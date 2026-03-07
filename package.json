@@ -24,6 +24,8 @@
     "build:ios:preview": "cd apps/expo && bun build:ios:preview",
     "build:android:preview": "cd apps/expo && bun build:android:preview",
     "submit:android": "cd apps/expo && eas submit --platform android --path ./app-release.aab",
+    "test": "cd packages/app && vitest run",
+    "test:watch": "cd packages/app && vitest",
     "check-deps": "check-dependency-version-consistency .",
     "check-types": "tsc --noEmit",
     "format": "bun x @biomejs/biome format --write ./packages ./apps",
@@ -46,5 +48,8 @@
     "react-native-url-polyfill": "^2.0.0",
     "typescript": "^5.2.2",
     "workerd": "1.20231218.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
   }
 }

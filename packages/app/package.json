@@ -5,7 +5,9 @@
   "private": true,
   "sideEffects": ["*.css"],
   "scripts": {
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@shopify/flash-list": "^1.6.3",
