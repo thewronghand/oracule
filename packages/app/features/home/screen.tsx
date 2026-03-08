@@ -99,7 +99,7 @@ export function HomeScreen() {
         ai="center"
         gap="$5"
         animation="fadeIn"
-        enterStyle={{ opacity: 0, y: 24 }}
+
         opacity={visible ? 1 : 0}
         y={visible ? 0 : 24}
       >
@@ -176,7 +176,7 @@ export function HomeScreen() {
         bottom={40}
         ai="center"
         animation="fadeIn"
-        enterStyle={{ opacity: 0 }}
+
         opacity={visible ? 0.45 : 0}
       >
         <Text fontSize="$2" color="$purple6" letterSpacing={1.5}>

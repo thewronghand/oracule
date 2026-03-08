@@ -316,7 +316,7 @@ function NativeCard({
         alignItems="center"
         justifyContent="center"
         animation="cardReveal"
-        enterStyle={{ opacity: 0, scale: 0.9 }}
+
         shadowColor="$shadowColor"
         shadowOpacity={0.4}
         shadowRadius={8}
@@ -360,7 +360,6 @@ function NativeCard({
       borderWidth={isReversed ? 1.5 : 1}
       borderColor={isReversed ? '$red8' : '$borderColor'}
       animation="cardReveal"
-      enterStyle={{ opacity: 0, scale: 0.9 }}
       shadowColor="$shadowColor"
       shadowOpacity={0.3}
       shadowRadius={8}

@@ -62,7 +62,7 @@ export function ResultScreen(): React.ReactNode {
             gap="$6"
             paddingBottom="$12"
             animation="fadeIn"
-            enterStyle={{ opacity: 0, y: 20 }}
+
           >
             {/* 제목 */}
             <YStack alignItems="center" gap="$3" paddingTop="$2">
@@ -91,7 +91,7 @@ export function ResultScreen(): React.ReactNode {
               borderColor="$yellow8"
               position="relative"
               animation="cardReveal"
-              enterStyle={{ opacity: 0, scale: 0.97 }}
+
             >
               {/* 이중 안쪽 테두리 */}
               <YStack
@@ -134,7 +134,7 @@ export function ResultScreen(): React.ReactNode {
             {/* 스프레드 레이아웃 */}
             <YStack
               animation="fadeIn"
-              enterStyle={{ opacity: 0 }}
+
             >
               <SpreadLayout
                 spreadType={reading.spreadType as SpreadType}
@@ -165,7 +165,7 @@ export function ResultScreen(): React.ReactNode {
               borderLeftWidth={3}
               borderLeftColor="$accentBackground"
               animation="cardReveal"
-              enterStyle={{ opacity: 0, x: -10 }}
+
             >
               <XStack alignItems="center" gap="$2">
                 <Sparkles size={14} color="$accentBackground" />
@@ -191,7 +191,7 @@ export function ResultScreen(): React.ReactNode {
             <YStack
               gap="$3"
               animation="fadeIn"
-              enterStyle={{ opacity: 0, y: 12 }}
+
             >
               {reading.shareId && (
                 <OraculeButton

@@ -31,7 +31,7 @@ export function QueryScreen() {
         gap="$6"
         paddingBottom="$12"
         animation="fadeIn"
-        enterStyle={{ opacity: 0, y: 20 }}
+
       >
         {/* 스프레드 선택 섹션 */}
         <YStack gap="$3" paddingTop="$2">
@@ -46,7 +46,7 @@ export function QueryScreen() {
 
         <YStack
           animation="cardReveal"
-          enterStyle={{ opacity: 0, y: 12 }}
+
         >
           <SpreadSelector selectedSpread={selectedSpread} onSelect={setSelectedSpread} />
         </YStack>

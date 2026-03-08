@@ -83,7 +83,7 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
       gap="$6"
       padding="$4"
       animation="fadeIn"
-      enterStyle={{ opacity: 0, y: 16 }}
+
     >
       <YStack alignItems="center" gap="$2">
         <H2 textAlign="center" color="$color">카드를 셔플합니다</H2>
@@ -166,7 +166,7 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
       gap="$6"
       padding="$4"
       animation="fadeIn"
-      enterStyle={{ opacity: 0, y: 16 }}
+
     >
       <YStack alignItems="center" gap="$2">
         <H2 textAlign="center" color="$color">카드를 컷합니다</H2>
@@ -296,7 +296,7 @@ function DrawPhaseView({
               <YStack
                 key={index}
                 animation="cardReveal"
-                enterStyle={{ opacity: 0, scale: 0.75, y: 12 }}
+
                 scale={isSelected ? 1.08 : 1}
                 y={isSelected ? -10 : 0}
                 onPress={() => handleSelectCard(index)}
@@ -367,7 +367,7 @@ function RevealPhase({
       gap="$4"
       padding="$4"
       animation="fadeIn"
-      enterStyle={{ opacity: 0, y: 16 }}
+
     >
       <YStack alignItems="center" gap="$2">
         <H2 textAlign="center" color="$color">카드가 공개됩니다</H2>
@@ -392,7 +392,7 @@ function RevealPhase({
           gap="$3"
           paddingBottom="$4"
           animation="fadeIn"
-          enterStyle={{ opacity: 0, y: 20 }}
+
         >
           {isApiLoading ? (
             <YStack gap="$3" alignItems="center">
