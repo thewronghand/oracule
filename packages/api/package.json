@@ -19,17 +19,17 @@
     "@hono/trpc-server": "^0.1.0",
     "@trpc/server": "^10.43.2",
     "@tsndr/cloudflare-worker-jwt": "2.2.7",
-    "drizzle-orm": "^0.29.0",
-    "drizzle-valibot": "beta",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-valibot": "^0.4.2",
     "hono": "^3.9.2",
     "miniflare": "3.20231025.1",
     "superjson": "1.13.3",
-    "valibot": "^0.20.1"
+    "valibot": "^1.2.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231025.0",
-    "drizzle-kit": "^0.20.1",
+    "drizzle-kit": "^0.31.9",
     "typescript": "^5.2.2",
-    "wrangler": "3.22.3"
+    "wrangler": "^4.71.0"
   }
 }

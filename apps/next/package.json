@@ -35,6 +35,6 @@
     "@tamagui/next-plugin": "1.75.9",
     "@types/react": "^18.2.37",
     "vercel": "33.0.2",
-    "wrangler": "3.22.3"
+    "wrangler": "^4.71.0"
   }
 }

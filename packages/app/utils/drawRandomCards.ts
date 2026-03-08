@@ -25,10 +25,8 @@ function processCardDirection(card: TarotCard): DrawnTarotCard {
     suit: card.suit,
     number: card.number,
     direction,
-    keywords:
-      direction === '정방향' ? card.upright.keywords : card.reversed.keywords,
-    description:
-      direction === '정방향' ? card.upright.description : card.reversed.description,
+    keywords: direction === '정방향' ? card.upright.keywords : card.reversed.keywords,
+    description: direction === '정방향' ? card.upright.description : card.reversed.description,
     imageDescription: card.imageDescription,
   }
 }
