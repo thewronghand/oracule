@@ -11,11 +11,13 @@ interface User {
 interface ApiContextProps {
   user: User | null
   db: DrizzleD1Database
+  vertexServiceAccountJson: string
 }
 
 export const createContext = async (
   d1: D1Database,
   JWT_VERIFICATION_KEY: string,
+  vertexServiceAccountJson: string,
   opts: FetchCreateContextFnOptions
 ): Promise<ApiContextProps> => {
   const db = createDb(d1)
@@ -63,7 +65,7 @@ export const createContext = async (
 
   const user = await getUser()
 
-  return { user, db }
+  return { user, db, vertexServiceAccountJson }
 }
 
 export type Context = inferAsyncReturnType<typeof createContext>

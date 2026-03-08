@@ -30,3 +30,19 @@ export type Car = InferSelectModel<typeof CarTable>
 export type InsertCar = InferInsertModel<typeof CarTable>
 export const insertCarSchema = createInsertSchema(CarTable)
 export const selectCarSchema = createSelectSchema(CarTable)
+
+// Reading
+export const ReadingTable = sqliteTable('Reading', {
+  id: text('id').primaryKey(),
+  question: text('question').notNull(),
+  cards: text('cards').notNull(), // JSON.stringify된 DrawnTarotCard[]
+  interpretation: text('interpretation').notNull(),
+  spreadType: text('spreadType').notNull(),
+  shareId: text('shareId').unique(),
+  createdAt: text('createdAt').notNull(),
+})
+
+export type Reading = InferSelectModel<typeof ReadingTable>
+export type InsertReading = InferInsertModel<typeof ReadingTable>
+export const insertReadingSchema = createInsertSchema(ReadingTable)
+export const selectReadingSchema = createSelectSchema(ReadingTable)
