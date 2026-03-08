@@ -118,7 +118,6 @@ function CardSlot({
     <YStack
       alignItems="center"
       gap="$2"
-      animation="cardReveal"
 
     >
       <HoverCardWrapper isWeb={isWeb}>{cardContent}</HoverCardWrapper>

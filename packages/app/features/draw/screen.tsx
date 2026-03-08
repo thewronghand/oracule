@@ -82,7 +82,6 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
       justifyContent="center"
       gap="$6"
       padding="$4"
-      animation="fadeIn"
 
     >
       <YStack alignItems="center" gap="$2">
@@ -104,7 +103,6 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
           <YStack
             key={i}
             position="absolute"
-            animation="medium"
             {...(isShuffling
               ? {
                   x: i % 2 === 0 ? -22 + i * 6 : 22 - i * 6,
@@ -165,7 +163,6 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
       justifyContent="center"
       gap="$6"
       padding="$4"
-      animation="fadeIn"
 
     >
       <YStack alignItems="center" gap="$2">
@@ -191,7 +188,6 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
           return (
             <YStack
               key={stackIndex}
-              animation="medium"
               scale={isTapped ? 0.92 : 1}
               y={isTapped ? 4 : 0}
               onPress={() => handleTapStack(stackIndex)}
@@ -281,7 +277,6 @@ function DrawPhaseView({
           fontSize="$5"
           fontWeight="700"
           color={selectedIndices.length === cardCount ? '$green10' : '$accentBackground'}
-          animation="quick"
         >
           {selectedIndices.length} / {cardCount} 장 선택됨
         </Text>
@@ -295,7 +290,6 @@ function DrawPhaseView({
             return (
               <YStack
                 key={index}
-                animation="cardReveal"
 
                 scale={isSelected ? 1.08 : 1}
                 y={isSelected ? -10 : 0}
@@ -366,7 +360,6 @@ function RevealPhase({
       flex={1}
       gap="$4"
       padding="$4"
-      animation="fadeIn"
 
     >
       <YStack alignItems="center" gap="$2">
@@ -391,7 +384,6 @@ function RevealPhase({
           alignItems="center"
           gap="$3"
           paddingBottom="$4"
-          animation="fadeIn"
 
         >
           {isApiLoading ? (
@@ -450,7 +442,6 @@ function PhaseIndicator({ currentPhase }: { currentPhase: DrawPhase }) {
                 justifyContent="center"
                 borderWidth={isActive ? 2 : isDone ? 0 : 1}
                 borderColor={isActive ? '$yellow8' : '$backgroundStrong'}
-                animation="quick"
                 shadowColor={isActive ? '$accentBackground' : undefined}
                 shadowOpacity={isActive ? 0.5 : 0}
                 shadowRadius={isActive ? 8 : 0}
@@ -481,7 +472,6 @@ function PhaseIndicator({ currentPhase }: { currentPhase: DrawPhase }) {
                 marginBottom="$4"
                 backgroundColor={isDone ? '$green8' : '$backgroundStrong'}
                 borderRadius={1}
-                animation="medium"
               />
             )}
           </XStack>

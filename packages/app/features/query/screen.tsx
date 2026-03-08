@@ -30,7 +30,6 @@ export function QueryScreen() {
         padding="$4"
         gap="$6"
         paddingBottom="$12"
-        animation="fadeIn"
 
       >
         {/* 스프레드 선택 섹션 */}
@@ -45,7 +44,6 @@ export function QueryScreen() {
         </YStack>
 
         <YStack
-          animation="cardReveal"
 
         >
           <SpreadSelector selectedSpread={selectedSpread} onSelect={setSelectedSpread} />
@@ -95,7 +93,6 @@ export function QueryScreen() {
                   borderColor={isSelected ? '$yellow8' : '$borderColor'}
                   pressStyle={{ opacity: 0.7, scale: 0.99 }}
                   onPress={() => handleExampleQuestion(q)}
-                  animation="quick"
                   cursor="pointer"
                 >
                   <XStack alignItems="center" gap="$2">
@@ -135,7 +132,6 @@ export function QueryScreen() {
           onPress={handleDraw}
           disabled={question.trim() === ''}
           opacity={question.trim() === '' ? 0.45 : 1}
-          animation="quick"
         >
           카드 뽑기
         </OraculeButton>

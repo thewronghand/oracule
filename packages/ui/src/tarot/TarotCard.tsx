@@ -315,7 +315,6 @@ function NativeCard({
         backgroundColor="$purple10"
         alignItems="center"
         justifyContent="center"
-        animation="cardReveal"
 
         shadowColor="$shadowColor"
         shadowOpacity={0.4}
@@ -359,7 +358,6 @@ function NativeCard({
       backgroundColor="$background"
       borderWidth={isReversed ? 1.5 : 1}
       borderColor={isReversed ? '$red8' : '$borderColor'}
-      animation="cardReveal"
       shadowColor="$shadowColor"
       shadowOpacity={0.3}
       shadowRadius={8}

@@ -98,7 +98,6 @@ export function HomeScreen() {
       <YStack
         ai="center"
         gap="$5"
-        animation="fadeIn"
 
         opacity={visible ? 1 : 0}
         y={visible ? 0 : 24}
@@ -175,7 +174,6 @@ export function HomeScreen() {
         position="absolute"
         bottom={40}
         ai="center"
-        animation="fadeIn"
 
         opacity={visible ? 0.45 : 0}
       >

@@ -61,7 +61,6 @@ export function ResultScreen(): React.ReactNode {
             padding="$4"
             gap="$6"
             paddingBottom="$12"
-            animation="fadeIn"
 
           >
             {/* 제목 */}
@@ -90,7 +89,6 @@ export function ResultScreen(): React.ReactNode {
               borderWidth={1.5}
               borderColor="$yellow8"
               position="relative"
-              animation="cardReveal"
 
             >
               {/* 이중 안쪽 테두리 */}
@@ -133,7 +131,6 @@ export function ResultScreen(): React.ReactNode {
 
             {/* 스프레드 레이아웃 */}
             <YStack
-              animation="fadeIn"
 
             >
               <SpreadLayout
@@ -164,7 +161,6 @@ export function ResultScreen(): React.ReactNode {
               borderColor="$borderColor"
               borderLeftWidth={3}
               borderLeftColor="$accentBackground"
-              animation="cardReveal"
 
             >
               <XStack alignItems="center" gap="$2">
@@ -190,7 +186,6 @@ export function ResultScreen(): React.ReactNode {
             {/* 버튼 영역 */}
             <YStack
               gap="$3"
-              animation="fadeIn"
 
             >
               {reading.shareId && (
@@ -198,7 +193,6 @@ export function ResultScreen(): React.ReactNode {
                   variant="secondary"
                   customSize="md"
                   onPress={handleShare}
-                  animation="quick"
                   scale={copied ? 0.98 : 1}
                 >
                   <XStack alignItems="center" gap="$2">
