@@ -56,6 +56,7 @@ dist/
 THUMBS_DB
 node_modules/
 types/
+!packages/app/types/
 
 # Cloudflare D1
 **/.wrangler/*
@@ -76,3 +77,4 @@ apps/expo/android/**
 **/workbox-*.js
 **/fallback-*.js
 **/service-worker.js
+.envrc
