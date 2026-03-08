@@ -13,8 +13,7 @@ interface SpreadLayoutProps {
 // 포지션 레이블에서 괄호 안 짧은 이름만 추출
 function extractShortLabel(position: string): string {
   const match = position.match(/\(([^)]+)\)/)
-  if (match) {
-    // 예: "왼쪽 - 과거의 영향" → "과거"
+  if (match?.[1]) {
     const inner = match[1]
     const parts = inner.split(' - ')
     return parts[parts.length - 1] ?? inner

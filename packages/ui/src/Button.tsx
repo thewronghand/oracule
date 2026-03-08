@@ -1,6 +1,6 @@
-import { type TamaguiComponent, Button, styled } from 'tamagui'
+import { Button, styled } from 'tamagui'
 
-export const OraculeButton: TamaguiComponent = styled(Button, {
+export const OraculeButton = styled(Button, {
   name: 'OraculeButton',
   borderRadius: '$4',
   fontWeight: '600',
