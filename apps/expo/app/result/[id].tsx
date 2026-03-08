@@ -1,0 +1,15 @@
+import { ResultScreen } from 'app/features/result/screen'
+import { Stack } from 'expo-router'
+
+export default function Screen() {
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          title: '타로 해석 결과',
+        }}
+      />
+      <ResultScreen />
+    </>
+  )
+}
