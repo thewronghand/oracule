@@ -30,6 +30,7 @@ const description = `${process.env.NEXT_PUBLIC_METADATA_DESCRIPTION}`
 const T4App = ({ Component, pageProps }: SolitoAppProps<{ initialSession: Session | null }>) => {
   return (
     <>
+      <DefaultSeo title={title} description={description} />
       <Metadata />
       <Provider initialSession={pageProps.initialSession}>
         <Component {...pageProps} />
@@ -42,7 +43,6 @@ export default trpc.withTRPC(T4App)
 
 const Metadata = () => (
   <Head>
-    <DefaultSeo title={title} description={description} />
     <meta name='viewport' content='width=device-width,initial-scale=1' />
     {/* Ensure a minimum width of 100% */}
     <style>
