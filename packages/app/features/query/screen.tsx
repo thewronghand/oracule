@@ -32,7 +32,7 @@ export function QueryScreen() {
 
         <OraculeButton
           variant="primary"
-          size="lg"
+          customSize="lg"
           onPress={handleDraw}
           disabled={question.trim() === ''}
           opacity={question.trim() === '' ? 0.5 : 1}

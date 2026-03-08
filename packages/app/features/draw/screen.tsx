@@ -58,8 +58,6 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
             shadowOpacity={0.3}
             shadowRadius={4}
             shadowOffset={{ width: 0, height: 2 }}
-            animation="cardReveal"
-            enterStyle={{ opacity: 0, scale: 0.8 }}
             {...(isShuffling
               ? {
                   x: i % 2 === 0 ? -20 + i * 5 : 20 - i * 5,
@@ -76,7 +74,7 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
 
       <OraculeButton
         variant="primary"
-        size="lg"
+        customSize="lg"
         onPress={handleShuffle}
         disabled={isShuffling}
         opacity={isShuffling ? 0.6 : 1}
@@ -319,7 +317,7 @@ function RevealPhase({
               </Paragraph>
             </YStack>
           ) : readingId ? (
-            <OraculeButton variant="primary" size="lg" onPress={handleViewResult}>
+            <OraculeButton variant="primary" customSize="lg" onPress={handleViewResult}>
               결과 보기
             </OraculeButton>
           ) : (
@@ -327,7 +325,7 @@ function RevealPhase({
               <Paragraph color="$red10" textAlign="center">
                 해석 생성에 실패했습니다
               </Paragraph>
-              <OraculeButton variant="secondary" size="md" onPress={handleViewResult}>
+              <OraculeButton variant="secondary" customSize="md" onPress={handleViewResult}>
                 다시 시도
               </OraculeButton>
             </YStack>

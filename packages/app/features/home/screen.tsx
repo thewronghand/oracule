@@ -47,7 +47,7 @@ export function HomeScreen() {
       <OraculeButton
         {...queryLink}
         variant="primary"
-        size="lg"
+        customSize="lg"
         minWidth={220}
       >
         타로 리딩 시작하기

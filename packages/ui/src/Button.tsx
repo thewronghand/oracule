@@ -28,7 +28,7 @@ export const OraculeButton = styled(Button, {
         borderWidth: 0,
       },
     },
-    size: {
+    customSize: {
       sm: {
         paddingHorizontal: '$3',
         paddingVertical: '$2',
@@ -49,6 +49,6 @@ export const OraculeButton = styled(Button, {
 
   defaultVariants: {
     variant: 'primary',
-    size: 'md',
+    customSize: 'md',
   },
 })
