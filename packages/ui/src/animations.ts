@@ -19,4 +19,22 @@ export const animations: AnimationDriver = createAnimations({
     mass: 1.2,
     stiffness: 250,
   },
+  cardFlip: {
+    type: 'spring',
+    damping: 15,
+    mass: 1,
+    stiffness: 180,
+  },
+  cardReveal: {
+    type: 'spring',
+    damping: 12,
+    mass: 0.8,
+    stiffness: 120,
+  },
+  fadeIn: {
+    type: 'spring',
+    damping: 20,
+    mass: 1,
+    stiffness: 80,
+  },
 })
