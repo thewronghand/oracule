@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { H1, Paragraph, XStack, YStack, Text, styled } from 'tamagui'
 import { OraculeButton } from '@t4/ui/src/Button'
 import { useLink } from 'solito/link'
-import { Moon, Star, Sparkles } from 'lucide-react-native'
+import { Moon, Star, Sparkles } from '@tamagui/lucide-icons'
 
 const GlowText = styled(H1, {
   textAlign: 'center',
@@ -157,7 +157,6 @@ export function HomeScreen() {
               backgroundColor="$purple8"
               opacity={0.18}
               scale={1.08}
-              blur={16}
             />
             <OraculeButton
               {...queryLink}
