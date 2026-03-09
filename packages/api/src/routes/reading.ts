@@ -54,41 +54,54 @@ export const readingRouter = router({
     .mutation(async ({ input, ctx }) => {
       const { question, cards, spreadType } = input
 
-      const userPrompt = formatReadingPrompt(
-        question,
-        cards as DrawnTarotCard[],
-        spreadType as SpreadType
-      )
+      try {
+        const userPrompt = formatReadingPrompt(
+          question,
+          cards as DrawnTarotCard[],
+          spreadType as SpreadType
+        )
 
-      const interpretation = await generateTarotReading(
-        { serviceAccountJson: ctx.vertexServiceAccountJson },
-        systemPrompt.input,
-        systemPrompt.response,
-        userPrompt
-      )
+        console.log('[reading.create] Gemini API 호출 시작')
+        const interpretation = await generateTarotReading(
+          { serviceAccountJson: ctx.vertexServiceAccountJson },
+          systemPrompt.input,
+          systemPrompt.response,
+          userPrompt
+        )
+        console.log('[reading.create] Gemini API 호출 성공')
 
-      const id = crypto.randomUUID()
-      const shareId = generateShareId()
-      const createdAt = new Date().toISOString()
+        const id = crypto.randomUUID()
+        const shareId = generateShareId()
+        const createdAt = new Date().toISOString()
 
-      await ctx.db.insert(ReadingTable).values({
-        id,
-        question,
-        cards: JSON.stringify(cards),
-        interpretation,
-        spreadType,
-        shareId,
-        createdAt,
-      })
+        console.log('[reading.create] DB 저장 시작')
+        await ctx.db.insert(ReadingTable).values({
+          id,
+          question,
+          cards: JSON.stringify(cards),
+          interpretation,
+          spreadType,
+          shareId,
+          createdAt,
+        })
+        console.log('[reading.create] DB 저장 성공')
 
-      return {
-        id,
-        question,
-        cards,
-        interpretation,
-        spreadType,
-        shareId,
-        createdAt,
+        return {
+          id,
+          question,
+          cards,
+          interpretation,
+          spreadType,
+          shareId,
+          createdAt,
+        }
+      } catch (error) {
+        console.error('[reading.create] 에러 발생:', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error instanceof Error ? error.message : '알 수 없는 에러',
+          cause: error,
+        })
       }
     }),
 
