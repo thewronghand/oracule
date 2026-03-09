@@ -3,12 +3,12 @@ compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 send_metrics = false
 main = "src/worker.ts"
-account_id = "719e3374c9fabba87860b809acb3c939"
+account_id = "0e23ccec1650765ea14bdde657b93172"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "production"
-database_id = "aa5e3923-0f1b-469a-8bb8-d10fb866efe0"
+database_name = "oracule-db"
+database_id = "20a0181f-3178-4f1b-85c6-a76e4702b978"
 migrations_dir = "migrations"
 
 # The necessary secrets are:

@@ -5,15 +5,14 @@
   "license": "MIT",
   "scripts": {
     "dev": "wrangler dev",
-    "generate": "drizzle-kit generate:sqlite --schema=./src/db/schema.ts --out=./migrations",
-    "migrate": "wrangler d1 migrations apply production",
-    "migrate:local": "wrangler d1 migrations apply production --local",
-    "seed": "wrangler d1 execute production --file=./seed/seed.sql",
-    "seed:local": "wrangler d1 execute production --local --file=./seed/seed.sql",
+    "generate": "drizzle-kit generate",
+    "migrate": "wrangler d1 migrations apply oracule-db",
+    "migrate:local": "wrangler d1 migrations apply oracule-db --local",
+    "seed": "wrangler d1 execute oracule-db --file=./seed/seed.sql",
+    "seed:local": "wrangler d1 execute oracule-db --local --file=./seed/seed.sql",
     "studio": "drizzle-kit studio",
     "deploy": "wrangler deploy --minify src/worker.ts",
     "test": "vitest run",
-    "postinstall": "bun generate",
     "clean": "rm -rf .turbo node_modules"
   },
   "dependencies": {
