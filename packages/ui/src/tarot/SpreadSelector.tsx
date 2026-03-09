@@ -23,7 +23,6 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
             padding="$3"
             gap="$2"
             pressStyle={{ scale: 0.97, opacity: 0.85 }}
-            animation="quick"
             cursor="pointer"
             onPress={() => onSelect(option.value)}
           >

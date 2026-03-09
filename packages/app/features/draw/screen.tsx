@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { H2, H3, Paragraph, ScrollView, Text, XStack, YStack } from '@t4/ui'
 import { OraculeButton } from '@t4/ui/src/Button'
 import { LoadingSpinner } from '@t4/ui/src/LoadingSpinner'
 import { SpreadLayout } from '@t4/ui/src/tarot/SpreadLayout'
-import { TarotCard } from '@t4/ui/src/tarot/TarotCard'
+import { Star, Sparkles } from '@tamagui/lucide-icons'
 import { createParam } from 'solito'
 import { useRouter } from 'solito/router'
 import type { DrawnTarotCard } from 'app/types/card'
@@ -15,24 +15,81 @@ const { useParam } = createParam<{ spreadType: string; question: string }>()
 
 type DrawPhase = 'shuffle' | 'cut' | 'draw' | 'reveal'
 
-// 셔플 페이즈에서 카드 더미를 보여주는 컴포넌트
+// 카드 뒷면 미니 컴포넌트 (재사용)
+function CardBack({
+  width = 120,
+  height = 180,
+  opacity = 1,
+  borderColor = '$yellow8',
+  glowColor,
+  children,
+}: {
+  width?: number
+  height?: number
+  opacity?: number
+  borderColor?: string
+  glowColor?: string
+  children?: React.ReactNode
+}) {
+  return (
+    <YStack
+      width={width}
+      height={height}
+      borderRadius={12}
+      borderWidth={1.5}
+      borderColor={borderColor}
+      backgroundColor="$purple10"
+      alignItems="center"
+      justifyContent="center"
+      opacity={opacity}
+      shadowColor={glowColor ?? '$shadowColor'}
+      shadowOpacity={glowColor ? 0.6 : 0.35}
+      shadowRadius={glowColor ? 10 : 5}
+      shadowOffset={{ width: 0, height: 3 }}
+    >
+      {/* 이중 안쪽 테두리 */}
+      <YStack
+        position="absolute"
+        top={6}
+        left={6}
+        right={6}
+        bottom={6}
+        borderRadius={8}
+        borderWidth={1}
+        borderColor="$yellow6"
+        opacity={0.5}
+      />
+      {children}
+    </YStack>
+  )
+}
+
+// 셔플 페이즈
 function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
   const [isShuffling, setIsShuffling] = useState(false)
 
   const handleShuffle = useCallback(() => {
     setIsShuffling(true)
-    // 셔플 애니메이션 시간 후 다음 단계로
     setTimeout(() => {
       onShuffle()
     }, 1200)
   }, [onShuffle])
 
   return (
-    <YStack flex={1} alignItems="center" justifyContent="center" gap="$6" padding="$4">
-      <H2 textAlign="center" color="$color">카드를 셔플합니다</H2>
-      <Paragraph textAlign="center" color="$color3">
-        카드를 섞어 운명의 배열을 만듭니다
-      </Paragraph>
+    <YStack
+      flex={1}
+      alignItems="center"
+      justifyContent="center"
+      gap="$6"
+      padding="$4"
+
+    >
+      <YStack alignItems="center" gap="$2">
+        <H2 textAlign="center" color="$color">카드를 셔플합니다</H2>
+        <Paragraph textAlign="center" color="$color3">
+          카드를 섞어 운명의 배열을 만듭니다
+        </Paragraph>
+      </YStack>
 
       {/* 카드 더미 */}
       <YStack
@@ -46,29 +103,24 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
           <YStack
             key={i}
             position="absolute"
-            width={120}
-            height={180}
-            borderRadius={12}
-            borderWidth={1.5}
-            borderColor="$yellow8"
-            backgroundColor="$purple10"
-            alignItems="center"
-            justifyContent="center"
-            shadowColor="$shadowColor"
-            shadowOpacity={0.3}
-            shadowRadius={4}
-            shadowOffset={{ width: 0, height: 2 }}
             {...(isShuffling
               ? {
-                  x: i % 2 === 0 ? -20 + i * 5 : 20 - i * 5,
-                  y: -i * 4 + (isShuffling ? (i % 2 === 0 ? -10 : 10) : 0),
-                  rotate: `${(i - 2) * 3}deg`,
+                  x: i % 2 === 0 ? -22 + i * 6 : 22 - i * 6,
+                  y: -i * 4 + (i % 2 === 0 ? -12 : 12),
+                  rotate: `${(i - 2) * 5}deg`,
+                  scale: 0.97,
                 }
               : {
-                  y: -i * 4,
+                  y: -i * 5,
                   x: 0,
+                  rotate: `${(i - 2) * 0.5}deg`,
+                  scale: 1,
                 })}
-          />
+          >
+            <CardBack width={120} height={180} opacity={1 - i * 0.05}>
+              {i === 0 && <Star size={28} color="$yellow8" />}
+            </CardBack>
+          </YStack>
         ))}
       </YStack>
 
@@ -85,7 +137,7 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
   )
 }
 
-// 컷 페이즈 - 3개 더미 중 순서대로 선택
+// 컷 페이즈 - 3개 더미 순서대로 선택
 function CutPhase({ onComplete }: { onComplete: () => void }) {
   const [tappedStacks, setTappedStacks] = useState<number[]>([])
 
@@ -105,46 +157,75 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
   )
 
   return (
-    <YStack flex={1} alignItems="center" justifyContent="center" gap="$6" padding="$4">
-      <H2 textAlign="center" color="$color">카드를 컷합니다</H2>
-      <Paragraph textAlign="center" color="$color3">
-        세 더미를 순서대로 터치하세요 ({tappedStacks.length}/3)
-      </Paragraph>
+    <YStack
+      flex={1}
+      alignItems="center"
+      justifyContent="center"
+      gap="$6"
+      padding="$4"
 
-      <XStack gap="$4" justifyContent="center" alignItems="center">
+    >
+      <YStack alignItems="center" gap="$2">
+        <H2 textAlign="center" color="$color">카드를 컷합니다</H2>
+        <Paragraph textAlign="center" color="$color3">
+          세 더미를 순서대로 터치하세요
+        </Paragraph>
+        <Text
+          fontSize="$4"
+          fontWeight="700"
+          color="$accentBackground"
+        >
+          {tappedStacks.length} / 3
+        </Text>
+      </YStack>
+
+      <XStack gap="$5" justifyContent="center" alignItems="flex-end">
         {[0, 1, 2].map((stackIndex) => {
           const isTapped = tappedStacks.includes(stackIndex)
           const tapOrder = tappedStacks.indexOf(stackIndex)
+          // 가운데 더미를 살짝 높게
+          const heightBonus = stackIndex === 1 ? 20 : 0
           return (
             <YStack
               key={stackIndex}
-              width={100}
-              height={150}
-              borderRadius={12}
-              borderWidth={2}
-              borderColor={isTapped ? '$green8' : '$yellow8'}
-              backgroundColor={isTapped ? '$green3' : '$purple10'}
-              alignItems="center"
-              justifyContent="center"
-              animation="cardReveal"
-              enterStyle={{ opacity: 0, scale: 0.8, y: 20 }}
-              pressStyle={!isTapped ? { scale: 0.95, opacity: 0.8 } : {}}
-              cursor={!isTapped ? 'pointer' : 'default'}
+              scale={isTapped ? 0.92 : 1}
+              y={isTapped ? 4 : 0}
               onPress={() => handleTapStack(stackIndex)}
-              shadowColor="$shadowColor"
-              shadowOpacity={0.3}
-              shadowRadius={6}
-              shadowOffset={{ width: 0, height: 3 }}
+              cursor={!isTapped ? 'pointer' : 'default'}
             >
-              {isTapped ? (
-                <Text fontSize="$6" fontWeight="700" color="$green10">
-                  {tapOrder + 1}
-                </Text>
-              ) : (
-                <Text fontSize="$3" color="$yellow8" fontWeight="600">
-                  더미 {stackIndex + 1}
-                </Text>
-              )}
+              {/* 카드 여러 장 쌓인 효과 */}
+              <YStack position="relative" width={100} height={150 + heightBonus} alignItems="center">
+                {[2, 1, 0].map((layer) => (
+                  <YStack
+                    key={layer}
+                    position="absolute"
+                    top={layer * 3}
+                    left={layer * 2}
+                  >
+                    <CardBack
+                      width={96}
+                      height={144 + heightBonus}
+                      opacity={1 - layer * 0.08}
+                      borderColor={isTapped ? '$green8' : '$yellow8'}
+                    >
+                      {layer === 0 && (
+                        <YStack alignItems="center" justifyContent="center" gap="$2">
+                          {isTapped ? (
+                            <YStack alignItems="center" gap="$1">
+                              <Text fontSize="$7" fontWeight="700" color="$green10">
+                                {tapOrder + 1}
+                              </Text>
+                              <Sparkles size={16} color="$green8" />
+                            </YStack>
+                          ) : (
+                            <Star size={20} color="$yellow8" opacity={0.7} />
+                          )}
+                        </YStack>
+                      )}
+                    </CardBack>
+                  </YStack>
+                ))}
+              </YStack>
             </YStack>
           )
         })}
@@ -156,7 +237,6 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
 // 드로우 페이즈 - 카드 선택
 function DrawPhaseView({
   cardCount,
-  drawnCards,
   onComplete,
 }: {
   cardCount: number
@@ -164,7 +244,6 @@ function DrawPhaseView({
   onComplete: (selectedIndices: number[]) => void
 }) {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
-  // 표시할 카드 수: 실제 뽑을 수의 2~3배 (최소 12장, 최대 21장)
   const displayCount = Math.min(Math.max(cardCount * 3, 12), 21)
 
   const handleSelectCard = useCallback(
@@ -207,37 +286,32 @@ function DrawPhaseView({
         <XStack flexWrap="wrap" justifyContent="center" gap="$3" paddingBottom="$6">
           {Array.from({ length: displayCount }).map((_, index) => {
             const isSelected = selectedIndices.includes(index)
+            const selectOrder = selectedIndices.indexOf(index)
             return (
               <YStack
                 key={index}
-                animation="cardReveal"
-                enterStyle={{ opacity: 0, scale: 0.8 }}
-                scale={isSelected ? 1.05 : 1}
-                y={isSelected ? -8 : 0}
+
+                scale={isSelected ? 1.08 : 1}
+                y={isSelected ? -10 : 0}
+                onPress={() => handleSelectCard(index)}
+                cursor="pointer"
               >
-                <YStack
+                <CardBack
                   width={80}
                   height={120}
-                  borderRadius={12}
-                  borderWidth={isSelected ? 2.5 : 1.5}
                   borderColor={isSelected ? '$green8' : '$yellow8'}
-                  backgroundColor={isSelected ? '$purple8' : '$purple10'}
-                  alignItems="center"
-                  justifyContent="center"
-                  onPress={() => handleSelectCard(index)}
-                  pressStyle={{ scale: 0.95, opacity: 0.85 }}
-                  cursor="pointer"
-                  shadowColor={isSelected ? '$green8' : '$shadowColor'}
-                  shadowOpacity={isSelected ? 0.5 : 0.3}
-                  shadowRadius={isSelected ? 8 : 4}
-                  shadowOffset={{ width: 0, height: isSelected ? 4 : 2 }}
+                  glowColor={isSelected ? '$green8' : undefined}
                 >
                   {isSelected && (
-                    <Text fontSize="$4" fontWeight="700" color="$green8">
-                      {selectedIndices.indexOf(index) + 1}
-                    </Text>
+                    <YStack alignItems="center" gap="$1">
+                      <Text fontSize="$5" fontWeight="700" color="$green8">
+                        {selectOrder + 1}
+                      </Text>
+                      <Sparkles size={14} color="$green6" />
+                    </YStack>
                   )}
-                </YStack>
+                  {!isSelected && <Star size={18} color="$yellow7" opacity={0.5} />}
+                </CardBack>
               </YStack>
             )
           })}
@@ -263,7 +337,6 @@ function RevealPhase({
   const [revealedIndices, setRevealedIndices] = useState<number[]>([])
   const [allRevealed, setAllRevealed] = useState(false)
 
-  // 순차적으로 카드 공개
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
     if (revealedIndices.length < drawnCards.length) {
@@ -283,7 +356,12 @@ function RevealPhase({
   }, [readingId, router])
 
   return (
-    <YStack flex={1} gap="$4" padding="$4">
+    <YStack
+      flex={1}
+      gap="$4"
+      padding="$4"
+
+    >
       <YStack alignItems="center" gap="$2">
         <H2 textAlign="center" color="$color">카드가 공개됩니다</H2>
         <Paragraph textAlign="center" color="$color3">
@@ -306,8 +384,7 @@ function RevealPhase({
           alignItems="center"
           gap="$3"
           paddingBottom="$4"
-          animation="fadeIn"
-          enterStyle={{ opacity: 0, y: 20 }}
+
         >
           {isApiLoading ? (
             <YStack gap="$3" alignItems="center">
@@ -348,41 +425,51 @@ function PhaseIndicator({ currentPhase }: { currentPhase: DrawPhase }) {
   const currentIndex = phases.findIndex((p) => p.key === currentPhase)
 
   return (
-    <XStack justifyContent="center" alignItems="center" gap="$2" paddingVertical="$3">
+    <XStack justifyContent="center" alignItems="center" paddingVertical="$4" paddingHorizontal="$2">
       {phases.map((p, index) => {
         const isActive = index === currentIndex
         const isDone = index < currentIndex
         return (
-          <XStack key={p.key} alignItems="center" gap="$2">
-            <YStack
-              width={28}
-              height={28}
-              borderRadius={14}
-              backgroundColor={isDone ? '$green8' : isActive ? '$accentBackground' : '$backgroundStrong'}
-              alignItems="center"
-              justifyContent="center"
-              borderWidth={isActive ? 2 : 0}
-              borderColor="$accentBackground"
-            >
+          <XStack key={p.key} alignItems="center">
+            {/* 단계 원 + 라벨 */}
+            <YStack alignItems="center" gap="$1">
+              <YStack
+                width={32}
+                height={32}
+                borderRadius={16}
+                backgroundColor={isDone ? '$green8' : isActive ? '$accentBackground' : '$backgroundStrong'}
+                alignItems="center"
+                justifyContent="center"
+                borderWidth={isActive ? 2 : isDone ? 0 : 1}
+                borderColor={isActive ? '$yellow8' : '$backgroundStrong'}
+                shadowColor={isActive ? '$accentBackground' : undefined}
+                shadowOpacity={isActive ? 0.5 : 0}
+                shadowRadius={isActive ? 8 : 0}
+              >
+                <Text
+                  fontSize="$2"
+                  fontWeight="700"
+                  color={isDone || isActive ? 'white' : '$color4'}
+                >
+                  {isDone ? '✓' : index + 1}
+                </Text>
+              </YStack>
               <Text
                 fontSize="$1"
-                fontWeight="700"
-                color={isDone || isActive ? 'white' : '$color3'}
+                fontWeight={isActive ? '700' : '400'}
+                color={isActive ? '$color' : isDone ? '$green10' : '$color4'}
               >
-                {isDone ? '✓' : index + 1}
+                {p.label}
               </Text>
             </YStack>
-            <Text
-              fontSize="$2"
-              fontWeight={isActive ? '700' : '400'}
-              color={isActive ? '$color' : '$color3'}
-            >
-              {p.label}
-            </Text>
+
+            {/* 구분선 */}
             {index < phases.length - 1 && (
               <YStack
-                width={20}
+                width={40}
                 height={2}
+                marginHorizontal="$1"
+                marginBottom="$4"
                 backgroundColor={isDone ? '$green8' : '$backgroundStrong'}
                 borderRadius={1}
               />
@@ -411,7 +498,6 @@ export function DrawScreen() {
 
   const createReading = trpc.reading.create.useMutation()
 
-  // 컴포넌트 마운트 시 카드를 뽑고 API 호출 시작
   const apiCalledRef = useRef(false)
   useEffect(() => {
     if (apiCalledRef.current) return
@@ -447,7 +533,6 @@ export function DrawScreen() {
 
   const handleDrawComplete = useCallback(
     (_selectedIndices: number[]) => {
-      // 선택 인덱스와 무관하게 이미 뽑힌 카드를 사용 (LLM에 이미 전송됨)
       setPhase('reveal')
     },
     []
@@ -455,17 +540,14 @@ export function DrawScreen() {
 
   return (
     <YStack flex={1} backgroundColor="$background">
-      {/* 상단 진행 표시기 */}
       <PhaseIndicator currentPhase={phase} />
 
-      {/* 스프레드 정보 */}
       <YStack alignItems="center" paddingHorizontal="$4" paddingBottom="$2">
         <H3 color="$accentBackground" fontSize="$3">
           {spreadInfo.name}
         </H3>
       </YStack>
 
-      {/* 페이즈별 컨텐츠 */}
       {phase === 'shuffle' && <ShufflePhase onShuffle={handleShuffleComplete} />}
       {phase === 'cut' && <CutPhase onComplete={handleCutComplete} />}
       {phase === 'draw' && (
