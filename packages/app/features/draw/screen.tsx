@@ -488,6 +488,7 @@ export function DrawScreen() {
   const spreadType = (spreadTypeParam ?? 'SINGLE') as SpreadType
   const question = questionParam ? decodeURIComponent(questionParam) : ''
 
+
   const spreadInfo = SPREAD_INFO[spreadType]
   const cardCount = spreadOptions.find((s) => s.value === spreadType)?.cardCount ?? 1
 
@@ -501,6 +502,8 @@ export function DrawScreen() {
   const apiCalledRef = useRef(false)
   useEffect(() => {
     if (apiCalledRef.current) return
+    // 파라미터가 아직 준비되지 않았으면 대기 (Next.js router.isReady 전)
+    if (!questionParam) return
     apiCalledRef.current = true
 
     const cards = drawRandomCards(cardCount)
@@ -521,7 +524,7 @@ export function DrawScreen() {
         console.error('리딩 생성 실패:', error)
         setIsApiLoading(false)
       })
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [questionParam]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleShuffleComplete = useCallback(() => {
     setPhase('cut')
