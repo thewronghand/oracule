@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { H2, Paragraph, ScrollView, Separator, XStack, YStack, Text } from 'tamagui'
 import { OraculeButton, OraculeTextArea, SpreadSelector } from '@t4/ui'
 import type { SpreadType } from 'app/types/spread'
+import { CHARACTERS, type CharacterId } from 'app/types/character'
 import { useRouter } from 'solito/router'
-import { Sparkles, MessageCircle, Star } from '@tamagui/lucide-icons'
+import { Sparkles, MessageCircle, Star, Users } from '@tamagui/lucide-icons'
 
 const EXAMPLE_QUESTIONS = [
   '지금 내 커리어 방향은 올바른가요?',
@@ -13,11 +14,14 @@ const EXAMPLE_QUESTIONS = [
 
 export function QueryScreen() {
   const [selectedSpread, setSelectedSpread] = useState<SpreadType>('SINGLE')
+  const [selectedCharacter, setSelectedCharacter] = useState<CharacterId>('default')
   const [question, setQuestion] = useState('')
   const router = useRouter()
 
   const handleDraw = () => {
-    router.push(`/draw?spreadType=${selectedSpread}&question=${encodeURIComponent(question)}`)
+    router.push(
+      `/draw?spreadType=${selectedSpread}&question=${encodeURIComponent(question)}&character=${selectedCharacter}`
+    )
   }
 
   const handleExampleQuestion = (q: string) => {
@@ -27,8 +31,78 @@ export function QueryScreen() {
   return (
     <ScrollView backgroundColor='$background'>
       <YStack padding='$4' gap='$6' paddingBottom='$12'>
-        {/* 스프레드 선택 섹션 */}
+        {/* 캐릭터 선택 섹션 */}
         <YStack gap='$3' paddingTop='$2'>
+          <XStack alignItems='center' gap='$2'>
+            <Users size={20} color='$accentBackground' />
+            <H2 color='$accentBackground' letterSpacing={0.5}>
+              누가 해석해줄까요?
+            </H2>
+          </XStack>
+          <Paragraph fontSize='$3' color='$colorSubtle' paddingLeft='$1'>
+            캐릭터마다 해석 스타일이 달라요
+          </Paragraph>
+        </YStack>
+
+        <XStack flexWrap='wrap' gap='$3'>
+          {CHARACTERS.map((character) => {
+            const isSelected = selectedCharacter === character.id
+            return (
+              <YStack
+                key={character.id}
+                flex={1}
+                minWidth='45%'
+                backgroundColor={isSelected ? '$purple10' : '$backgroundHover'}
+                borderRadius='$4'
+                padding='$3'
+                borderWidth={isSelected ? 1.5 : 1}
+                borderColor={isSelected ? '$yellow8' : '$borderColor'}
+                pressStyle={{ opacity: 0.7, scale: 0.98 }}
+                onPress={() => setSelectedCharacter(character.id)}
+                cursor='pointer'
+                alignItems='center'
+                gap='$1'
+              >
+                <Text fontSize={28}>{character.emoji}</Text>
+                <Text
+                  fontSize='$3'
+                  fontWeight={isSelected ? '700' : '500'}
+                  color={isSelected ? '$color' : '$colorSubtle'}
+                  textAlign='center'
+                >
+                  {character.name}
+                </Text>
+                <Text
+                  fontSize='$1'
+                  color={isSelected ? '$color3' : '$colorSubtle'}
+                  textAlign='center'
+                >
+                  {character.description}
+                </Text>
+              </YStack>
+            )
+          })}
+        </XStack>
+
+        {/* 장식 구분선 */}
+        <XStack alignItems='center' gap='$3'>
+          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
+          <XStack gap='$2' alignItems='center'>
+            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
+              ✦
+            </Text>
+            <Text fontSize='$3' color='$accentBackground'>
+              ✦
+            </Text>
+            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
+              ✦
+            </Text>
+          </XStack>
+          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
+        </XStack>
+
+        {/* 스프레드 선택 섹션 */}
+        <YStack gap='$3'>
           <XStack alignItems='center' gap='$2'>
             <Sparkles size={20} color='$accentBackground' />
             <H2 color='$accentBackground' letterSpacing={0.5}>

@@ -39,6 +39,7 @@ export const ReadingTable = sqliteTable('Reading', {
   interpretation: text('interpretation').notNull(),
   spreadType: text('spreadType').notNull(),
   shareId: text('shareId').unique(),
+  characterId: text('characterId'),
   createdAt: text('createdAt').notNull(),
 })
 

@@ -7,6 +7,7 @@ import { ReadingTable } from '../db/schema'
 import { formatReadingPrompt } from '../data/prompts/prompt-formatter'
 import { generateTarotReading } from '../services/gemini.service'
 import { systemPrompt } from '../data/prompts/system-prompt'
+import { getCharacterById } from 'app/types/character'
 import { publicProcedure, router } from '../trpc'
 
 const DrawnTarotCardSchema = v.object({
@@ -48,17 +49,20 @@ export const readingRouter = router({
           question: v.string(),
           cards: v.array(DrawnTarotCardSchema),
           spreadType: SpreadTypeSchema,
+          characterId: v.optional(v.string()),
         })
       )
     )
     .mutation(async ({ input, ctx }) => {
-      const { question, cards, spreadType } = input
+      const { question, cards, spreadType, characterId } = input
+      const character = getCharacterById(characterId)
 
       try {
         const userPrompt = formatReadingPrompt(
           question,
           cards as DrawnTarotCard[],
-          spreadType as SpreadType
+          spreadType as SpreadType,
+          character.rpPrompt || undefined
         )
 
         console.log('[reading.create] Gemini API 호출 시작')
@@ -84,6 +88,7 @@ export const readingRouter = router({
           interpretation: interpretationJson,
           spreadType,
           shareId,
+          characterId: characterId ?? null,
           createdAt,
         })
         console.log('[reading.create] DB 저장 성공')
@@ -95,6 +100,7 @@ export const readingRouter = router({
           interpretation: interpretationJson,
           spreadType,
           shareId,
+          characterId: characterId ?? null,
           createdAt,
         }
       } catch (error) {

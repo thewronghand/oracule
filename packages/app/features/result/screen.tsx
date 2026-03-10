@@ -11,6 +11,7 @@ import type { SpreadType } from 'app/types/spread'
 import type { ReadingInterpretation } from 'app/types/reading'
 import { Quote, Share2, Sparkles, RefreshCw, Star, MessageCircle } from '@tamagui/lucide-icons'
 import { shareToKakao } from 'app/utils/kakaoShare'
+import { getCharacterById } from 'app/types/character'
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -151,6 +152,7 @@ export function ResultScreen(): React.ReactNode {
 
       const interp = parseInterpretation(reading.interpretation)
       const allIndices = reading.cards.map((_, i) => i)
+      const character = getCharacterById(reading.characterId)
 
       return (
         <ScrollView flex={1}>
@@ -164,6 +166,14 @@ export function ResultScreen(): React.ReactNode {
                 </H2>
                 <Sparkles size={20} color='$accentBackground' />
               </XStack>
+              {character.id !== 'default' && (
+                <XStack alignItems='center' gap='$2'>
+                  <Text fontSize={18}>{character.emoji}</Text>
+                  <Text fontSize='$3' color='$colorSubtle' fontWeight='500'>
+                    {character.name}의 해석
+                  </Text>
+                </XStack>
+              )}
               <XStack alignItems='center' gap='$2' width={160}>
                 <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
                 <Star size={10} color='$yellow8' />
