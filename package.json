@@ -14,6 +14,7 @@
     "seed:local": "cd packages/api && bun seed:local",
     "migrate": "cd packages/api && bun migrate",
     "seed": "cd packages/api && bun seed",
+    "deploy": "bun migrate && cd packages/api && bun deploy",
     "native": "cd apps/expo && bun dev",
     "studio": "cd packages/api && bun studio",
     "native:prod": "cd apps/expo && bun dev:prod",
