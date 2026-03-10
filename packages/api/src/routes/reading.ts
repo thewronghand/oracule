@@ -62,13 +62,15 @@ export const readingRouter = router({
         )
 
         console.log('[reading.create] Gemini API 호출 시작')
-        const interpretation = await generateTarotReading(
+        const parsedInterpretation = await generateTarotReading(
           { serviceAccountJson: ctx.vertexServiceAccountJson },
           systemPrompt.input,
           systemPrompt.response,
           userPrompt
         )
         console.log('[reading.create] Gemini API 호출 성공')
+
+        const interpretationJson = JSON.stringify(parsedInterpretation)
 
         const id = crypto.randomUUID()
         const shareId = generateShareId()
@@ -79,7 +81,7 @@ export const readingRouter = router({
           id,
           question,
           cards: JSON.stringify(cards),
-          interpretation,
+          interpretation: interpretationJson,
           spreadType,
           shareId,
           createdAt,
@@ -90,7 +92,7 @@ export const readingRouter = router({
           id,
           question,
           cards,
-          interpretation,
+          interpretation: interpretationJson,
           spreadType,
           shareId,
           createdAt,
