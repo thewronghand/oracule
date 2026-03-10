@@ -1,0 +1,1 @@
+ALTER TABLE `Reading` ADD COLUMN `characterId` text;
