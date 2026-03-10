@@ -65,6 +65,7 @@ describe('Reading type compatibility', () => {
       interpretation: 'The cards suggest...',
       spreadType: 'SINGLE',
       shareId: 'share-abc123',
+      characterId: null,
       createdAt: new Date().toISOString(),
     }
     expect(reading.id).toBe('test-id')
