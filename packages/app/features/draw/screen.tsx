@@ -11,7 +11,7 @@ import { SPREAD_INFO, type SpreadType, spreadOptions } from 'app/types/spread'
 import { drawRandomCards } from 'app/utils/drawRandomCards'
 import { trpc } from 'app/utils/trpc'
 
-const { useParam } = createParam<{ spreadType: string; question: string }>()
+const { useParam } = createParam<{ spreadType: string; question: string; character: string }>()
 
 type DrawPhase = 'shuffle' | 'cut' | 'draw' | 'reveal'
 
@@ -469,9 +469,11 @@ function PhaseIndicator({ currentPhase }: { currentPhase: DrawPhase }) {
 export function DrawScreen() {
   const [spreadTypeParam] = useParam('spreadType')
   const [questionParam] = useParam('question')
+  const [characterParam] = useParam('character')
 
   const spreadType = (spreadTypeParam ?? 'SINGLE') as SpreadType
   const question = questionParam ? decodeURIComponent(questionParam) : ''
+  const characterId = characterParam ?? 'default'
 
   const spreadInfo = SPREAD_INFO[spreadType]
   const cardCount = spreadOptions.find((s) => s.value === spreadType)?.cardCount ?? 1
@@ -499,6 +501,7 @@ export function DrawScreen() {
         question,
         cards,
         spreadType,
+        characterId,
       })
       .then((result) => {
         setReadingId(result.id)
