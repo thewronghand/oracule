@@ -6,7 +6,8 @@ import { spreadGuides } from './spread-guide'
 export function formatReadingPrompt(
   userInput: string,
   cards: DrawnTarotCard[],
-  spreadType: SpreadType
+  spreadType: SpreadType,
+  characterRpPrompt?: string
 ): string {
   const spreadInfo = SPREAD_INFO[spreadType]
   const guide = spreadGuides[spreadType]
@@ -18,7 +19,14 @@ export function formatReadingPrompt(
     })
     .join('\n\n')
 
-  return `# Spread Information
+  const characterSection = characterRpPrompt
+    ? `# Character Role-Play
+${characterRpPrompt}
+
+`
+    : ''
+
+  return `${characterSection}# Spread Information
 ${spreadInfo.name}
 ${guide}
 
