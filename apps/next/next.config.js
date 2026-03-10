@@ -57,7 +57,14 @@ module.exports = function () {
     //   loaderFile: './cfImageLoader.js',
     // },
     // Using Solito image loader without Cloudflare's Paid Image Resizing
-    images: {},
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '*.r2.dev',
+        },
+      ],
+    },
     typescript: {
       ignoreBuildErrors: true,
     },
