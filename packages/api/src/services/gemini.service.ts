@@ -177,12 +177,58 @@ async function getAccessToken(clientEmail: string, privateKey: string): Promise<
   return tokenData.access_token
 }
 
+interface ReadingInterpretation {
+  cardReadings: Array<{
+    cardName: string
+    position: string
+    interpretation: string
+  }>
+  content: string
+  title: string
+  summary: string
+}
+
+function parseReadingResponse(text: string): ReadingInterpretation {
+  // ```json 코드블록 제거
+  let cleaned = text.trim()
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/```\s*$/, '')
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(cleaned)
+    if (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      'content' in parsed &&
+      'cardReadings' in parsed
+    ) {
+      const obj = parsed as Record<string, unknown>
+      return {
+        cardReadings: Array.isArray(obj.cardReadings) ? obj.cardReadings as ReadingInterpretation['cardReadings'] : [],
+        content: typeof obj.content === 'string' ? obj.content : '',
+        title: typeof obj.title === 'string' ? obj.title : '타로 리딩 결과',
+        summary: typeof obj.summary === 'string' ? obj.summary : '',
+      }
+    }
+  } catch {
+    // JSON 파싱 실패 — fallback
+  }
+
+  return {
+    title: '타로 리딩 결과',
+    summary: '',
+    cardReadings: [],
+    content: text,
+  }
+}
+
 export async function generateTarotReading(
   config: GeminiServiceConfig,
   systemInput: string,
   systemResponse: string,
   userPrompt: string
-): Promise<string> {
+): Promise<ReadingInterpretation> {
   const serviceAccount = parseServiceAccount(config.serviceAccountJson)
   const region = config.region ?? DEFAULT_REGION
   const model = config.model ?? DEFAULT_MODEL
@@ -230,5 +276,5 @@ export async function generateTarotReading(
     throw new Error('Gemini API 응답에서 텍스트를 추출할 수 없습니다')
   }
 
-  return text
+  return parseReadingResponse(text)
 }
