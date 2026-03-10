@@ -39,7 +39,11 @@ const mockCelticCrossCards: DrawnTarotCard[] = Array.from({ length: 10 }, (_, i)
 describe('formatReadingPrompt', () => {
   describe('SINGLE spread', () => {
     it('returns a string', () => {
-      const result = formatReadingPrompt('What should I focus on today?', [mockSingleCard], 'SINGLE')
+      const result = formatReadingPrompt(
+        'What should I focus on today?',
+        [mockSingleCard],
+        'SINGLE'
+      )
       expect(typeof result).toBe('string')
     })
 
@@ -93,29 +97,49 @@ describe('formatReadingPrompt', () => {
 
   describe('CELTIC_CROSS spread', () => {
     it('returns a string', () => {
-      const result = formatReadingPrompt('How will this situation unfold?', mockCelticCrossCards, 'CELTIC_CROSS')
+      const result = formatReadingPrompt(
+        'How will this situation unfold?',
+        mockCelticCrossCards,
+        'CELTIC_CROSS'
+      )
       expect(typeof result).toBe('string')
     })
 
     it('includes the Celtic Cross spread name', () => {
-      const result = formatReadingPrompt('How will this situation unfold?', mockCelticCrossCards, 'CELTIC_CROSS')
+      const result = formatReadingPrompt(
+        'How will this situation unfold?',
+        mockCelticCrossCards,
+        'CELTIC_CROSS'
+      )
       expect(result).toContain(SPREAD_INFO.CELTIC_CROSS.name)
     })
 
     it('includes the Celtic Cross guide text', () => {
-      const result = formatReadingPrompt('How will this situation unfold?', mockCelticCrossCards, 'CELTIC_CROSS')
+      const result = formatReadingPrompt(
+        'How will this situation unfold?',
+        mockCelticCrossCards,
+        'CELTIC_CROSS'
+      )
       expect(result).toContain(spreadGuides.CELTIC_CROSS)
     })
 
     it('includes all 10 card positions', () => {
-      const result = formatReadingPrompt('How will this situation unfold?', mockCelticCrossCards, 'CELTIC_CROSS')
+      const result = formatReadingPrompt(
+        'How will this situation unfold?',
+        mockCelticCrossCards,
+        'CELTIC_CROSS'
+      )
       for (const position of SPREAD_INFO.CELTIC_CROSS.positions) {
         expect(result).toContain(position)
       }
     })
 
     it('includes all 10 cards data', () => {
-      const result = formatReadingPrompt('How will this situation unfold?', mockCelticCrossCards, 'CELTIC_CROSS')
+      const result = formatReadingPrompt(
+        'How will this situation unfold?',
+        mockCelticCrossCards,
+        'CELTIC_CROSS'
+      )
       for (const card of mockCelticCrossCards) {
         expect(result).toContain(card.name.en)
       }
@@ -140,7 +164,13 @@ describe('formatReadingPrompt', () => {
     })
 
     it('returns a non-empty string for all spread types', () => {
-      const spreadTypes = ['SINGLE', 'TRIPLE_TIMELINE', 'TRIPLE_CHOICE', 'FIVE_CARD_CROSS', 'CELTIC_CROSS'] as const
+      const spreadTypes = [
+        'SINGLE',
+        'TRIPLE_TIMELINE',
+        'TRIPLE_CHOICE',
+        'FIVE_CARD_CROSS',
+        'CELTIC_CROSS',
+      ] as const
       for (const spreadType of spreadTypes) {
         const cardCount = SPREAD_INFO[spreadType].positions.length
         const cards = Array.from({ length: cardCount }, () => mockSingleCard)

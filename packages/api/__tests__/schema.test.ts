@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import {
-  ReadingTable,
-  insertReadingSchema,
-  selectReadingSchema,
-} from '../src/db/schema'
+import { ReadingTable, insertReadingSchema, selectReadingSchema } from '../src/db/schema'
 import type { Reading, InsertReading } from '../src/db/schema'
 
 describe('ReadingTable', () => {

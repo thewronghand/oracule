@@ -2,7 +2,7 @@ import type { SpreadType } from 'app/types/spread'
 
 export const spreadGuides: Record<SpreadType, string> = {
   SINGLE:
-    'A single card spread provides a direct answer or insight to a specific question or situation. As this spread relies on just one card, the interpretation should be thorough and detailed, drawing upon the card\'s symbolism, imagery, traditional meanings, and elemental associations to provide comprehensive guidance.',
+    "A single card spread provides a direct answer or insight to a specific question or situation. As this spread relies on just one card, the interpretation should be thorough and detailed, drawing upon the card's symbolism, imagery, traditional meanings, and elemental associations to provide comprehensive guidance.",
   TRIPLE_TIMELINE:
     'The Triple Timeline(트리플 - 타임라인) spread uses three cards to explore the past, present, and future aspects of a situation, showing how events and energies flow through time.',
   TRIPLE_CHOICE:

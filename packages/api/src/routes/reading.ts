@@ -108,10 +108,7 @@ export const readingRouter = router({
   getById: publicProcedure
     .input(v.parser(v.object({ id: v.string() })))
     .query(async ({ input, ctx }) => {
-      const rows = await ctx.db
-        .select()
-        .from(ReadingTable)
-        .where(eq(ReadingTable.id, input.id))
+      const rows = await ctx.db.select().from(ReadingTable).where(eq(ReadingTable.id, input.id))
 
       const row = rows[0]
       if (!row) {

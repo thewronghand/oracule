@@ -133,9 +133,7 @@
       "indexes": {
         "Reading_shareId_unique": {
           "name": "Reading_shareId_unique",
-          "columns": [
-            "shareId"
-          ],
+          "columns": ["shareId"],
           "isUnique": true
         }
       },
