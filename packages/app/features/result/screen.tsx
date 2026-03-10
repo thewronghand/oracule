@@ -6,10 +6,96 @@ import { useLink } from 'solito/link'
 import { match } from 'ts-pattern'
 import { trpc } from 'app/utils/trpc'
 import { error, loading, success } from 'app/utils/trpc/patterns'
+import { parseInterpretation } from 'app/utils/parseInterpretation'
 import type { SpreadType } from 'app/types/spread'
-import { Quote, Share2, Sparkles, RefreshCw, Star } from '@tamagui/lucide-icons'
+import type { ReadingInterpretation } from 'app/types/reading'
+import { Quote, Share2, Sparkles, RefreshCw, Star, MessageCircle } from '@tamagui/lucide-icons'
+import { shareToKakao } from 'app/utils/kakaoShare'
 
 const { useParam } = createParam<{ id: string }>()
+
+function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
+  const hasCardReadings = interp.cardReadings.length > 0
+
+  return (
+    <YStack gap='$4'>
+      {/* 카드별 해석 */}
+      {hasCardReadings && (
+        <YStack gap='$4'>
+          {interp.cardReadings.map((card, i) => (
+            <YStack
+              key={i}
+              gap='$2'
+              backgroundColor='$backgroundHover'
+              borderRadius='$4'
+              padding='$4'
+              borderWidth={1}
+              borderColor='$borderColor'
+              borderLeftWidth={3}
+              borderLeftColor='$yellow8'
+            >
+              <XStack alignItems='center' gap='$2'>
+                <Text color='$yellow8' fontSize='$2' fontWeight='700'>
+                  {card.position}
+                </Text>
+                <Text color='$colorSubtle' fontSize='$2'>
+                  —
+                </Text>
+                <Text color='$accentBackground' fontSize='$2' fontWeight='600'>
+                  {card.cardName}
+                </Text>
+              </XStack>
+              <Paragraph lineHeight='$6' fontSize='$3' color='$color'>
+                {card.interpretation}
+              </Paragraph>
+            </YStack>
+          ))}
+        </YStack>
+      )}
+
+      {/* 장식 구분선 (카드별 해석이 있을 때만) */}
+      {hasCardReadings && (
+        <XStack alignItems='center' gap='$3'>
+          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
+          <XStack gap='$2' alignItems='center'>
+            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
+              ✦
+            </Text>
+            <Text fontSize='$3' color='$accentBackground'>
+              ✦
+            </Text>
+            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
+              ✦
+            </Text>
+          </XStack>
+          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
+        </XStack>
+      )}
+
+      {/* 종합 해석 */}
+      <YStack
+        gap='$4'
+        backgroundColor='$backgroundHover'
+        borderRadius='$4'
+        padding='$5'
+        borderWidth={1}
+        borderColor='$borderColor'
+        borderLeftWidth={3}
+        borderLeftColor='$accentBackground'
+      >
+        <XStack alignItems='center' gap='$2'>
+          <Sparkles size={14} color='$accentBackground' />
+          <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
+            {hasCardReadings ? '종합 해석' : '해석'}
+          </H3>
+        </XStack>
+        <Paragraph lineHeight='$7' fontSize='$4' color='$color'>
+          {interp.content}
+        </Paragraph>
+      </YStack>
+    </YStack>
+  )
+}
 
 export function ResultScreen(): React.ReactNode {
   const [id] = useParam('id')
@@ -32,6 +118,19 @@ export function ResultScreen(): React.ReactNode {
     }
   }
 
+  const handleKakaoShare = () => {
+    if (!readingQuery.data?.shareId) return
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    const shareUrl = `${origin}/share/${readingQuery.data.shareId}`
+    const interp = parseInterpretation(readingQuery.data.interpretation)
+
+    shareToKakao({
+      title: interp.title,
+      description: interp.summary || '나만의 타로 리딩 결과를 확인해보세요',
+      shareUrl,
+    })
+  }
+
   const content = match(readingQuery)
     .with(error, () => (
       <YStack flex={1} alignItems='center' justifyContent='center' padding='$6' gap='$4'>
@@ -50,6 +149,7 @@ export function ResultScreen(): React.ReactNode {
       const reading = readingQuery.data
       if (!reading) return null
 
+      const interp = parseInterpretation(reading.interpretation)
       const allIndices = reading.cards.map((_, i) => i)
 
       return (
@@ -64,7 +164,6 @@ export function ResultScreen(): React.ReactNode {
                 </H2>
                 <Sparkles size={20} color='$accentBackground' />
               </XStack>
-              {/* 제목 아래 장식선 */}
               <XStack alignItems='center' gap='$2' width={160}>
                 <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
                 <Star size={10} color='$yellow8' />
@@ -146,49 +245,53 @@ export function ResultScreen(): React.ReactNode {
               <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
             </XStack>
 
-            {/* 해석 박스 */}
-            <YStack
-              gap='$4'
-              backgroundColor='$backgroundHover'
-              borderRadius='$4'
-              padding='$5'
-              borderWidth={1}
-              borderColor='$borderColor'
-              borderLeftWidth={3}
-              borderLeftColor='$accentBackground'
-            >
-              <XStack alignItems='center' gap='$2'>
-                <Sparkles size={14} color='$accentBackground' />
-                <H3
-                  color='$accentBackground'
-                  fontSize='$2'
-                  textTransform='uppercase'
-                  letterSpacing={3}
-                >
-                  해석
-                </H3>
-              </XStack>
-              <Paragraph lineHeight='$7' fontSize='$4' color='$color'>
-                {reading.interpretation}
-              </Paragraph>
+            {/* AI 생성 제목 + 요약 */}
+            <YStack alignItems='center' gap='$2'>
+              <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
+                {interp.title}
+              </H2>
+              {interp.summary ? (
+                <Paragraph textAlign='center' color='$colorSubtle' fontSize='$3' fontStyle='italic'>
+                  {interp.summary}
+                </Paragraph>
+              ) : null}
             </YStack>
+
+            {/* 해석 영역 */}
+            <InterpretationView interp={interp} />
 
             {/* 버튼 영역 */}
             <YStack gap='$3'>
               {reading.shareId && (
-                <OraculeButton
-                  variant='secondary'
-                  customSize='md'
-                  onPress={handleShare}
-                  scale={copied ? 0.98 : 1}
-                >
-                  <XStack alignItems='center' gap='$2'>
-                    <Share2 size={16} color='$color' />
-                    <Text color='$color' fontWeight='600'>
-                      {copied ? '링크가 복사되었습니다 ✓' : '공유 링크 복사'}
-                    </Text>
-                  </XStack>
-                </OraculeButton>
+                <XStack gap='$3'>
+                  <OraculeButton
+                    variant='secondary'
+                    customSize='md'
+                    onPress={handleShare}
+                    scale={copied ? 0.98 : 1}
+                    flex={1}
+                  >
+                    <XStack alignItems='center' gap='$2'>
+                      <Share2 size={16} color='$color' />
+                      <Text color='$color' fontWeight='600'>
+                        {copied ? '복사됨 ✓' : '링크 복사'}
+                      </Text>
+                    </XStack>
+                  </OraculeButton>
+                  <OraculeButton
+                    variant='secondary'
+                    customSize='md'
+                    onPress={handleKakaoShare}
+                    flex={1}
+                  >
+                    <XStack alignItems='center' gap='$2'>
+                      <MessageCircle size={16} color='$yellow10' />
+                      <Text color='$yellow10' fontWeight='600'>
+                        카카오톡 공유
+                      </Text>
+                    </XStack>
+                  </OraculeButton>
+                </XStack>
               )}
               <OraculeButton variant='primary' customSize='lg' {...queryLink}>
                 <XStack alignItems='center' gap='$2'>

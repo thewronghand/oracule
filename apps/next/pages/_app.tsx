@@ -18,6 +18,7 @@ import { Provider } from 'app/provider'
 import { trpc } from 'app/utils/trpc/index.web'
 import { DefaultSeo } from 'next-seo'
 import Head from 'next/head'
+import Script from 'next/script'
 import type { SolitoAppProps } from 'solito'
 
 if (process.env.NODE_ENV === 'production') {
@@ -32,6 +33,20 @@ const T4App = ({ Component, pageProps }: SolitoAppProps<{ initialSession: Sessio
     <>
       <DefaultSeo title={title} description={description} />
       <Metadata />
+      <Script
+        src='https://t1.kakaocdn.net/kakao_js_sdk/2.8.0/kakao.min.js'
+        strategy='afterInteractive'
+        onLoad={() => {
+          try {
+            if (window.Kakao && !window.Kakao.isInitialized()) {
+              const key = process.env.NEXT_PUBLIC_KAKAO_JS_KEY
+              if (key) window.Kakao.init(key)
+            }
+          } catch (e) {
+            console.warn('[Kakao SDK] 초기화 실패:', e)
+          }
+        }}
+      />
       <Provider initialSession={pageProps.initialSession}>
         <Component {...pageProps} />
       </Provider>
