@@ -14,7 +14,7 @@
     "seed:local": "cd packages/api && bun seed:local",
     "migrate": "cd packages/api && bun migrate",
     "seed": "cd packages/api && bun seed",
-    "deploy": "bun migrate && cd packages/api && bun deploy",
+    "deploy": "cd packages/api && wrangler d1 migrations apply oracule-db --remote && wrangler deploy --minify src/worker.ts",
     "native": "cd apps/expo && bun dev",
     "studio": "cd packages/api && bun studio",
     "native:prod": "cd apps/expo && bun dev:prod",
