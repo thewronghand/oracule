@@ -78,3 +78,6 @@ apps/expo/android/**
 **/fallback-*.js
 **/service-worker.js
 .envrc
+
+# 카드 이미지 (R2에 업로드됨)
+assets/deck/
