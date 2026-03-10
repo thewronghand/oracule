@@ -1,8 +1,8 @@
-import { Coins, Sparkles, Star, Swords, Wand2, Wine } from '@tamagui/lucide-icons'
+import { Star } from '@tamagui/lucide-icons'
 import type { DrawnTarotCard } from 'app/types/card'
 import { useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native'
-import { Card, Text, XStack, YStack, styled } from 'tamagui'
+import { Image, YStack } from 'tamagui'
 
 interface TarotCardProps {
   card: DrawnTarotCard
@@ -13,29 +13,18 @@ interface TarotCardProps {
 }
 
 const SIZE_MAP = {
-  sm: { width: 80, height: 120, iconSize: 20, fontSize: '$1' },
-  md: { width: 120, height: 180, iconSize: 32, fontSize: '$2' },
-  lg: { width: 160, height: 240, iconSize: 44, fontSize: '$3' },
+  sm: { width: 80, height: 120, iconSize: 20 },
+  md: { width: 120, height: 180, iconSize: 32 },
+  lg: { width: 160, height: 240, iconSize: 44 },
 } as const
 
-function getSuitIcon(suit: DrawnTarotCard['suit'], size: number) {
-  const props = { size, color: '$color' } as const
-  if (suit === 'Cup') return <Wine {...props} />
-  if (suit === 'Pentacle') return <Coins {...props} />
-  if (suit === 'Sword') return <Swords {...props} />
-  if (suit === 'Wand') return <Wand2 {...props} />
-  return <Sparkles {...props} />
+const R2_BASE_URL = process.env.NEXT_PUBLIC_R2_URL ?? process.env.EXPO_PUBLIC_R2_URL ?? ''
+
+function getCardImageUrl(cardId: number): string {
+  return `${R2_BASE_URL}/deck/default/${cardId}.webp`
 }
 
 // 웹 전용 3D 플립 컨테이너
-const FlipContainer = styled(YStack, {
-  position: 'relative',
-  style: {
-    perspective: '1000px',
-  } as unknown as Record<string, never>,
-})
-
-// 웹 전용 카드 내부 (flip 대상)
 function WebFlipCard({
   card,
   isRevealed,
@@ -53,8 +42,7 @@ function WebFlipCard({
     }
   }, [isRevealed])
 
-  const { width, height, iconSize, fontSize } = SIZE_MAP[size]
-  const displayedKeywords = card.keywords.slice(0, 3).join(', ')
+  const { width, height, iconSize } = SIZE_MAP[size]
   const isReversed = card.direction === '역방향'
 
   const cardStyle: React.CSSProperties = {
@@ -81,11 +69,6 @@ function WebFlipCard({
     ...faceStyle,
     transform: 'rotateY(180deg)',
   }
-
-  // 역방향 카드: 앞면을 180도 뒤집어서 표시
-  const frontContentStyle: React.CSSProperties = isReversed
-    ? { transform: 'rotate(180deg)', width: '100%', height: '100%' }
-    : {}
 
   return (
     <div
@@ -141,15 +124,15 @@ function WebFlipCard({
             height={height}
           >
             <defs>
-              <pattern id="diag" patternUnits="userSpaceOnUse" width="12" height="12">
-                <line x1="0" y1="12" x2="12" y2="0" stroke="#e9c46a" strokeWidth="0.8" />
+              <pattern id='diag' patternUnits='userSpaceOnUse' width='12' height='12'>
+                <line x1='0' y1='12' x2='12' y2='0' stroke='#e9c46a' strokeWidth='0.8' />
               </pattern>
             </defs>
-            <rect width={width} height={height} fill="url(#diag)" />
+            <rect width={width} height={height} fill='url(#diag)' />
           </svg>
           {/* 중앙 별 아이콘 */}
           <div style={{ position: 'relative', zIndex: 1, opacity: 0.9 }}>
-            <Star size={iconSize} color="#e9c46a" />
+            <Star size={iconSize} color='#e9c46a' />
           </div>
           {/* 코너 장식 */}
           {['topleft', 'topright', 'bottomleft', 'bottomright'].map((pos) => (
@@ -170,112 +153,41 @@ function WebFlipCard({
           ))}
         </div>
 
-        {/* 앞면 */}
+        {/* 앞면: 카드 이미지 */}
         <div
           style={{
             ...frontStyle,
-            background: 'var(--background, #fff)',
-            border: isReversed ? '1.5px solid #e05252' : '1px solid rgba(120,120,120,0.3)',
+            background: '#1a1040',
+            border: isReversed ? '2px solid #e05252' : '1.5px solid rgba(183,134,11,0.5)',
           }}
         >
-          <div style={frontContentStyle}>
+          <img
+            src={getCardImageUrl(card.id)}
+            alt={card.name.ko}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transform: isReversed ? 'rotate(180deg)' : undefined,
+            }}
+            loading='lazy'
+          />
+          {/* 역방향 표시 배너 */}
+          {isReversed && (
             <div
               style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                padding: 8,
-                boxSizing: 'border-box',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: 'rgba(224,82,82,0.85)',
+                padding: '2px 0',
+                textAlign: 'center',
               }}
             >
-              {/* 역방향 표시 배너 */}
-              {isReversed && (
-                <div
-                  style={{
-                    background: 'rgba(224,82,82,0.12)',
-                    borderRadius: 4,
-                    marginBottom: 4,
-                    padding: '1px 4px',
-                    textAlign: 'center',
-                  }}
-                >
-                  <span style={{ fontSize: 9, color: '#c0392b', fontWeight: 700 }}>▼ 역방향</span>
-                </div>
-              )}
-
-              {/* 상단: 번호 + 아르카나 배지 */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: 4,
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: size === 'sm' ? 10 : size === 'md' ? 12 : 14,
-                    color: '#888',
-                    fontWeight: 600,
-                  }}
-                >
-                  {card.number}
-                </span>
-                <span
-                  style={{
-                    background: card.arcanaType === 'Major' ? 'rgba(120,0,200,0.15)' : 'rgba(0,80,200,0.12)',
-                    borderRadius: 4,
-                    padding: '1px 5px',
-                    fontSize: 9,
-                    color: card.arcanaType === 'Major' ? '#7b00c8' : '#004fc8',
-                    fontWeight: 600,
-                  }}
-                >
-                  {card.arcanaType === 'Major' ? '메이저' : '마이너'}
-                </span>
-              </div>
-
-              {/* 중앙: 아이콘 + 카드명 */}
-              <div
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 4,
-                }}
-              >
-                {getSuitIcon(card.suit, iconSize)}
-                <span
-                  style={{
-                    fontSize: size === 'sm' ? 10 : size === 'md' ? 13 : 16,
-                    fontWeight: 700,
-                    textAlign: 'center',
-                    color: 'inherit',
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {card.name.ko}
-                </span>
-              </div>
-
-              {/* 하단: 키워드 */}
-              <div
-                style={{
-                  textAlign: 'center',
-                  fontSize: 9,
-                  color: '#999',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {displayedKeywords}
-              </div>
+              <span style={{ fontSize: 9, color: '#fff', fontWeight: 700 }}>▼ 역방향</span>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
@@ -290,8 +202,7 @@ function NativeCard({
   onPress,
   rotate,
 }: Omit<TarotCardProps, 'size'> & { size: 'sm' | 'md' | 'lg' }) {
-  const { width, height, iconSize, fontSize } = SIZE_MAP[size]
-  const displayedKeywords = card.keywords.slice(0, 3).join(', ')
+  const { width, height, iconSize } = SIZE_MAP[size]
   const isReversed = card.direction === '역방향'
 
   const pressProps = onPress
@@ -311,12 +222,11 @@ function NativeCard({
         height={height}
         borderRadius={12}
         borderWidth={1.5}
-        borderColor="$yellow8"
-        backgroundColor="$purple10"
-        alignItems="center"
-        justifyContent="center"
-
-        shadowColor="$shadowColor"
+        borderColor='$yellow8'
+        backgroundColor='$purple10'
+        alignItems='center'
+        justifyContent='center'
+        shadowColor='$shadowColor'
         shadowOpacity={0.4}
         shadowRadius={8}
         shadowOffset={{ width: 0, height: 4 }}
@@ -324,100 +234,89 @@ function NativeCard({
         {...pressProps}
       >
         <YStack
-          position="absolute"
+          position='absolute'
           top={6}
           left={6}
           right={6}
           bottom={6}
           borderRadius={8}
           borderWidth={1}
-          borderColor="$yellow6"
+          borderColor='$yellow6'
           opacity={0.5}
         />
         <YStack
-          position="absolute"
+          position='absolute'
           top={11}
           left={11}
           right={11}
           bottom={11}
           borderRadius={5}
           borderWidth={0.5}
-          borderColor="$yellow5"
+          borderColor='$yellow5'
           opacity={0.3}
         />
-        <Star size={iconSize} color="$yellow8" />
+        <Star size={iconSize} color='$yellow8' />
       </YStack>
     )
   }
 
   return (
-    <Card
+    <YStack
       width={width}
       height={height}
       borderRadius={12}
-      backgroundColor="$background"
-      borderWidth={isReversed ? 1.5 : 1}
-      borderColor={isReversed ? '$red8' : '$borderColor'}
-      shadowColor="$shadowColor"
+      borderWidth={isReversed ? 2 : 1.5}
+      borderColor={isReversed ? '$red8' : '$yellow8'}
+      overflow='hidden'
+      shadowColor='$shadowColor'
       shadowOpacity={0.3}
       shadowRadius={8}
       shadowOffset={{ width: 0, height: 4 }}
-      padding="$2"
       {...rotateStyle}
       {...pressProps}
     >
-      {/* 역방향 배너 */}
+      <Image
+        source={{ uri: getCardImageUrl(card.id), width, height }}
+        width={width}
+        height={height}
+        resizeMode='cover'
+        style={isReversed ? { transform: [{ rotate: '180deg' }] } : undefined}
+      />
+      {/* 역방향 표시 배너 */}
       {isReversed && (
         <YStack
-          backgroundColor="$red3"
-          borderRadius={4}
-          paddingHorizontal="$1"
-          paddingVertical={1}
-          marginBottom="$1"
-          alignItems="center"
-        >
-          <Text fontSize="$1" color="$red10" fontWeight="700">
-            ▼ 역방향
-          </Text>
-        </YStack>
-      )}
-
-      {/* 상단: 번호 + 아르카나 배지 */}
-      <XStack justifyContent="space-between" alignItems="center" marginBottom="$1">
-        <Text fontSize={fontSize} color="$color2" fontWeight="600">
-          {card.number}
-        </Text>
-        <YStack
-          backgroundColor={card.arcanaType === 'Major' ? '$purple5' : '$blue5'}
-          borderRadius={4}
-          paddingHorizontal="$1"
+          position='absolute'
+          bottom={0}
+          left={0}
+          right={0}
+          backgroundColor='rgba(224,82,82,0.85)'
           paddingVertical={2}
-        >
-          <Text fontSize="$1" color={card.arcanaType === 'Major' ? '$purple11' : '$blue11'}>
-            {card.arcanaType === 'Major' ? '메이저' : '마이너'}
-          </Text>
-        </YStack>
-      </XStack>
-
-      {/* 중앙: 슈트 아이콘 + 카드 이름 */}
-      <YStack flex={1} alignItems="center" justifyContent="center" gap="$1">
-        {getSuitIcon(card.suit, iconSize)}
-        <Text fontSize={fontSize} fontWeight="700" color="$color" textAlign="center" numberOfLines={2}>
-          {card.name.ko}
-        </Text>
-      </YStack>
-
-      {/* 하단: 키워드 */}
-      <Text fontSize="$1" color="$color3" textAlign="center" numberOfLines={1}>
-        {displayedKeywords}
-      </Text>
-    </Card>
+          alignItems='center'
+        />
+      )}
+    </YStack>
   )
 }
 
-export function TarotCard({ card, isRevealed = false, size = 'md', onPress, rotate }: TarotCardProps) {
+export function TarotCard({
+  card,
+  isRevealed = false,
+  size = 'md',
+  onPress,
+  rotate,
+}: TarotCardProps) {
   if (Platform.OS === 'web') {
-    return <WebFlipCard card={card} isRevealed={isRevealed} size={size} onPress={onPress} rotate={rotate} />
+    return (
+      <WebFlipCard
+        card={card}
+        isRevealed={isRevealed}
+        size={size}
+        onPress={onPress}
+        rotate={rotate}
+      />
+    )
   }
-  return <NativeCard card={card} isRevealed={isRevealed} size={size} onPress={onPress} rotate={rotate} />
+  return (
+    <NativeCard card={card} isRevealed={isRevealed} size={size} onPress={onPress} rotate={rotate} />
+  )
 }
