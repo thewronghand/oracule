@@ -37,9 +37,13 @@ const T4App = ({ Component, pageProps }: SolitoAppProps<{ initialSession: Sessio
         src='https://t1.kakaocdn.net/kakao_js_sdk/2.8.0/kakao.min.js'
         strategy='afterInteractive'
         onLoad={() => {
-          if (window.Kakao && !window.Kakao.isInitialized()) {
-            const key = process.env.NEXT_PUBLIC_KAKAO_JS_KEY
-            if (key) window.Kakao.init(key)
+          try {
+            if (window.Kakao && !window.Kakao.isInitialized()) {
+              const key = process.env.NEXT_PUBLIC_KAKAO_JS_KEY
+              if (key) window.Kakao.init(key)
+            }
+          } catch (e) {
+            console.warn('[Kakao SDK] 초기화 실패:', e)
           }
         }}
       />
