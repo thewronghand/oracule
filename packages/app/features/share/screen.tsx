@@ -81,12 +81,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
       >
         <XStack alignItems='center' gap='$2'>
           <Sparkles size={14} color='$accentBackground' />
-          <H3
-            color='$accentBackground'
-            fontSize='$2'
-            textTransform='uppercase'
-            letterSpacing={3}
-          >
+          <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
             {hasCardReadings ? '종합 해석' : '해석'}
           </H3>
         </XStack>
@@ -136,20 +131,10 @@ export function ShareScreen(): React.ReactNode {
               <XStack alignItems='center' gap='$3'>
                 <Sparkles size={20} color='$accentBackground' />
                 <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
-                  {interp.title}
+                  공유된 타로 리딩
                 </H2>
                 <Sparkles size={20} color='$accentBackground' />
               </XStack>
-              {interp.summary ? (
-                <Paragraph
-                  textAlign='center'
-                  color='$colorSubtle'
-                  fontSize='$3'
-                  fontStyle='italic'
-                >
-                  {interp.summary}
-                </Paragraph>
-              ) : null}
               <XStack alignItems='center' gap='$2' width={160}>
                 <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
                 <Star size={10} color='$yellow8' />
@@ -227,6 +212,18 @@ export function ShareScreen(): React.ReactNode {
               </XStack>
               <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
             </XStack>
+
+            {/* AI 생성 제목 + 요약 */}
+            <YStack alignItems='center' gap='$2'>
+              <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
+                {interp.title}
+              </H2>
+              {interp.summary ? (
+                <Paragraph textAlign='center' color='$colorSubtle' fontSize='$3' fontStyle='italic'>
+                  {interp.summary}
+                </Paragraph>
+              ) : null}
+            </YStack>
 
             {/* 해석 영역 */}
             <InterpretationView interp={interp} />

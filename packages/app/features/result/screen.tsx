@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { H2, H3, H4, Paragraph, ScrollView, Separator, XStack, YStack, Text } from 'tamagui'
+import { H2, H3, Paragraph, ScrollView, Separator, XStack, YStack, Text } from 'tamagui'
 import { LoadingSpinner, OraculeButton, SpreadLayout } from '@t4/ui'
 import { createParam } from 'solito'
 import { useLink } from 'solito/link'
@@ -85,12 +85,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
       >
         <XStack alignItems='center' gap='$2'>
           <Sparkles size={14} color='$accentBackground' />
-          <H3
-            color='$accentBackground'
-            fontSize='$2'
-            textTransform='uppercase'
-            letterSpacing={3}
-          >
+          <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
             {hasCardReadings ? '종합 해석' : '해석'}
           </H3>
         </XStack>
@@ -165,22 +160,10 @@ export function ResultScreen(): React.ReactNode {
               <XStack alignItems='center' gap='$3'>
                 <Sparkles size={20} color='$accentBackground' />
                 <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
-                  {interp.title}
+                  타로 리딩 결과
                 </H2>
                 <Sparkles size={20} color='$accentBackground' />
               </XStack>
-              {/* 한줄 요약 */}
-              {interp.summary ? (
-                <Paragraph
-                  textAlign='center'
-                  color='$colorSubtle'
-                  fontSize='$3'
-                  fontStyle='italic'
-                >
-                  {interp.summary}
-                </Paragraph>
-              ) : null}
-              {/* 제목 아래 장식선 */}
               <XStack alignItems='center' gap='$2' width={160}>
                 <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
                 <Star size={10} color='$yellow8' />
@@ -261,6 +244,18 @@ export function ResultScreen(): React.ReactNode {
               </XStack>
               <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
             </XStack>
+
+            {/* AI 생성 제목 + 요약 */}
+            <YStack alignItems='center' gap='$2'>
+              <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
+                {interp.title}
+              </H2>
+              {interp.summary ? (
+                <Paragraph textAlign='center' color='$colorSubtle' fontSize='$3' fontStyle='italic'>
+                  {interp.summary}
+                </Paragraph>
+              ) : null}
+            </YStack>
 
             {/* 해석 영역 */}
             <InterpretationView interp={interp} />
