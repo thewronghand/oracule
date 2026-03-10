@@ -205,7 +205,9 @@ function parseReadingResponse(text: string): ReadingInterpretation {
     ) {
       const obj = parsed as Record<string, unknown>
       return {
-        cardReadings: Array.isArray(obj.cardReadings) ? obj.cardReadings as ReadingInterpretation['cardReadings'] : [],
+        cardReadings: Array.isArray(obj.cardReadings)
+          ? (obj.cardReadings as ReadingInterpretation['cardReadings'])
+          : [],
         content: typeof obj.content === 'string' ? obj.content : '',
         title: typeof obj.title === 'string' ? obj.title : '타로 리딩 결과',
         summary: typeof obj.summary === 'string' ? obj.summary : '',
