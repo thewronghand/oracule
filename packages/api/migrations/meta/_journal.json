@@ -50,6 +50,13 @@
       "when": 1741654800000,
       "tag": "0006_add_user_id",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1741740000000,
+      "tag": "0007_add_daily_fortune",
+      "breakpoints": true
     }
   ]
 }

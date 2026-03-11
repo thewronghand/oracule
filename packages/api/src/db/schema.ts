@@ -48,3 +48,18 @@ export type Reading = InferSelectModel<typeof ReadingTable>
 export type InsertReading = InferInsertModel<typeof ReadingTable>
 export const insertReadingSchema = createInsertSchema(ReadingTable)
 export const selectReadingSchema = createSelectSchema(ReadingTable)
+
+// DailyFortune
+export const DailyFortuneTable = sqliteTable('DailyFortune', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull(),
+  cardId: integer('card_id').notNull(),
+  cardDirection: text('card_direction').notNull(),
+  interpretation: text('interpretation').notNull(),
+  characterId: text('characterId'),
+  date: text('date').notNull(),
+  createdAt: text('created_at').notNull(),
+})
+
+export type DailyFortune = InferSelectModel<typeof DailyFortuneTable>
+export type InsertDailyFortune = InferInsertModel<typeof DailyFortuneTable>
