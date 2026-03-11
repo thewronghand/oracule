@@ -517,7 +517,7 @@ export function FortuneScreen() {
 
       {/* 탭 콘텐츠 */}
       {activeTab === 'today' ? (
-        todayQuery.isLoading ? (
+        todayQuery.isLoading || todayQuery.fetchStatus === 'fetching' ? (
           <YStack flex={1} justifyContent='center' alignItems='center'>
             <LoadingSpinner />
           </YStack>
