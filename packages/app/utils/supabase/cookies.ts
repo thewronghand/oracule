@@ -24,12 +24,13 @@ export function getCookieValue(cookieName: string): string | undefined {
 
 export const AUTH_TOKEN_COOKIE_NAME = 'auth-token'
 
+const isProduction = typeof window !== 'undefined' && window.location.protocol === 'https:'
+
 export const secureCookieOptions = {
   ...DEFAULT_COOKIE_OPTIONS,
   name: AUTH_TOKEN_COOKIE_NAME,
-  sameSite: 'Strict',
-  secure: true,
-  // domain: 'localhost',
+  sameSite: 'Lax' as const,
+  secure: isProduction,
 }
 
 export const getToken = (): string | undefined => {
