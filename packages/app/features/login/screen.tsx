@@ -128,7 +128,7 @@ export function LoginScreen() {
 						) : (
 							<Text fontSize={18}>G</Text>
 						)}
-						<Text fontSize="$4" fontWeight="600" color="$gray12">
+						<Text fontSize="$4" fontWeight="600" color="#333333">
 							Google로 시작하기
 						</Text>
 					</XStack>
