@@ -1,5 +1,5 @@
-import { Star } from '@tamagui/lucide-icons'
 import type { DrawnTarotCard } from 'app/types/card'
+import { getCardImageUrl } from 'app/utils/cardImage'
 import { useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { Image, YStack } from 'tamagui'
@@ -13,16 +13,10 @@ interface TarotCardProps {
 }
 
 const SIZE_MAP = {
-  sm: { width: 80, height: 120, iconSize: 20 },
-  md: { width: 120, height: 180, iconSize: 32 },
-  lg: { width: 160, height: 240, iconSize: 44 },
+  sm: { width: 80, height: 120 },
+  md: { width: 120, height: 180 },
+  lg: { width: 160, height: 240 },
 } as const
-
-const R2_BASE_URL = process.env.NEXT_PUBLIC_R2_URL ?? process.env.EXPO_PUBLIC_R2_URL ?? ''
-
-function getCardImageUrl(cardId: number): string {
-  return `${R2_BASE_URL}/deck/default/${cardId}.webp`
-}
 
 // 웹 전용 3D 플립 컨테이너
 function WebFlipCard({
@@ -42,7 +36,7 @@ function WebFlipCard({
     }
   }, [isRevealed])
 
-  const { width, height, iconSize } = SIZE_MAP[size]
+  const { width, height } = SIZE_MAP[size]
   const isReversed = card.direction === '역방향'
 
   const cardStyle: React.CSSProperties = {
@@ -130,10 +124,6 @@ function WebFlipCard({
             </defs>
             <rect width={width} height={height} fill='url(#diag)' />
           </svg>
-          {/* 중앙 별 아이콘 */}
-          <div style={{ position: 'relative', zIndex: 1, opacity: 0.9 }}>
-            <Star size={iconSize} color='#e9c46a' />
-          </div>
           {/* 코너 장식 */}
           {['topleft', 'topright', 'bottomleft', 'bottomright'].map((pos) => (
             <div
@@ -170,7 +160,7 @@ function WebFlipCard({
               objectFit: 'cover',
               transform: isReversed ? 'rotate(180deg)' : undefined,
             }}
-            loading='lazy'
+            loading='eager'
           />
           {/* 역방향 표시 배너 */}
           {isReversed && (
@@ -202,7 +192,7 @@ function NativeCard({
   onPress,
   rotate,
 }: Omit<TarotCardProps, 'size'> & { size: 'sm' | 'md' | 'lg' }) {
-  const { width, height, iconSize } = SIZE_MAP[size]
+  const { width, height } = SIZE_MAP[size]
   const isReversed = card.direction === '역방향'
 
   const pressProps = onPress
@@ -255,7 +245,6 @@ function NativeCard({
           borderColor='$yellow5'
           opacity={0.3}
         />
-        <Star size={iconSize} color='$yellow8' />
       </YStack>
     )
   }

@@ -9,7 +9,7 @@ import { error, loading, success } from 'app/utils/trpc/patterns'
 import { parseInterpretation } from 'app/utils/parseInterpretation'
 import type { SpreadType } from 'app/types/spread'
 import type { ReadingInterpretation } from 'app/types/reading'
-import { Quote, Share2, Sparkles, RefreshCw, Star, MessageCircle } from '@tamagui/lucide-icons'
+import { Quote, Share2, RefreshCw, MessageCircle } from '@tamagui/lucide-icons'
 import { shareToKakao } from 'app/utils/kakaoShare'
 import { getCharacterById } from 'app/types/character'
 
@@ -54,23 +54,8 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         </YStack>
       )}
 
-      {/* 장식 구분선 (카드별 해석이 있을 때만) */}
       {hasCardReadings && (
-        <XStack alignItems='center' gap='$3'>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-          <XStack gap='$2' alignItems='center'>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-            <Text fontSize='$3' color='$accentBackground'>
-              ✦
-            </Text>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-          </XStack>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-        </XStack>
+        <Separator borderColor='$borderColor' opacity={0.3} />
       )}
 
       {/* 종합 해석 */}
@@ -84,12 +69,9 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         borderLeftWidth={3}
         borderLeftColor='$accentBackground'
       >
-        <XStack alignItems='center' gap='$2'>
-          <Sparkles size={14} color='$accentBackground' />
-          <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
-            {hasCardReadings ? '종합 해석' : '해석'}
-          </H3>
-        </XStack>
+        <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
+          {hasCardReadings ? '종합 해석' : '해석'}
+        </H3>
         <Paragraph lineHeight='$7' fontSize='$4' color='$color'>
           {interp.content}
         </Paragraph>
@@ -135,7 +117,6 @@ export function ResultScreen(): React.ReactNode {
   const content = match(readingQuery)
     .with(error, () => (
       <YStack flex={1} alignItems='center' justifyContent='center' padding='$6' gap='$4'>
-        <Star size={32} color='$red8' opacity={0.5} />
         <Paragraph color='$red10' textAlign='center' fontSize='$4'>
           리딩 결과를 불러오지 못했습니다.
         </Paragraph>
@@ -159,13 +140,9 @@ export function ResultScreen(): React.ReactNode {
           <YStack padding='$4' gap='$6' paddingBottom='$12'>
             {/* 제목 */}
             <YStack alignItems='center' gap='$3' paddingTop='$2'>
-              <XStack alignItems='center' gap='$3'>
-                <Sparkles size={20} color='$accentBackground' />
-                <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
-                  타로 리딩 결과
-                </H2>
-                <Sparkles size={20} color='$accentBackground' />
-              </XStack>
+              <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
+                타로 리딩 결과
+              </H2>
               {character.id !== 'default' && (
                 <XStack alignItems='center' gap='$2'>
                   <Text fontSize={18}>{character.emoji}</Text>
@@ -174,11 +151,7 @@ export function ResultScreen(): React.ReactNode {
                   </Text>
                 </XStack>
               )}
-              <XStack alignItems='center' gap='$2' width={160}>
-                <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
-                <Star size={10} color='$yellow8' />
-                <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
-              </XStack>
+              <YStack width={160} height={1} backgroundColor='$borderColor' opacity={0.3} />
             </YStack>
 
             {/* 질문 박스 */}
@@ -238,22 +211,7 @@ export function ResultScreen(): React.ReactNode {
               />
             </YStack>
 
-            {/* 장식 구분선 */}
-            <XStack alignItems='center' gap='$3'>
-              <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-              <XStack gap='$2' alignItems='center'>
-                <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-                  ✦
-                </Text>
-                <Text fontSize='$3' color='$accentBackground'>
-                  ✦
-                </Text>
-                <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-                  ✦
-                </Text>
-              </XStack>
-              <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-            </XStack>
+            <Separator borderColor='$borderColor' opacity={0.3} />
 
             {/* AI 생성 제목 + 요약 */}
             <YStack alignItems='center' gap='$2'>

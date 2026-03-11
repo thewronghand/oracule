@@ -3,13 +3,21 @@ import { H2, H3, Paragraph, ScrollView, Text, XStack, YStack } from '@t4/ui'
 import { OraculeButton } from '@t4/ui/src/Button'
 import { LoadingSpinner } from '@t4/ui/src/LoadingSpinner'
 import { SpreadLayout } from '@t4/ui/src/tarot/SpreadLayout'
-import { Star, Sparkles } from '@tamagui/lucide-icons'
 import { createParam } from 'solito'
 import { useRouter } from 'solito/router'
 import type { DrawnTarotCard } from 'app/types/card'
 import { SPREAD_INFO, type SpreadType, spreadOptions } from 'app/types/spread'
 import { drawRandomCards } from 'app/utils/drawRandomCards'
+import { getCardImageUrl } from 'app/utils/cardImage'
 import { trpc } from 'app/utils/trpc'
+
+function preloadCardImages(cards: DrawnTarotCard[]) {
+  if (typeof window === 'undefined') return
+  for (const card of cards) {
+    const img = new window.Image()
+    img.src = getCardImageUrl(card.id)
+  }
+}
 
 const { useParam } = createParam<{ spreadType: string; question: string; character: string }>()
 
@@ -112,9 +120,7 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
                   scale: 1,
                 })}
           >
-            <CardBack width={120} height={180} opacity={1 - i * 0.05}>
-              {i === 0 && <Star size={28} color='$yellow8' />}
-            </CardBack>
+            <CardBack width={120} height={180} opacity={1 - i * 0.05} />
           </YStack>
         ))}
       </YStack>
@@ -194,19 +200,10 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
                       opacity={1 - layer * 0.08}
                       borderColor={isTapped ? '$green8' : '$yellow8'}
                     >
-                      {layer === 0 && (
-                        <YStack alignItems='center' justifyContent='center' gap='$2'>
-                          {isTapped ? (
-                            <YStack alignItems='center' gap='$1'>
-                              <Text fontSize='$7' fontWeight='700' color='$green10'>
-                                {tapOrder + 1}
-                              </Text>
-                              <Sparkles size={16} color='$green8' />
-                            </YStack>
-                          ) : (
-                            <Star size={20} color='$yellow8' opacity={0.7} />
-                          )}
-                        </YStack>
+                      {layer === 0 && isTapped && (
+                        <Text fontSize='$7' fontWeight='700' color='$green10'>
+                          {tapOrder + 1}
+                        </Text>
                       )}
                     </CardBack>
                   </YStack>
@@ -290,14 +287,10 @@ function DrawPhaseView({
                   glowColor={isSelected ? '$green8' : undefined}
                 >
                   {isSelected && (
-                    <YStack alignItems='center' gap='$1'>
-                      <Text fontSize='$5' fontWeight='700' color='$green8'>
-                        {selectOrder + 1}
-                      </Text>
-                      <Sparkles size={14} color='$green6' />
-                    </YStack>
+                    <Text fontSize='$5' fontWeight='700' color='$green8'>
+                      {selectOrder + 1}
+                    </Text>
                   )}
-                  {!isSelected && <Star size={18} color='$yellow7' opacity={0.5} />}
                 </CardBack>
               </YStack>
             )
@@ -494,6 +487,7 @@ export function DrawScreen() {
 
     const cards = drawRandomCards(cardCount)
     setDrawnCards(cards)
+    preloadCardImages(cards)
     setIsApiLoading(true)
 
     createReading

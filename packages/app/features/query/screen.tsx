@@ -4,7 +4,7 @@ import { OraculeButton, OraculeTextArea, SpreadSelector } from '@t4/ui'
 import type { SpreadType } from 'app/types/spread'
 import { CHARACTERS, type CharacterId } from 'app/types/character'
 import { useRouter } from 'solito/router'
-import { Sparkles, MessageCircle, Star, Users } from '@tamagui/lucide-icons'
+import { MessageCircle, Users } from '@tamagui/lucide-icons'
 
 const EXAMPLE_QUESTIONS = [
   '지금 내 커리어 방향은 올바른가요?',
@@ -84,27 +84,11 @@ export function QueryScreen() {
           })}
         </XStack>
 
-        {/* 장식 구분선 */}
-        <XStack alignItems='center' gap='$3'>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-          <XStack gap='$2' alignItems='center'>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-            <Text fontSize='$3' color='$accentBackground'>
-              ✦
-            </Text>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-          </XStack>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-        </XStack>
+        <Separator borderColor='$borderColor' opacity={0.3} />
 
         {/* 스프레드 선택 섹션 */}
         <YStack gap='$3'>
           <XStack alignItems='center' gap='$2'>
-            <Sparkles size={20} color='$accentBackground' />
             <H2 color='$accentBackground' letterSpacing={0.5}>
               어떤 스프레드로 볼까요?
             </H2>
@@ -118,22 +102,7 @@ export function QueryScreen() {
           <SpreadSelector selectedSpread={selectedSpread} onSelect={setSelectedSpread} />
         </YStack>
 
-        {/* 장식 구분선 */}
-        <XStack alignItems='center' gap='$3'>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-          <XStack gap='$2' alignItems='center'>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-            <Text fontSize='$3' color='$accentBackground'>
-              ✦
-            </Text>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-          </XStack>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-        </XStack>
+        <Separator borderColor='$borderColor' opacity={0.3} />
 
         {/* 질문 입력 섹션 */}
         <YStack gap='$3'>
@@ -150,17 +119,14 @@ export function QueryScreen() {
 
         {/* 예시 질문 힌트 */}
         <YStack gap='$3'>
-          <XStack alignItems='center' gap='$2'>
-            <Star size={13} color='$yellow8' />
-            <Paragraph
-              fontSize='$2'
-              color='$colorSubtle'
-              letterSpacing={1.5}
-              textTransform='uppercase'
-            >
-              예시 질문
-            </Paragraph>
-          </XStack>
+          <Paragraph
+            fontSize='$2'
+            color='$colorSubtle'
+            letterSpacing={1.5}
+            textTransform='uppercase'
+          >
+            예시 질문
+          </Paragraph>
           <YStack gap='$2'>
             {EXAMPLE_QUESTIONS.map((q) => {
               const isSelected = question === q
@@ -178,7 +144,6 @@ export function QueryScreen() {
                   cursor='pointer'
                 >
                   <XStack alignItems='center' gap='$2'>
-                    {isSelected && <Star size={12} color='$yellow8' />}
                     <Text
                       flex={1}
                       fontSize='$3'
