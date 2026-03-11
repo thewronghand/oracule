@@ -437,11 +437,13 @@ function FortuneCalendar() {
 type TabType = 'today' | 'calendar'
 
 export function FortuneScreen() {
-  const { user, isLoading: isUserLoading } = useUser()
+  const { user, isLoading: isUserLoading, session } = useUser()
   const [activeTab, setActiveTab] = useState<TabType>('today')
 
   const todayQuery = trpc.fortune.getToday.useQuery(undefined, {
-    enabled: !!user,
+    enabled: !!session,
+    retry: 2,
+    retryDelay: 1000,
   })
 
   if (isUserLoading) {
