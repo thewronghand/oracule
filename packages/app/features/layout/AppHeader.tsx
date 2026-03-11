@@ -2,7 +2,7 @@ import { XStack, Text, YStack, Avatar, styled } from "tamagui";
 import { useUser } from "app/utils/supabase/hooks/useUser";
 import { useSupabase } from "app/utils/supabase/hooks/useSupabase";
 import { useLink } from "solito/link";
-import { LogOut } from "@tamagui/lucide-icons";
+import { LogOut, History } from "@tamagui/lucide-icons";
 
 const HeaderContainer = styled(XStack, {
 	width: "100%",
@@ -48,6 +48,7 @@ export function AppHeader() {
 	const supabase = useSupabase();
 	const loginLink = useLink({ href: "/login" });
 	const homeLink = useLink({ href: "/" });
+	const historyLink = useLink({ href: "/history" });
 
 	const handleLogout = async () => {
 		await supabase.auth.signOut();
@@ -69,6 +70,9 @@ export function AppHeader() {
 			{/* 우측: 로그인 상태 */}
 			{isLoading ? null : user ? (
 				<XStack alignItems="center" gap="$3">
+					<YStack {...historyLink} cursor="pointer" pressStyle={{ opacity: 0.7 }} padding="$1">
+						<History size={20} color="$purple8" />
+					</YStack>
 					<XStack alignItems="center" gap="$2">
 						{avatarUrl ? (
 							<Avatar circular size="$2">
