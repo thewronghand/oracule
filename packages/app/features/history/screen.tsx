@@ -164,7 +164,7 @@ export function HistoryScreen() {
   const utils = trpc.useUtils()
 
   const readingsQuery = trpc.reading.listByUser.useQuery(
-    { limit: 50 },
+    { limit: 50, offset: 0 },
     { enabled: !!user }
   )
 
@@ -226,7 +226,7 @@ export function HistoryScreen() {
                     interpretation={reading.interpretation}
                     createdAt={reading.createdAt}
                     onDelete={(id) => deleteMutation.mutate({ id })}
-                    isDeleting={deleteMutation.isPending}
+                    isDeleting={deleteMutation.isLoading}
                   />
                 ))}
               </YStack>
