@@ -13,6 +13,7 @@ const GlowText = styled(H1, {
 
 export function HomeScreen() {
   const queryLink = useLink({ href: '/query' })
+  const fortuneLink = useLink({ href: '/fortune' })
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -82,6 +83,9 @@ export function HomeScreen() {
               타로 리딩 시작하기
             </OraculeButton>
           </YStack>
+          <OraculeButton {...fortuneLink} variant='secondary' customSize='md' minWidth={220}>
+            오늘의 운세
+          </OraculeButton>
         </YStack>
       </YStack>
 
