@@ -6,11 +6,11 @@ import { createTamagui } from 'tamagui'
 
 // 보라빛 신비로운 다크 테마 커스터마이징
 const darkOverrides = {
-  background: '#1a1625',
-  backgroundHover: '#211d2e',
-  backgroundPress: '#16121f',
-  backgroundFocus: '#211d2e',
-  backgroundStrong: '#140f1e',
+  background: '#1e1a2e',
+  backgroundHover: '#262137',
+  backgroundPress: '#1a1625',
+  backgroundFocus: '#262137',
+  backgroundStrong: '#181425',
   backgroundTransparent: 'rgba(26, 22, 37, 0)',
   borderColor: '#2d2640',
   borderColorHover: '#3d3555',
