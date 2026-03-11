@@ -1,6 +1,6 @@
 import { type inferAsyncReturnType } from '@trpc/server'
 import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
-import { createRemoteJWKSet, jwtVerify } from 'jose'
+import { importJWK, jwtVerify, type JWK } from 'jose'
 import { DrizzleD1Database } from 'drizzle-orm/d1'
 import { createDb } from './db/client'
 
@@ -14,14 +14,29 @@ interface ApiContextProps {
   vertexServiceAccountJson: string
 }
 
-// JWKS 캐시
-let cachedJWKS: ReturnType<typeof createRemoteJWKSet> | null = null
+// JWKS 캐시 (1시간)
+let cachedKey: { key: CryptoKey; expiry: number } | null = null
 
-function getJWKS(supabaseUrl: string) {
-  if (!cachedJWKS) {
-    cachedJWKS = createRemoteJWKSet(new URL(`${supabaseUrl}/auth/v1/jwks`))
+async function getSigningKey(supabaseUrl: string, supabaseAnonKey: string): Promise<CryptoKey> {
+  if (cachedKey && Date.now() < cachedKey.expiry) {
+    return cachedKey.key
   }
-  return cachedJWKS
+
+  const res = await fetch(`${supabaseUrl}/auth/v1/.well-known/jwks.json`, {
+    headers: { apikey: supabaseAnonKey },
+  })
+
+  if (!res.ok) {
+    throw new Error(`JWKS fetch failed: ${res.status}`)
+  }
+
+  const { keys } = (await res.json()) as { keys: JWK[] }
+  const jwk = keys[0]
+  if (!jwk) throw new Error('No keys in JWKS')
+
+  const key = await importJWK(jwk, jwk.alg ?? 'ES256')
+  cachedKey = { key: key as CryptoKey, expiry: Date.now() + 60 * 60 * 1000 }
+  return key as CryptoKey
 }
 
 export const createContext = async (
@@ -29,7 +44,8 @@ export const createContext = async (
   JWT_VERIFICATION_KEY: string,
   vertexServiceAccountJson: string,
   opts: FetchCreateContextFnOptions,
-  supabaseUrl?: string
+  supabaseUrl?: string,
+  supabaseAnonKey?: string
 ): Promise<ApiContextProps> => {
   const db = createDb(d1)
 
@@ -40,10 +56,9 @@ export const createContext = async (
     if (!sessionToken || sessionToken === 'undefined') return null
 
     try {
-      if (supabaseUrl) {
-        // JWKS 기반 검증 (ES256 등 자동 지원)
-        const jwks = getJWKS(supabaseUrl)
-        const { payload } = await jwtVerify(sessionToken, jwks)
+      if (supabaseUrl && supabaseAnonKey) {
+        const key = await getSigningKey(supabaseUrl, supabaseAnonKey)
+        const { payload } = await jwtVerify(sessionToken, key)
 
         if (payload.sub) {
           return { id: payload.sub }
