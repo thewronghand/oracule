@@ -9,7 +9,7 @@ import { error, loading, success } from 'app/utils/trpc/patterns'
 import { parseInterpretation } from 'app/utils/parseInterpretation'
 import type { SpreadType } from 'app/types/spread'
 import type { ReadingInterpretation } from 'app/types/reading'
-import { Sparkles, Star, Quote } from '@tamagui/lucide-icons'
+import { Quote } from '@tamagui/lucide-icons'
 import { getCharacterById } from 'app/types/character'
 
 const { useParam } = createParam<{ shareId: string }>()
@@ -53,21 +53,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
       )}
 
       {hasCardReadings && (
-        <XStack alignItems='center' gap='$3'>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-          <XStack gap='$2' alignItems='center'>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-            <Text fontSize='$3' color='$accentBackground'>
-              ✦
-            </Text>
-            <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-              ✦
-            </Text>
-          </XStack>
-          <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-        </XStack>
+        <Separator borderColor='$borderColor' opacity={0.3} />
       )}
 
       <YStack
@@ -80,12 +66,9 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         borderLeftWidth={3}
         borderLeftColor='$accentBackground'
       >
-        <XStack alignItems='center' gap='$2'>
-          <Sparkles size={14} color='$accentBackground' />
-          <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
-            {hasCardReadings ? '종합 해석' : '해석'}
-          </H3>
-        </XStack>
+        <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
+          {hasCardReadings ? '종합 해석' : '해석'}
+        </H3>
         <Paragraph lineHeight='$7' fontSize='$4' color='$color'>
           {interp.content}
         </Paragraph>
@@ -130,13 +113,9 @@ export function ShareScreen(): React.ReactNode {
           <YStack padding='$4' gap='$6' paddingBottom='$12'>
             {/* 제목 */}
             <YStack alignItems='center' gap='$3' paddingTop='$2'>
-              <XStack alignItems='center' gap='$3'>
-                <Sparkles size={20} color='$accentBackground' />
-                <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
-                  공유된 타로 리딩
-                </H2>
-                <Sparkles size={20} color='$accentBackground' />
-              </XStack>
+              <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
+                공유된 타로 리딩
+              </H2>
               {character.id !== 'default' && (
                 <XStack alignItems='center' gap='$2'>
                   <Text fontSize={18}>{character.emoji}</Text>
@@ -145,11 +124,7 @@ export function ShareScreen(): React.ReactNode {
                   </Text>
                 </XStack>
               )}
-              <XStack alignItems='center' gap='$2' width={160}>
-                <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
-                <Star size={10} color='$yellow8' />
-                <YStack flex={1} height={1} backgroundColor='$yellow8' opacity={0.4} />
-              </XStack>
+              <YStack width={160} height={1} backgroundColor='$borderColor' opacity={0.3} />
             </YStack>
 
             {/* 질문 박스 */}
@@ -206,22 +181,7 @@ export function ShareScreen(): React.ReactNode {
               revealedIndices={allIndices}
             />
 
-            {/* 장식 구분선 */}
-            <XStack alignItems='center' gap='$3'>
-              <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-              <XStack gap='$2' alignItems='center'>
-                <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-                  ✦
-                </Text>
-                <Text fontSize='$3' color='$accentBackground'>
-                  ✦
-                </Text>
-                <Text fontSize='$2' color='$yellow8' opacity={0.4}>
-                  ✦
-                </Text>
-              </XStack>
-              <Separator flex={1} borderColor='$yellow8' opacity={0.2} />
-            </XStack>
+            <Separator borderColor='$borderColor' opacity={0.3} />
 
             {/* AI 생성 제목 + 요약 */}
             <YStack alignItems='center' gap='$2'>
