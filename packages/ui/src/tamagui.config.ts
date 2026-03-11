@@ -34,21 +34,24 @@ const themes = Object.fromEntries(
       return [key, { ...value, ...darkOverrides }]
     }
     if (key.startsWith('dark_')) {
-      return [key, {
-        ...value,
-        background: darkOverrides.background,
-        backgroundHover: darkOverrides.backgroundHover,
-        backgroundPress: darkOverrides.backgroundPress,
-        backgroundFocus: darkOverrides.backgroundFocus,
-        borderColor: darkOverrides.borderColor,
-        borderColorHover: darkOverrides.borderColorHover,
-        borderColorFocus: darkOverrides.borderColorFocus,
-        borderColorPress: darkOverrides.borderColorPress,
-        shadowColor: darkOverrides.shadowColor,
-        shadowColorHover: darkOverrides.shadowColorHover,
-        shadowColorPress: darkOverrides.shadowColorPress,
-        shadowColorFocus: darkOverrides.shadowColorFocus,
-      }]
+      return [
+        key,
+        {
+          ...value,
+          background: darkOverrides.background,
+          backgroundHover: darkOverrides.backgroundHover,
+          backgroundPress: darkOverrides.backgroundPress,
+          backgroundFocus: darkOverrides.backgroundFocus,
+          borderColor: darkOverrides.borderColor,
+          borderColorHover: darkOverrides.borderColorHover,
+          borderColorFocus: darkOverrides.borderColorFocus,
+          borderColorPress: darkOverrides.borderColorPress,
+          shadowColor: darkOverrides.shadowColor,
+          shadowColorHover: darkOverrides.shadowColorHover,
+          shadowColorPress: darkOverrides.shadowColorPress,
+          shadowColorFocus: darkOverrides.shadowColorFocus,
+        },
+      ]
     }
     return [key, value]
   })

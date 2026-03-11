@@ -34,7 +34,11 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
                 paddingHorizontal='$2'
                 paddingVertical={2}
               >
-                <Text fontSize='$1' color={isSelected ? '$purple11' : '$colorFocus'} fontWeight='600'>
+                <Text
+                  fontSize='$1'
+                  color={isSelected ? '$purple11' : '$colorFocus'}
+                  fontWeight='600'
+                >
                   {option.cardCount}장
                 </Text>
               </YStack>
