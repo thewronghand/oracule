@@ -278,7 +278,7 @@ function FortuneCalendar() {
   const monthQuery = trpc.fortune.listByMonth.useQuery({ year, month })
 
   const fortuneMap = useMemo(() => {
-    const map = new Map<string, (typeof monthQuery.data)[0]>()
+    const map = new Map<string, NonNullable<typeof monthQuery.data>[number]>()
     if (monthQuery.data) {
       for (const f of monthQuery.data) {
         map.set(f.date, f)
