@@ -1,8 +1,58 @@
 import { createInterFont } from '@tamagui/font-inter'
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/themes'
+import { themes as baseThemes, tokens } from '@tamagui/themes'
 import { createTamagui } from 'tamagui'
+
+// 보라빛 신비로운 다크 테마 커스터마이징
+const darkOverrides = {
+  background: '#1a1625',
+  backgroundHover: '#211d2e',
+  backgroundPress: '#16121f',
+  backgroundFocus: '#211d2e',
+  backgroundStrong: '#140f1e',
+  backgroundTransparent: 'rgba(26, 22, 37, 0)',
+  borderColor: '#2d2640',
+  borderColorHover: '#3d3555',
+  borderColorFocus: '#4a3f6b',
+  borderColorPress: '#231e33',
+  color: '#ede9f6',
+  colorHover: '#f5f0ff',
+  colorPress: '#d4cce6',
+  colorFocus: '#b8b0cc',
+  colorTransparent: 'rgba(237, 233, 246, 0)',
+  placeholderColor: '#7a7190',
+  shadowColor: 'rgba(20, 15, 30, 0.5)',
+  shadowColorHover: 'rgba(20, 15, 30, 0.6)',
+  shadowColorPress: 'rgba(20, 15, 30, 0.7)',
+  shadowColorFocus: 'rgba(20, 15, 30, 0.5)',
+}
+
+const themes = Object.fromEntries(
+  Object.entries(baseThemes).map(([key, value]) => {
+    if (key === 'dark') {
+      return [key, { ...value, ...darkOverrides }]
+    }
+    if (key.startsWith('dark_')) {
+      return [key, {
+        ...value,
+        background: darkOverrides.background,
+        backgroundHover: darkOverrides.backgroundHover,
+        backgroundPress: darkOverrides.backgroundPress,
+        backgroundFocus: darkOverrides.backgroundFocus,
+        borderColor: darkOverrides.borderColor,
+        borderColorHover: darkOverrides.borderColorHover,
+        borderColorFocus: darkOverrides.borderColorFocus,
+        borderColorPress: darkOverrides.borderColorPress,
+        shadowColor: darkOverrides.shadowColor,
+        shadowColorHover: darkOverrides.shadowColorHover,
+        shadowColorPress: darkOverrides.shadowColorPress,
+        shadowColorFocus: darkOverrides.shadowColorFocus,
+      }]
+    }
+    return [key, value]
+  })
+) as typeof baseThemes
 
 import { animations } from './animations'
 
