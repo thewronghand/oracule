@@ -15,10 +15,12 @@ import '@tamagui/font-inter/css/700.css'
 
 import type { Session } from '@supabase/supabase-js'
 import { Provider } from 'app/provider'
+import { AppHeader } from 'app/features/layout/AppHeader'
 import { trpc } from 'app/utils/trpc/index.web'
 import { DefaultSeo } from 'next-seo'
 import Head from 'next/head'
 import Script from 'next/script'
+import { useRouter } from 'next/router'
 import type { SolitoAppProps } from 'solito'
 
 if (process.env.NODE_ENV === 'production') {
@@ -28,7 +30,12 @@ if (process.env.NODE_ENV === 'production') {
 const title = `${process.env.NEXT_PUBLIC_METADATA_NAME}`
 const description = `${process.env.NEXT_PUBLIC_METADATA_DESCRIPTION}`
 
+const HIDE_HEADER_PATHS = ['/', '/login']
+
 const T4App = ({ Component, pageProps }: SolitoAppProps<{ initialSession: Session | null }>) => {
+  const router = useRouter()
+  const showHeader = !HIDE_HEADER_PATHS.includes(router.pathname)
+
   return (
     <>
       <DefaultSeo title={title} description={description} />
@@ -48,6 +55,7 @@ const T4App = ({ Component, pageProps }: SolitoAppProps<{ initialSession: Sessio
         }}
       />
       <Provider initialSession={pageProps.initialSession}>
+        {showHeader && <AppHeader />}
         <Component {...pageProps} />
       </Provider>
     </>
