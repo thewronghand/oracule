@@ -2,7 +2,7 @@ import type { AppRouter } from '@t4/api/src/router'
 import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import superjson from 'superjson'
-import { supabase } from '../supabase/client'
+import { getToken } from '../supabase/cookies'
 
 export const trpc = createTRPCNext<AppRouter>({
   config() {
@@ -16,8 +16,7 @@ export const trpc = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           async headers() {
-            const { data } = await supabase.auth.getSession()
-            const token = data?.session?.access_token
+            const token = getToken()
             return {
               Authorization: token ? `Bearer ${token}` : '',
             }

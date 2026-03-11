@@ -34,6 +34,8 @@ export const secureCookieOptions = {
 }
 
 export const getToken = (): string | undefined => {
+  if (typeof document === 'undefined') return undefined
+
   let token = getCookieValue(AUTH_TOKEN_COOKIE_NAME)
   if (token !== undefined) {
     const parse = JSON.parse(token)

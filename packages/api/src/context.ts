@@ -1,6 +1,6 @@
 import { type inferAsyncReturnType } from '@trpc/server'
 import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
-import jwt from '@tsndr/cloudflare-worker-jwt'
+import { createRemoteJWKSet, jwtVerify } from 'jose'
 import { DrizzleD1Database } from 'drizzle-orm/d1'
 import { createDb } from './db/client'
 
@@ -14,50 +14,43 @@ interface ApiContextProps {
   vertexServiceAccountJson: string
 }
 
+// JWKS 캐시
+let cachedJWKS: ReturnType<typeof createRemoteJWKSet> | null = null
+
+function getJWKS(supabaseUrl: string) {
+  if (!cachedJWKS) {
+    cachedJWKS = createRemoteJWKSet(new URL(`${supabaseUrl}/auth/v1/jwks`))
+  }
+  return cachedJWKS
+}
+
 export const createContext = async (
   d1: D1Database,
   JWT_VERIFICATION_KEY: string,
   vertexServiceAccountJson: string,
-  opts: FetchCreateContextFnOptions
+  opts: FetchCreateContextFnOptions,
+  supabaseUrl?: string
 ): Promise<ApiContextProps> => {
   const db = createDb(d1)
 
   async function getUser() {
-    const sessionToken = opts.req.headers.get('authorization')?.split(' ')[1]
+    const authHeader = opts.req.headers.get('authorization')
+    const sessionToken = authHeader?.split(' ')[1]
 
-    if (sessionToken !== undefined && sessionToken !== 'undefined') {
-      if (!JWT_VERIFICATION_KEY) {
-        console.error('JWT_VERIFICATION_KEY is not set')
-        return null
+    if (!sessionToken || sessionToken === 'undefined') return null
+
+    try {
+      if (supabaseUrl) {
+        // JWKS 기반 검증 (ES256 등 자동 지원)
+        const jwks = getJWKS(supabaseUrl)
+        const { payload } = await jwtVerify(sessionToken, jwks)
+
+        if (payload.sub) {
+          return { id: payload.sub }
+        }
       }
-
-      try {
-        const authorized = await jwt.verify(sessionToken, JWT_VERIFICATION_KEY, {
-          algorithm: 'HS256',
-        })
-        if (!authorized) {
-          return null
-        }
-
-        const decodedToken = jwt.decode(sessionToken)
-
-        // Check if token is expired
-        const expirationTimestamp = decodedToken.payload.exp
-        const currentTimestamp = Math.floor(Date.now() / 1000)
-        if (!expirationTimestamp || expirationTimestamp < currentTimestamp) {
-          return null
-        }
-
-        const userId = decodedToken?.payload?.sub
-
-        if (userId) {
-          return {
-            id: userId,
-          }
-        }
-      } catch (e) {
-        console.error(e)
-      }
+    } catch (e) {
+      console.error('[auth] JWT 검증 실패:', e)
     }
 
     return null

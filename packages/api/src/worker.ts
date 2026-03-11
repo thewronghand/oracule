@@ -9,6 +9,7 @@ type Bindings = {
   JWT_VERIFICATION_KEY: string
   APP_URL: string
   VERTEX_SERVICE_ACCOUNT_JSON: string
+  SUPABASE_URL: string
 }
 
 const app = new Hono<{ Bindings: Bindings }>()
@@ -37,7 +38,8 @@ app.use('/trpc/*', async (c, next) => {
         c.env.DB,
         c.env.JWT_VERIFICATION_KEY,
         c.env.VERTEX_SERVICE_ACCOUNT_JSON,
-        opts
+        opts,
+        c.env.SUPABASE_URL
       )
     },
   })(c, next)
