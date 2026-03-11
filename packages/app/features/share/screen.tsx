@@ -52,9 +52,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         </YStack>
       )}
 
-      {hasCardReadings && (
-        <Separator borderColor='$borderColor' opacity={0.3} />
-      )}
+      {hasCardReadings && <Separator borderColor='$borderColor' opacity={0.3} />}
 
       <YStack
         gap='$4'

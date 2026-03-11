@@ -20,7 +20,9 @@ export function QueryScreen() {
 
   const handleDraw = () => {
     router.push(
-      `/draw?spreadType=${selectedSpread}&question=${encodeURIComponent(question)}&character=${selectedCharacter}`
+      `/draw?spreadType=${selectedSpread}&question=${encodeURIComponent(
+        question
+      )}&character=${selectedCharacter}`
     )
   }
 

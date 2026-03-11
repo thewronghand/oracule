@@ -59,38 +59,38 @@ function ReadingItem({
 
   return (
     <ReadingCard {...link}>
-      <XStack justifyContent="space-between" alignItems="flex-start">
-        <YStack flex={1} gap="$2">
-          <XStack alignItems="center" gap="$2">
-            <Clock size={14} color="$purple8" />
-            <Text fontSize="$2" color="$colorSubtle">
+      <XStack justifyContent='space-between' alignItems='flex-start'>
+        <YStack flex={1} gap='$2'>
+          <XStack alignItems='center' gap='$2'>
+            <Clock size={14} color='$purple8' />
+            <Text fontSize='$2' color='$colorSubtle'>
               {formatDate(createdAt)}
             </Text>
           </XStack>
 
-          <Text fontSize="$4" fontWeight="600" color="$color" numberOfLines={2}>
+          <Text fontSize='$4' fontWeight='600' color='$color' numberOfLines={2}>
             {question}
           </Text>
 
-          <XStack gap="$2" flexWrap="wrap">
+          <XStack gap='$2' flexWrap='wrap'>
             <Text
-              fontSize="$2"
-              color="$purple10"
-              backgroundColor="$purple3"
-              paddingHorizontal="$2"
-              paddingVertical="$1"
-              borderRadius="$2"
+              fontSize='$2'
+              color='$purple10'
+              backgroundColor='$purple3'
+              paddingHorizontal='$2'
+              paddingVertical='$1'
+              borderRadius='$2'
             >
               {spreadName}
             </Text>
             {character.id !== 'default' && (
               <Text
-                fontSize="$2"
-                color="$yellow10"
-                backgroundColor="$yellow3"
-                paddingHorizontal="$2"
-                paddingVertical="$1"
-                borderRadius="$2"
+                fontSize='$2'
+                color='$yellow10'
+                backgroundColor='$yellow3'
+                paddingHorizontal='$2'
+                paddingVertical='$1'
+                borderRadius='$2'
               >
                 {character.name}
               </Text>
@@ -98,15 +98,15 @@ function ReadingItem({
           </XStack>
 
           {summary && (
-            <Text fontSize="$3" color="$colorSubtle" numberOfLines={2}>
+            <Text fontSize='$3' color='$colorSubtle' numberOfLines={2}>
               {summary}
             </Text>
           )}
         </YStack>
 
         <YStack
-          padding="$2"
-          cursor="pointer"
+          padding='$2'
+          cursor='pointer'
           pressStyle={{ opacity: 0.6 }}
           opacity={isDeleting ? 0.3 : 0.6}
           onPress={(e) => {
@@ -114,7 +114,7 @@ function ReadingItem({
             if (!isDeleting) onDelete(id)
           }}
         >
-          <Trash2 size={18} color="$red9" />
+          <Trash2 size={18} color='$red9' />
         </YStack>
       </XStack>
     </ReadingCard>
@@ -125,15 +125,15 @@ function LoginPrompt() {
   const loginLink = useLink({ href: '/login' })
 
   return (
-    <YStack flex={1} justifyContent="center" alignItems="center" padding="$6" gap="$4">
-      <LogIn size={48} color="$purple8" />
-      <H2 textAlign="center" color="$color">
+    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$4'>
+      <LogIn size={48} color='$purple8' />
+      <H2 textAlign='center' color='$color'>
         로그인이 필요해요
       </H2>
-      <Paragraph textAlign="center" color="$colorSubtle">
+      <Paragraph textAlign='center' color='$colorSubtle'>
         타로 리딩 기록을 보려면 먼저 로그인해주세요.
       </Paragraph>
-      <OraculeButton variant="primary" {...loginLink}>
+      <OraculeButton variant='primary' {...loginLink}>
         로그인하기
       </OraculeButton>
     </YStack>
@@ -144,15 +144,15 @@ function EmptyState() {
   const homeLink = useLink({ href: '/' })
 
   return (
-    <YStack flex={1} justifyContent="center" alignItems="center" padding="$6" gap="$4">
-      <BookOpen size={48} color="$purple8" />
-      <H2 textAlign="center" color="$color">
+    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$4'>
+      <BookOpen size={48} color='$purple8' />
+      <H2 textAlign='center' color='$color'>
         아직 리딩 기록이 없어요
       </H2>
-      <Paragraph textAlign="center" color="$colorSubtle">
+      <Paragraph textAlign='center' color='$colorSubtle'>
         타로 리딩을 받으면 이곳에 기록이 쌓여요.
       </Paragraph>
-      <OraculeButton variant="primary" {...homeLink}>
+      <OraculeButton variant='primary' {...homeLink}>
         타로 보러 가기
       </OraculeButton>
     </YStack>
@@ -176,7 +176,7 @@ export function HistoryScreen() {
 
   if (isUserLoading) {
     return (
-      <YStack flex={1} justifyContent="center" alignItems="center">
+      <YStack flex={1} justifyContent='center' alignItems='center'>
         <LoadingSpinner />
       </YStack>
     )
@@ -188,25 +188,18 @@ export function HistoryScreen() {
 
   return (
     <ScrollView>
-      <YStack
-        flex={1}
-        padding="$4"
-        gap="$4"
-        maxWidth={640}
-        width="100%"
-        alignSelf="center"
-      >
-        <H2 color="$purple10">리딩 히스토리</H2>
+      <YStack flex={1} padding='$4' gap='$4' maxWidth={640} width='100%' alignSelf='center'>
+        <H2 color='$purple10'>리딩 히스토리</H2>
 
         {match(readingsQuery)
           .with(loading, () => (
-            <YStack flex={1} justifyContent="center" alignItems="center" paddingVertical="$8">
+            <YStack flex={1} justifyContent='center' alignItems='center' paddingVertical='$8'>
               <LoadingSpinner />
             </YStack>
           ))
           .with(error, () => (
-            <YStack padding="$4" alignItems="center">
-              <Paragraph color="$red9">기록을 불러오지 못했어요.</Paragraph>
+            <YStack padding='$4' alignItems='center'>
+              <Paragraph color='$red9'>기록을 불러오지 못했어요.</Paragraph>
             </YStack>
           ))
           .with(success, ({ data }) => {
@@ -215,7 +208,7 @@ export function HistoryScreen() {
             }
 
             return (
-              <YStack gap="$3">
+              <YStack gap='$3'>
                 {data.map((reading) => (
                   <ReadingItem
                     key={reading.id}

@@ -16,8 +16,9 @@ export const trpc = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           async headers() {
+            const token = getToken()
             return {
-              Authorization: `Bearer ${getToken()}`,
+              Authorization: token ? `Bearer ${token}` : '',
             }
           },
           url: `${process.env.NEXT_PUBLIC_API_URL}/trpc`,
