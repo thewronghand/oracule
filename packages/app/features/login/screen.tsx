@@ -4,7 +4,6 @@ import { H2, Paragraph, XStack, YStack, Text, styled, Spinner } from "tamagui";
 import { OraculeButton } from "@t4/ui/src/Button";
 import { useSupabase } from "app/utils/supabase/hooks/useSupabase";
 import { useRouter } from "solito/router";
-import { Star, Sparkles } from "@tamagui/lucide-icons";
 import { SolitoImage } from "solito/image";
 
 const BrandButton = styled(YStack, {
@@ -60,13 +59,9 @@ export function LoginScreen() {
 		>
 			{/* 헤더 */}
 			<YStack alignItems="center" gap="$3">
-				<XStack alignItems="center" gap="$2" opacity={0.8}>
-					<Sparkles size={16} color="#c4b5fd" />
-					<Text fontSize="$2" color="$purple8" letterSpacing={3} fontWeight="500">
-						WELCOME
-					</Text>
-					<Sparkles size={16} color="#c4b5fd" />
-				</XStack>
+				<Text fontSize="$2" color="$purple8" letterSpacing={3} fontWeight="500" opacity={0.8}>
+					WELCOME
+				</Text>
 
 				<H2
 					textAlign="center"
@@ -89,11 +84,7 @@ export function LoginScreen() {
 			</YStack>
 
 			{/* 구분선 */}
-			<XStack alignItems="center" gap="$3" width={260} justifyContent="center">
-				<YStack flex={1} height={1} backgroundColor="$purple6" opacity={0.4} />
-				<Star size={12} color="#a78bfa" />
-				<YStack flex={1} height={1} backgroundColor="$purple6" opacity={0.4} />
-			</XStack>
+			<YStack width={260} height={1} backgroundColor="$purple6" opacity={0.2} />
 
 			{/* 소셜 로그인 버튼 */}
 			<YStack gap="$3" width="100%" maxWidth={320}>
