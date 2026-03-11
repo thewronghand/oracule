@@ -205,7 +205,9 @@ function parseReadingResponse(text: string): ReadingInterpretation {
     ) {
       const obj = parsed as Record<string, unknown>
       return {
-        cardReadings: Array.isArray(obj.cardReadings) ? obj.cardReadings as ReadingInterpretation['cardReadings'] : [],
+        cardReadings: Array.isArray(obj.cardReadings)
+          ? (obj.cardReadings as ReadingInterpretation['cardReadings'])
+          : [],
         content: typeof obj.content === 'string' ? obj.content : '',
         title: typeof obj.title === 'string' ? obj.title : '타로 리딩 결과',
         summary: typeof obj.summary === 'string' ? obj.summary : '',
@@ -221,6 +223,91 @@ function parseReadingResponse(text: string): ReadingInterpretation {
     cardReadings: [],
     content: text,
   }
+}
+
+// 운세 전용 인터페이스 (cardReadings 없음)
+export interface FortuneInterpretation {
+  title: string
+  summary: string
+  content: string
+}
+
+function parseFortuneResponse(text: string): FortuneInterpretation {
+  // ```json 코드블록 제거
+  let cleaned = text.trim()
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/```\s*$/, '')
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(cleaned)
+    if (typeof parsed === 'object' && parsed !== null && 'content' in parsed) {
+      const obj = parsed as Record<string, unknown>
+      return {
+        title: typeof obj.title === 'string' ? obj.title : '오늘의 운세',
+        summary: typeof obj.summary === 'string' ? obj.summary : '',
+        content: typeof obj.content === 'string' ? obj.content : '',
+      }
+    }
+  } catch {
+    // JSON 파싱 실패 — fallback
+  }
+
+  return { title: '오늘의 운세', summary: '', content: text }
+}
+
+export async function generateFortuneReading(
+  config: GeminiServiceConfig,
+  systemInput: string,
+  systemResponse: string,
+  userPrompt: string
+): Promise<FortuneInterpretation> {
+  const serviceAccount = parseServiceAccount(config.serviceAccountJson)
+  const region = config.region ?? DEFAULT_REGION
+  const model = config.model ?? DEFAULT_MODEL
+
+  const accessToken = await getAccessToken(serviceAccount.client_email, serviceAccount.private_key)
+
+  const endpoint = `https://${region}-aiplatform.googleapis.com/v1/projects/${serviceAccount.project_id}/locations/${region}/publishers/google/models/${model}:generateContent`
+
+  const requestBody = {
+    contents: [
+      { role: 'user', parts: [{ text: systemInput }] },
+      { role: 'model', parts: [{ text: systemResponse }] },
+      { role: 'user', parts: [{ text: userPrompt }] },
+    ],
+    generationConfig: {
+      temperature: 0.8,
+      maxOutputTokens: 4096,
+    },
+  }
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestBody),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Gemini API 호출 실패 (${response.status}): ${errorText}`)
+  }
+
+  const data = (await response.json()) as GeminiResponse
+
+  if (data.error) {
+    throw new Error(`Gemini API 에러: [${data.error.code}] ${data.error.message}`)
+  }
+
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+  if (!text) {
+    throw new Error('Gemini API 응답에서 텍스트를 추출할 수 없습니다')
+  }
+
+  return parseFortuneResponse(text)
 }
 
 export async function generateTarotReading(

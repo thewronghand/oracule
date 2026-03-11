@@ -5,19 +5,13 @@ import { tarotDeck } from 'app/data/tarotDeck'
 import { getCharacterById } from 'app/types/character'
 import { DailyFortuneTable } from '../db/schema'
 import { fortuneSystemPrompt, formatFortunePrompt } from '../data/prompts/fortune-prompt'
-import { generateTarotReading } from '../services/gemini.service'
+import { generateFortuneReading } from '../services/gemini.service'
 import { protectedProcedure, router } from '../trpc'
 
 function getTodayDateKST(): string {
   const now = new Date()
   const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000)
   return kst.toISOString().slice(0, 10)
-}
-
-function drawOneCard(): { cardId: number; direction: '정방향' | '역방향' } {
-  const cardId = Math.floor(Math.random() * 78)
-  const direction = Math.random() > 0.5 ? '정방향' : '역방향'
-  return { cardId, direction }
 }
 
 export const fortuneRouter = router({
@@ -36,13 +30,15 @@ export const fortuneRouter = router({
     .input(
       v.parser(
         v.object({
+          cardId: v.pipe(v.number(), v.minValue(0), v.maxValue(77)),
+          direction: v.picklist(['정방향', '역방향']),
           characterId: v.optional(v.string()),
         })
       )
     )
     .mutation(async ({ input, ctx }) => {
       const today = getTodayDateKST()
-      const { characterId } = input
+      const { cardId, direction, characterId } = input
 
       // 오늘 이미 운세를 뽑았는지 확인
       const existing = await ctx.db
@@ -57,11 +53,10 @@ export const fortuneRouter = router({
         })
       }
 
-      // 카드 1장 서버에서 뽑기
-      const { cardId, direction } = drawOneCard()
       const card = tarotDeck[cardId]!
       const keywords = direction === '정방향' ? card.upright.keywords : card.reversed.keywords
-      const description = direction === '정방향' ? card.upright.description : card.reversed.description
+      const description =
+        direction === '정방향' ? card.upright.description : card.reversed.description
 
       const character = getCharacterById(characterId)
 
@@ -75,7 +70,7 @@ export const fortuneRouter = router({
         )
 
         console.log('[fortune.create] Gemini API 호출 시작')
-        const parsedInterpretation = await generateTarotReading(
+        const fortuneResult = await generateFortuneReading(
           { serviceAccountJson: ctx.vertexServiceAccountJson },
           fortuneSystemPrompt.input,
           fortuneSystemPrompt.response,
@@ -83,7 +78,7 @@ export const fortuneRouter = router({
         )
         console.log('[fortune.create] Gemini API 호출 성공')
 
-        const interpretationJson = JSON.stringify(parsedInterpretation)
+        const interpretationJson = JSON.stringify(fortuneResult)
 
         const id = crypto.randomUUID()
         const createdAt = new Date().toISOString()
