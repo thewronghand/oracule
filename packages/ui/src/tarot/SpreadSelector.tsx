@@ -34,7 +34,7 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
                 paddingHorizontal='$2'
                 paddingVertical={2}
               >
-                <Text fontSize='$1' color={isSelected ? '$purple11' : '$color3'} fontWeight='600'>
+                <Text fontSize='$1' color={isSelected ? '$purple11' : '$colorFocus'} fontWeight='600'>
                   {option.cardCount}장
                 </Text>
               </YStack>
@@ -54,7 +54,7 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
             </Text>
 
             {/* 설명 */}
-            <Text fontSize='$1' color='$color3' numberOfLines={3} lineHeight={16}>
+            <Text fontSize='$1' color='$colorFocus' numberOfLines={3} lineHeight={16}>
               {option.description}
             </Text>
           </YStack>
