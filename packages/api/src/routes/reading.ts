@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import * as v from 'valibot'
-import { eq } from 'drizzle-orm'
+import { eq, and, desc } from 'drizzle-orm'
 import type { DrawnTarotCard } from 'app/types/card'
 import type { SpreadType } from 'app/types/spread'
 import { ReadingTable } from '../db/schema'
@@ -8,7 +8,7 @@ import { formatReadingPrompt } from '../data/prompts/prompt-formatter'
 import { generateTarotReading } from '../services/gemini.service'
 import { systemPrompt } from '../data/prompts/system-prompt'
 import { getCharacterById } from 'app/types/character'
-import { publicProcedure, router } from '../trpc'
+import { publicProcedure, protectedProcedure, router } from '../trpc'
 
 const DrawnTarotCardSchema = v.object({
   id: v.number(),
@@ -89,6 +89,7 @@ export const readingRouter = router({
           spreadType,
           shareId,
           characterId: characterId ?? null,
+          userId: ctx.user?.id ?? null,
           createdAt,
         })
         console.log('[reading.create] DB 저장 성공')
@@ -127,6 +128,52 @@ export const readingRouter = router({
         ...row,
         cards: JSON.parse(row.cards) as DrawnTarotCard[],
       }
+    }),
+
+  listByUser: protectedProcedure
+    .input(
+      v.parser(
+        v.object({
+          limit: v.optional(v.number(), 20),
+          offset: v.optional(v.number(), 0),
+        })
+      )
+    )
+    .query(async ({ input, ctx }) => {
+      const rows = await ctx.db
+        .select()
+        .from(ReadingTable)
+        .where(eq(ReadingTable.userId, ctx.user.id))
+        .orderBy(desc(ReadingTable.createdAt))
+        .limit(input.limit)
+        .offset(input.offset)
+
+      return rows.map((row) => ({
+        ...row,
+        cards: JSON.parse(row.cards) as DrawnTarotCard[],
+      }))
+    }),
+
+  delete: protectedProcedure
+    .input(v.parser(v.object({ id: v.string() })))
+    .mutation(async ({ input, ctx }) => {
+      const rows = await ctx.db
+        .select()
+        .from(ReadingTable)
+        .where(and(eq(ReadingTable.id, input.id), eq(ReadingTable.userId, ctx.user.id)))
+
+      if (!rows[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: '리딩을 찾을 수 없거나 삭제 권한이 없습니다.',
+        })
+      }
+
+      await ctx.db
+        .delete(ReadingTable)
+        .where(and(eq(ReadingTable.id, input.id), eq(ReadingTable.userId, ctx.user.id)))
+
+      return { success: true }
     }),
 
   getByShareId: publicProcedure
