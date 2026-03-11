@@ -4,7 +4,7 @@ import { H2, Paragraph, XStack, YStack, Text, styled, Spinner } from "tamagui";
 import { OraculeButton } from "@t4/ui/src/Button";
 import { useSupabase } from "app/utils/supabase/hooks/useSupabase";
 import { useRouter } from "solito/router";
-import { Star, Sparkles } from "@tamagui/lucide-icons";
+import { Star, Sparkles, MessageCircle } from "@tamagui/lucide-icons";
 
 const BrandButton = styled(YStack, {
 	borderRadius: "$4",
@@ -107,7 +107,7 @@ export function LoginScreen() {
 						{loading === "kakao" ? (
 							<Spinner size="small" color="#191919" />
 						) : (
-							<Text fontSize={18}>💬</Text>
+							<MessageCircle size={18} color="#191919" fill="#191919" />
 						)}
 						<Text fontSize="$4" fontWeight="600" color="#191919">
 							카카오로 시작하기
@@ -126,7 +126,7 @@ export function LoginScreen() {
 						{loading === "google" ? (
 							<Spinner size="small" color="#444" />
 						) : (
-							<Text fontSize={18}>G</Text>
+							<Text fontSize={18} fontWeight="700" color="#4285F4">G</Text>
 						)}
 						<Text fontSize="$4" fontWeight="600" color="#333333">
 							Google로 시작하기
