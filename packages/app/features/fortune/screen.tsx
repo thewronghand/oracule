@@ -78,20 +78,11 @@ function fortuneToDrawnCard(cardId: number, cardDirection: string): DrawnTarotCa
 
 // ─── 공통 스타일드 컴포넌트 ──────────────────────────────────────────────────
 
-const SectionLabel = styled(Text, {
-  fontFamily: '$body',
-  fontSize: 10,
-  fontWeight: '500',
-  letterSpacing: 4,
-  textTransform: 'uppercase',
-  color: '#c9a96e',
-})
-
 const Divider = styled(YStack, {
   width: '100%',
   height: 1,
   backgroundColor: '$borderColor',
-  opacity: 0.5,
+  opacity: 0.3,
   marginVertical: '$6',
 })
 
@@ -102,19 +93,30 @@ function LoginPrompt() {
   return (
     <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$6'>
       <YStack gap='$2'>
-        <SectionLabel>Sign In Required</SectionLabel>
+        <Text
+          fontFamily='$body'
+          fontSize={11}
+          fontWeight='500'
+          letterSpacing={3}
+          textTransform='uppercase'
+          color='$colorFocus'
+          opacity={0.5}
+          marginBottom='$2'
+        >
+          Sign In Required
+        </Text>
         <Text
           fontFamily='$heading'
-          fontSize={40}
+          fontSize={32}
           fontWeight='300'
-          letterSpacing={-1}
+          letterSpacing={-0.5}
           color='$color'
-          lineHeight={42}
+          lineHeight={38}
         >
           로그인이{'\n'}필요해요
         </Text>
       </YStack>
-      <Paragraph fontFamily='$body' color='$colorFocus' fontSize='$3'>
+      <Paragraph fontFamily='$body' color='$colorFocus' fontSize='$3' opacity={0.7}>
         오늘의 운세를 보려면 먼저 로그인해주세요.
       </Paragraph>
       <OraculeButton variant='primary' {...loginLink} customSize='lg'>
@@ -143,52 +145,66 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
   return (
     <ScrollView>
       <YStack
-        maxWidth={720}
+        maxWidth={640}
         width='100%'
         alignSelf='center'
-        paddingHorizontal={48}
-        paddingTop={56}
-        paddingBottom={96}
+        paddingHorizontal={24}
+        paddingTop={40}
+        paddingBottom={80}
         gap='$0'
-        $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
-        $sm={{ paddingHorizontal: '$6' }}
+        $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
       >
         {/* 헤더 */}
-        <YStack marginBottom='$8' gap='$2'>
-          <XStack alignItems='center' gap='$3' marginBottom='$2'>
-            <SectionLabel>Daily Fortune</SectionLabel>
+        <YStack marginBottom='$8' gap='$1'>
+          <XStack alignItems='center' gap='$3' marginBottom='$3'>
+            <Text
+              fontFamily='$body'
+              fontSize={11}
+              fontWeight='500'
+              letterSpacing={3}
+              textTransform='uppercase'
+              color='$colorFocus'
+              opacity={0.5}
+            >
+              Daily Fortune
+            </Text>
             <YStack flex={1} height={1} backgroundColor='$borderColor' opacity={0.3} />
-            <Text fontFamily='$body' fontSize={10} letterSpacing={2} color='$colorFocus' opacity={0.6}>
+            <Text
+              fontFamily='$body'
+              fontSize={11}
+              letterSpacing={1}
+              color='$colorFocus'
+              opacity={0.4}
+            >
               {date}
             </Text>
           </XStack>
           <Text
             fontFamily='$heading'
-            fontSize={48}
+            fontSize={34}
             fontWeight='300'
-            letterSpacing={-1}
+            letterSpacing={-0.5}
             color='$color'
-            lineHeight={50}
-            $xs={{ fontSize: 36, lineHeight: 38 }}
+            lineHeight={40}
           >
             {interp.title}
           </Text>
           {interp.summary ? (
             <Text
-              fontFamily='$heading'
-              fontSize={18}
-              fontStyle='italic'
-              color='#c9a96e'
-              letterSpacing={0.3}
+              fontFamily='$body'
+              fontSize={14}
+              color='$colorFocus'
+              opacity={0.7}
               marginTop='$1'
+              lineHeight={22}
             >
               {interp.summary}
             </Text>
           ) : null}
           {character.id !== 'default' && (
             <XStack alignItems='center' gap='$2' marginTop='$2'>
-              <Text fontSize={16}>{character.emoji}</Text>
-              <Text fontFamily='$body' fontSize='$2' color='$colorFocus'>
+              <Text fontSize={14}>{character.emoji}</Text>
+              <Text fontFamily='$body' fontSize={12} color='$colorFocus' opacity={0.6}>
                 {character.name}의 해석
               </Text>
             </XStack>
@@ -197,32 +213,54 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
 
         <Divider />
 
-        {/* 카드 */}
+        {/* 카드 + 해석 */}
         <XStack gap='$6' alignItems='flex-start' $xs={{ flexDirection: 'column', alignItems: 'center' }}>
           <YStack alignItems='center' gap='$3' flexShrink={0}>
             <TarotCard card={drawnCard} isRevealed size='lg' />
             <YStack alignItems='center' gap='$1'>
-              <Text fontFamily='$heading' fontSize={20} fontWeight='400' fontStyle='italic' color='$color'>
+              <Text
+                fontFamily='$heading'
+                fontSize={18}
+                fontWeight='400'
+                fontStyle='italic'
+                color='$color'
+              >
                 {drawnCard.name.ko}
               </Text>
-              <Text fontFamily='$body' fontSize={10} letterSpacing={3} textTransform='uppercase' color='$colorFocus' opacity={0.6}>
+              <Text
+                fontFamily='$body'
+                fontSize={10}
+                letterSpacing={2}
+                textTransform='uppercase'
+                color='$colorFocus'
+                opacity={0.5}
+              >
                 {drawnCard.direction}
               </Text>
             </YStack>
           </YStack>
 
-          {/* 해석 */}
-          <YStack
-            flex={1}
-            gap='$4'
-            paddingVertical='$5'
-            paddingHorizontal='$5'
-            borderWidth={1}
-            borderColor='rgba(201,169,110,0.3)'
-            backgroundColor='rgba(201,169,110,0.04)'
-          >
-            <SectionLabel>오늘의 메시지</SectionLabel>
-            <Paragraph fontFamily='$body' lineHeight='$7' fontSize='$4' color='$color'>
+          {/* 해석 텍스트 */}
+          <YStack flex={1} paddingTop='$2'>
+            <Text
+              fontFamily='$body'
+              fontSize={11}
+              fontWeight='500'
+              letterSpacing={2}
+              textTransform='uppercase'
+              color='$colorFocus'
+              opacity={0.5}
+              marginBottom='$3'
+            >
+              오늘의 메시지
+            </Text>
+            <Paragraph
+              fontFamily='$body'
+              lineHeight={26}
+              fontSize={14}
+              color='$colorFocus'
+              opacity={0.85}
+            >
               {interp.content}
             </Paragraph>
           </YStack>
@@ -232,10 +270,16 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
 
         {/* 안내 + 홈 버튼 */}
         <XStack justifyContent='space-between' alignItems='center'>
-          <Text fontFamily='$heading' fontSize={14} fontStyle='italic' color='$colorFocus' opacity={0.6}>
-            내일 새로운 카드가 당신을 기다립니다
+          <Text
+            fontFamily='$body'
+            fontSize={13}
+            color='$colorFocus'
+            opacity={0.4}
+            fontStyle='italic'
+          >
+            내일 새로운 카드가 기다립니다
           </Text>
-          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='$borderColor'>
+          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='rgba(240,235,224,0.15)'>
             홈으로
           </OraculeButton>
         </XStack>
@@ -265,7 +309,7 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       width={90}
       height={135}
       borderWidth={1}
-      borderColor='rgba(201,169,110,0.4)'
+      borderColor='rgba(201,169,110,0.3)'
       overflow='hidden'
       animation='bouncy'
       x={isShuffling ? offset.x : 0}
@@ -275,20 +319,16 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       zIndex={5 - index}
       backgroundColor='#161410'
     >
-      <YStack
-        flex={1}
-        alignItems='center'
-        justifyContent='center'
-      >
+      <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
           width={70}
           height={115}
           borderWidth={1}
-          borderColor='rgba(201,169,110,0.2)'
+          borderColor='rgba(201,169,110,0.15)'
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={20} opacity={0.4} color='#c9a96e'>✦</Text>
+          <Text fontSize={20} opacity={0.3} color='#c9a96e'>✦</Text>
         </YStack>
       </YStack>
     </YStack>
@@ -304,14 +344,14 @@ function PickCard({ index, onPick, disabled }: { index: number; onPick: () => vo
       width={80}
       height={120}
       borderWidth={1}
-      borderColor='rgba(201,169,110,0.4)'
+      borderColor='rgba(201,169,110,0.3)'
       overflow='hidden'
       animation='bouncy'
       x={xOffsets[index]}
       rotate={`${angles[index]}deg`}
       cursor={disabled ? 'default' : 'pointer'}
-      pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: 'rgba(201,169,110,0.8)' }}
-      hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: 'rgba(201,169,110,0.6)' }}
+      pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: 'rgba(201,169,110,0.7)' }}
+      hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: 'rgba(201,169,110,0.5)' }}
       onPress={disabled ? undefined : onPick}
       backgroundColor='#161410'
     >
@@ -320,11 +360,11 @@ function PickCard({ index, onPick, disabled }: { index: number; onPick: () => vo
           width={62}
           height={100}
           borderWidth={1}
-          borderColor='rgba(201,169,110,0.2)'
+          borderColor='rgba(201,169,110,0.15)'
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={16} opacity={0.4} color='#c9a96e'>✦</Text>
+          <Text fontSize={16} opacity={0.3} color='#c9a96e'>✦</Text>
         </YStack>
       </YStack>
     </YStack>
@@ -395,38 +435,41 @@ function DrawFortuneView() {
       {phase === 'idle' && (
         <ScrollView>
           <YStack
-            maxWidth={720}
+            maxWidth={640}
             width='100%'
             alignSelf='center'
-            paddingHorizontal={48}
-            paddingTop={56}
-            paddingBottom={96}
+            paddingHorizontal={24}
+            paddingTop={40}
+            paddingBottom={80}
             gap='$0'
-            $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
-            $sm={{ paddingHorizontal: '$6' }}
+            $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
           >
             {/* 헤더 */}
-            <YStack marginBottom='$8' gap='$2'>
-              <SectionLabel>Daily Fortune</SectionLabel>
+            <YStack marginBottom='$8'>
               <Text
-                fontFamily='$heading'
-                fontSize={56}
-                fontWeight='300'
-                letterSpacing={-1.5}
-                color='$color'
-                lineHeight={54}
-                $xs={{ fontSize: 40, lineHeight: 40 }}
+                fontFamily='$body'
+                fontSize={11}
+                fontWeight='500'
+                letterSpacing={3}
+                textTransform='uppercase'
+                color='$colorFocus'
+                opacity={0.5}
+                marginBottom='$3'
               >
-                오늘의 운세
+                Daily Fortune
               </Text>
               <Text
                 fontFamily='$heading'
-                fontSize={20}
-                fontStyle='italic'
-                color='#c9a96e'
-                letterSpacing={0.5}
-                marginTop='$1'
+                fontSize={34}
+                fontWeight='300'
+                letterSpacing={-0.5}
+                color='$color'
+                lineHeight={40}
+                marginBottom='$2'
               >
+                오늘의 운세
+              </Text>
+              <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.6} lineHeight={22}>
                 카드 한 장으로 오늘 하루를 점쳐보세요
               </Text>
             </YStack>
@@ -434,64 +477,86 @@ function DrawFortuneView() {
             <Divider />
 
             {/* 캐릭터 선택 */}
-            <YStack gap='$5' marginBottom='$0'>
-              <YStack>
-                <SectionLabel>Interpreter</SectionLabel>
-                <Text
-                  fontFamily='$heading'
-                  fontSize={32}
-                  fontWeight='400'
-                  color='$color'
-                  lineHeight={36}
-                  marginTop='$2'
-                >
-                  누가 해석해줄까요?
-                </Text>
-              </YStack>
-              <XStack flexWrap='wrap' gap='$3'>
+            <YStack marginBottom='$8'>
+              <Text
+                fontFamily='$body'
+                fontSize={11}
+                fontWeight='500'
+                letterSpacing={2}
+                textTransform='uppercase'
+                color='$colorFocus'
+                opacity={0.5}
+                marginBottom='$4'
+              >
+                해석자 선택
+              </Text>
+              <YStack gap='$2'>
                 {CHARACTERS.map((character) => {
                   const isSelected = selectedCharacter === character.id
                   return (
-                    <YStack
+                    <XStack
                       key={character.id}
-                      flex={1}
-                      minWidth='45%'
-                      backgroundColor={isSelected ? 'rgba(201,169,110,0.08)' : 'transparent'}
+                      alignItems='center'
+                      gap='$4'
+                      paddingVertical='$4'
+                      paddingHorizontal='$4'
                       borderWidth={1}
-                      borderColor={isSelected ? 'rgba(201,169,110,0.6)' : '$borderColor'}
-                      padding='$4'
+                      borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(240,235,224,0.08)'}
+                      backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
                       pressStyle={{ opacity: 0.7 }}
                       onPress={() => setSelectedCharacter(character.id)}
                       cursor='pointer'
-                      gap='$2'
-                      $xs={{ minWidth: '100%' }}
+                      // @ts-ignore
+                      style={{ transition: 'all 0.15s ease' }}
                     >
-                      <Text fontSize={24}>{character.emoji}</Text>
-                      <Text
-                        fontFamily='$body'
-                        fontSize='$3'
-                        fontWeight={isSelected ? '500' : '400'}
-                        color={isSelected ? '#c9a96e' : '$color'}
-                        letterSpacing={0.3}
+                      <YStack
+                        width={16}
+                        height={16}
+                        borderRadius={8}
+                        borderWidth={1}
+                        borderColor={isSelected ? '#c9a96e' : 'rgba(240,235,224,0.25)'}
+                        alignItems='center'
+                        justifyContent='center'
+                        flexShrink={0}
                       >
-                        {character.name}
+                        {isSelected && (
+                          <YStack width={8} height={8} borderRadius={4} backgroundColor='#c9a96e' />
+                        )}
+                      </YStack>
+                      <YStack flex={1}>
+                        <Text
+                          fontFamily='$body'
+                          fontSize={14}
+                          fontWeight={isSelected ? '500' : '400'}
+                          color={isSelected ? '$color' : '$colorFocus'}
+                          letterSpacing={0.2}
+                        >
+                          {character.name}
+                        </Text>
+                        <Text
+                          fontFamily='$body'
+                          fontSize={12}
+                          color='$colorFocus'
+                          opacity={0.6}
+                          marginTop={2}
+                        >
+                          {character.description}
+                        </Text>
+                      </YStack>
+                      <Text fontSize={20} opacity={isSelected ? 1 : 0.4}>
+                        {character.emoji}
                       </Text>
-                      <Text fontFamily='$body' fontSize='$2' color='$colorFocus' lineHeight='$4'>
-                        {character.description}
-                      </Text>
-                    </YStack>
+                    </XStack>
                   )
                 })}
-              </XStack>
+              </YStack>
             </YStack>
-
-            <Divider />
 
             <XStack justifyContent='flex-end'>
               <OraculeButton
                 variant='primary'
                 customSize='lg'
-                minWidth={220}
+                minWidth={200}
                 onPress={handleStart}
               >
                 오늘의 카드 뽑기
@@ -510,10 +575,20 @@ function DrawFortuneView() {
       {/* shuffling */}
       {phase === 'shuffling' && (
         <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
-          <YStack gap='$2' alignItems='center'>
-            <SectionLabel>Shuffling</SectionLabel>
-            <Text fontFamily='$heading' fontSize={40} fontWeight='300' color='$color' letterSpacing={-0.5}>
-              카드를 섞는 중...
+          <YStack gap='$1' alignItems='center'>
+            <Text
+              fontFamily='$body'
+              fontSize={11}
+              letterSpacing={3}
+              textTransform='uppercase'
+              color='$colorFocus'
+              opacity={0.5}
+              marginBottom='$2'
+            >
+              Shuffling
+            </Text>
+            <Text fontFamily='$heading' fontSize={32} fontWeight='300' color='$color' letterSpacing={-0.5}>
+              카드를 섞는 중
             </Text>
           </YStack>
           <YStack width={200} height={200} alignItems='center' justifyContent='center' position='relative'>
@@ -521,7 +596,7 @@ function DrawFortuneView() {
               <ShuffleCard key={i} index={i} phase={phase} />
             ))}
           </YStack>
-          <Text fontFamily='$heading' fontSize={16} fontStyle='italic' color='$colorFocus' opacity={0.6}>
+          <Text fontFamily='$body' fontSize={13} color='$colorFocus' opacity={0.4} fontStyle='italic'>
             마음을 가다듬고 카드를 고르세요
           </Text>
         </YStack>
@@ -530,13 +605,23 @@ function DrawFortuneView() {
       {/* picking */}
       {phase === 'picking' && (
         <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
-          <YStack gap='$2' alignItems='center'>
-            <SectionLabel>Choose</SectionLabel>
-            <Text fontFamily='$heading' fontSize={40} fontWeight='300' color='$color' letterSpacing={-0.5}>
+          <YStack gap='$1' alignItems='center'>
+            <Text
+              fontFamily='$body'
+              fontSize={11}
+              letterSpacing={3}
+              textTransform='uppercase'
+              color='$colorFocus'
+              opacity={0.5}
+              marginBottom='$2'
+            >
+              Choose
+            </Text>
+            <Text fontFamily='$heading' fontSize={32} fontWeight='300' color='$color' letterSpacing={-0.5}>
               카드를 골라주세요
             </Text>
           </YStack>
-          <Text fontFamily='$heading' fontSize={16} fontStyle='italic' color='$colorFocus' opacity={0.6}>
+          <Text fontFamily='$body' fontSize={13} color='$colorFocus' opacity={0.4} fontStyle='italic'>
             끌리는 카드 하나를 선택하세요
           </Text>
           <XStack justifyContent='center' alignItems='center' height={180} width='100%' position='relative'>
@@ -550,10 +635,20 @@ function DrawFortuneView() {
       {/* revealing */}
       {phase === 'revealing' && (
         <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
-          <YStack gap='$2' alignItems='center'>
-            <SectionLabel>Revealing</SectionLabel>
-            <Text fontFamily='$heading' fontSize={40} fontWeight='300' color='$color' letterSpacing={-0.5}>
-              카드를 확인하는 중...
+          <YStack gap='$1' alignItems='center'>
+            <Text
+              fontFamily='$body'
+              fontSize={11}
+              letterSpacing={3}
+              textTransform='uppercase'
+              color='$colorFocus'
+              opacity={0.5}
+              marginBottom='$2'
+            >
+              Revealing
+            </Text>
+            <Text fontFamily='$heading' fontSize={32} fontWeight='300' color='$color' letterSpacing={-0.5}>
+              카드를 확인하는 중
             </Text>
           </YStack>
           <YStack alignItems='center'>
@@ -564,12 +659,12 @@ function DrawFortuneView() {
                 width={160}
                 height={240}
                 borderWidth={1}
-                borderColor='rgba(201,169,110,0.4)'
+                borderColor='rgba(201,169,110,0.3)'
                 backgroundColor='#161410'
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize={28} opacity={0.3} color='#c9a96e'>✦</Text>
+                <Text fontSize={28} opacity={0.25} color='#c9a96e'>✦</Text>
               </YStack>
             )}
           </YStack>
@@ -617,28 +712,37 @@ function FortuneCalendar() {
 
   return (
     <YStack
-      maxWidth={720}
+      maxWidth={640}
       width='100%'
       alignSelf='center'
-      paddingHorizontal={48}
-      paddingTop={56}
-      paddingBottom={96}
+      paddingHorizontal={24}
+      paddingTop={40}
+      paddingBottom={80}
       gap='$0'
-      $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
-      $sm={{ paddingHorizontal: '$6' }}
+      $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
     >
       {/* 헤더 */}
-      <YStack marginBottom='$8' gap='$2'>
-        <SectionLabel>Archive</SectionLabel>
+      <YStack marginBottom='$8'>
+        <Text
+          fontFamily='$body'
+          fontSize={11}
+          fontWeight='500'
+          letterSpacing={3}
+          textTransform='uppercase'
+          color='$colorFocus'
+          opacity={0.5}
+          marginBottom='$3'
+        >
+          Archive
+        </Text>
         <XStack alignItems='center' justifyContent='space-between'>
           <Text
             fontFamily='$heading'
-            fontSize={48}
+            fontSize={34}
             fontWeight='300'
-            letterSpacing={-1}
+            letterSpacing={-0.5}
             color='$color'
-            lineHeight={50}
-            $xs={{ fontSize: 36 }}
+            lineHeight={40}
           >
             {year}년 {month}월
           </Text>
@@ -648,26 +752,26 @@ function FortuneCalendar() {
               cursor='pointer'
               pressStyle={{ opacity: 0.5 }}
               borderWidth={1}
-              borderColor='$borderColor'
+              borderColor='rgba(240,235,224,0.12)'
               onPress={handlePrevMonth}
             >
-              <ChevronLeft size={18} color='$colorFocus' />
+              <ChevronLeft size={16} color='$colorFocus' />
             </YStack>
             <YStack
               padding='$2'
               cursor='pointer'
               pressStyle={{ opacity: 0.5 }}
               borderWidth={1}
-              borderColor='$borderColor'
+              borderColor='rgba(240,235,224,0.12)'
               onPress={handleNextMonth}
             >
-              <ChevronRight size={18} color='$colorFocus' />
+              <ChevronRight size={16} color='$colorFocus' />
             </YStack>
           </XStack>
         </XStack>
       </YStack>
 
-      <YStack width='100%' height={1} backgroundColor='$borderColor' opacity={0.5} marginBottom='$4' />
+      <YStack width='100%' height={1} backgroundColor='$borderColor' opacity={0.3} marginBottom='$4' />
 
       {/* 요일 헤더 */}
       <XStack marginBottom='$2'>
@@ -679,7 +783,7 @@ function FortuneCalendar() {
               letterSpacing={2}
               textTransform='uppercase'
               color='$colorFocus'
-              opacity={0.5}
+              opacity={0.4}
             >
               {day}
             </Text>
@@ -707,17 +811,17 @@ function FortuneCalendar() {
                   height={44}
                   alignItems='center'
                   justifyContent='center'
-                  backgroundColor={isSelected ? 'rgba(201,169,110,0.1)' : 'transparent'}
+                  backgroundColor={isSelected ? 'rgba(201,169,110,0.08)' : 'transparent'}
                   borderWidth={isSelected ? 1 : 0}
-                  borderColor='rgba(201,169,110,0.5)'
+                  borderColor='rgba(201,169,110,0.4)'
                   cursor={hasFortune ? 'pointer' : 'default'}
-                  opacity={hasFortune ? 1 : 0.3}
+                  opacity={hasFortune ? 1 : 0.25}
                   pressStyle={hasFortune ? { opacity: 0.6 } : undefined}
                   onPress={() => { if (hasFortune) setSelectedDate(dateStr) }}
                 >
                   <Text
                     fontFamily='$body'
-                    fontSize='$3'
+                    fontSize={13}
                     fontWeight={hasFortune ? '500' : '300'}
                     color={isSelected ? '#c9a96e' : '$color'}
                   >
@@ -725,12 +829,12 @@ function FortuneCalendar() {
                   </Text>
                   {hasFortune && (
                     <YStack
-                      width={4}
-                      height={4}
+                      width={3}
+                      height={3}
                       borderRadius={2}
-                      backgroundColor={isSelected ? '#c9a96e' : 'rgba(201,169,110,0.6)'}
+                      backgroundColor={isSelected ? '#c9a96e' : 'rgba(201,169,110,0.5)'}
                       position='absolute'
-                      bottom={4}
+                      bottom={5}
                     />
                   )}
                 </YStack>
@@ -795,55 +899,40 @@ export function FortuneScreen() {
 
   return (
     <YStack flex={1} backgroundColor='$background'>
-      {/* 탭 바 — 에디토리얼 스타일 */}
+      {/* 탭 바 */}
       <XStack
         borderBottomWidth={1}
-        borderBottomColor='$borderColor'
-        paddingHorizontal={48}
-        $xs={{ paddingHorizontal: '$5' }}
-        $sm={{ paddingHorizontal: '$6' }}
+        borderBottomColor='rgba(240,235,224,0.08)'
+        paddingHorizontal={24}
+        $gtSm={{ paddingHorizontal: 48 }}
       >
-        <YStack
-          paddingVertical='$4'
-          paddingHorizontal='$2'
-          marginRight='$6'
-          borderBottomWidth={1}
-          borderBottomColor={activeTab === 'today' ? '#c9a96e' : 'transparent'}
-          cursor='pointer'
-          pressStyle={{ opacity: 0.6 }}
-          onPress={() => setActiveTab('today')}
-        >
-          <Text
-            fontFamily='$body'
-            fontSize={11}
-            fontWeight='500'
-            letterSpacing={3}
-            textTransform='uppercase'
-            color={activeTab === 'today' ? '#c9a96e' : '$colorFocus'}
+        {(['today', 'calendar'] as TabType[]).map((tab) => (
+          <YStack
+            key={tab}
+            paddingVertical='$3'
+            paddingHorizontal='$2'
+            marginRight='$5'
+            borderBottomWidth={2}
+            borderBottomColor={activeTab === tab ? '#c9a96e' : 'transparent'}
+            cursor='pointer'
+            pressStyle={{ opacity: 0.6 }}
+            onPress={() => setActiveTab(tab)}
+            // @ts-ignore
+            style={{ transition: 'border-color 0.15s ease' }}
           >
-            Today
-          </Text>
-        </YStack>
-        <YStack
-          paddingVertical='$4'
-          paddingHorizontal='$2'
-          borderBottomWidth={1}
-          borderBottomColor={activeTab === 'calendar' ? '#c9a96e' : 'transparent'}
-          cursor='pointer'
-          pressStyle={{ opacity: 0.6 }}
-          onPress={() => setActiveTab('calendar')}
-        >
-          <Text
-            fontFamily='$body'
-            fontSize={11}
-            fontWeight='500'
-            letterSpacing={3}
-            textTransform='uppercase'
-            color={activeTab === 'calendar' ? '#c9a96e' : '$colorFocus'}
-          >
-            History
-          </Text>
-        </YStack>
+            <Text
+              fontFamily='$body'
+              fontSize={11}
+              fontWeight='500'
+              letterSpacing={2}
+              textTransform='uppercase'
+              color={activeTab === tab ? '$color' : '$colorFocus'}
+              opacity={activeTab === tab ? 1 : 0.5}
+            >
+              {tab === 'today' ? 'Today' : 'History'}
+            </Text>
+          </YStack>
+        ))}
       </XStack>
 
       {/* 탭 콘텐츠 */}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Paragraph, ScrollView, Separator, XStack, YStack, Text, styled } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text } from 'tamagui'
 import { OraculeButton, OraculeTextArea, SpreadSelector } from '@t4/ui'
 import type { SpreadType } from 'app/types/spread'
 import { CHARACTERS, type CharacterId } from 'app/types/character'
@@ -10,34 +10,6 @@ const EXAMPLE_QUESTIONS = [
   '이 관계에서 내가 놓치고 있는 것은?',
   '앞으로 한 달간 집중해야 할 것은?',
 ]
-
-const SectionLabel = styled(Text, {
-  fontFamily: '$body',
-  fontSize: 10,
-  fontWeight: '500',
-  letterSpacing: 4,
-  textTransform: 'uppercase',
-  color: '#c9a96e',
-  marginBottom: '$3',
-})
-
-const SectionTitle = styled(Text, {
-  fontFamily: '$heading',
-  fontSize: 32,
-  fontWeight: '400',
-  letterSpacing: -0.5,
-  color: '$color',
-  lineHeight: 36,
-  marginBottom: '$2',
-})
-
-const Divider = styled(YStack, {
-  width: '100%',
-  height: 1,
-  backgroundColor: '$borderColor',
-  opacity: 0.5,
-  marginVertical: '$6',
-})
 
 export function QueryScreen() {
   const [selectedSpread, setSelectedSpread] = useState<SpreadType>('SINGLE')
@@ -54,138 +26,154 @@ export function QueryScreen() {
   return (
     <ScrollView backgroundColor='$background'>
       <YStack
-        maxWidth={720}
+        maxWidth={640}
         width='100%'
         alignSelf='center'
-        paddingHorizontal={48}
-        paddingTop={56}
-        paddingBottom={96}
+        paddingHorizontal={24}
+        paddingTop={40}
+        paddingBottom={80}
         gap='$0'
-        $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
-        $sm={{ paddingHorizontal: '$6' }}
+        $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
       >
         {/* 페이지 헤더 */}
         <YStack marginBottom='$8'>
-          <SectionLabel>New Reading</SectionLabel>
+          <Text
+            fontFamily='$body'
+            fontSize={11}
+            fontWeight='500'
+            letterSpacing={3}
+            textTransform='uppercase'
+            color='$colorFocus'
+            opacity={0.5}
+            marginBottom='$3'
+          >
+            New Reading
+          </Text>
           <Text
             fontFamily='$heading'
-            fontSize={56}
+            fontSize={34}
             fontWeight='300'
-            letterSpacing={-1.5}
+            letterSpacing={-0.5}
             color='$color'
-            lineHeight={54}
-            $xs={{ fontSize: 40, lineHeight: 40 }}
+            lineHeight={40}
           >
             타로 리딩
           </Text>
-          <Text
-            fontFamily='$heading'
-            fontSize={56}
-            fontWeight='300'
-            fontStyle='italic'
-            letterSpacing={-1.5}
-            color='#c9a96e'
-            lineHeight={54}
-            $xs={{ fontSize: 40, lineHeight: 40 }}
-          >
-            시작하기
-          </Text>
         </YStack>
 
-        <Divider />
-
         {/* 캐릭터 선택 */}
-        <YStack gap='$5'>
-          <YStack>
-            <SectionLabel>01 — Interpreter</SectionLabel>
-            <SectionTitle>누가 해석해줄까요?</SectionTitle>
-            <Paragraph fontFamily='$body' fontSize='$3' color='$colorFocus' lineHeight='$5'>
-              캐릭터마다 해석 스타일이 달라요
-            </Paragraph>
-          </YStack>
-
-          <XStack flexWrap='wrap' gap='$3'>
+        <YStack marginBottom='$8'>
+          <Text
+            fontFamily='$body'
+            fontSize={11}
+            fontWeight='500'
+            letterSpacing={2}
+            textTransform='uppercase'
+            color='$colorFocus'
+            opacity={0.5}
+            marginBottom='$4'
+          >
+            해석자 선택
+          </Text>
+          <YStack gap='$2'>
             {CHARACTERS.map((character) => {
               const isSelected = selectedCharacter === character.id
               return (
-                <YStack
+                <XStack
                   key={character.id}
-                  flex={1}
-                  minWidth='45%'
-                  backgroundColor={isSelected ? 'rgba(201,169,110,0.08)' : 'transparent'}
+                  alignItems='center'
+                  gap='$4'
+                  paddingVertical='$4'
+                  paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(201,169,110,0.6)' : '$borderColor'}
-                  padding='$4'
+                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(240,235,224,0.08)'}
+                  backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
                   pressStyle={{ opacity: 0.7 }}
                   onPress={() => setSelectedCharacter(character.id)}
                   cursor='pointer'
-                  gap='$2'
-                  $xs={{ minWidth: '100%' }}
+                  // @ts-ignore
+                  style={{ transition: 'all 0.15s ease' }}
                 >
-                  <Text fontSize={24}>{character.emoji}</Text>
-                  <Text
-                    fontFamily='$body'
-                    fontSize='$3'
-                    fontWeight={isSelected ? '500' : '400'}
-                    color={isSelected ? '#c9a96e' : '$color'}
-                    letterSpacing={0.3}
+                  {/* 라디오 인디케이터 */}
+                  <YStack
+                    width={16}
+                    height={16}
+                    borderRadius={8}
+                    borderWidth={1}
+                    borderColor={isSelected ? '#c9a96e' : 'rgba(240,235,224,0.25)'}
+                    alignItems='center'
+                    justifyContent='center'
+                    flexShrink={0}
                   >
-                    {character.name}
+                    {isSelected && (
+                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#c9a96e' />
+                    )}
+                  </YStack>
+
+                  <YStack flex={1}>
+                    <Text
+                      fontFamily='$body'
+                      fontSize={14}
+                      fontWeight={isSelected ? '500' : '400'}
+                      color={isSelected ? '$color' : '$colorFocus'}
+                      letterSpacing={0.2}
+                    >
+                      {character.name}
+                    </Text>
+                    <Text
+                      fontFamily='$body'
+                      fontSize={12}
+                      color='$colorFocus'
+                      opacity={0.6}
+                      marginTop={2}
+                    >
+                      {character.description}
+                    </Text>
+                  </YStack>
+
+                  <Text fontSize={20} opacity={isSelected ? 1 : 0.4}>
+                    {character.emoji}
                   </Text>
-                  <Text
-                    fontFamily='$body'
-                    fontSize='$2'
-                    color='$colorFocus'
-                    lineHeight='$4'
-                  >
-                    {character.description}
-                  </Text>
-                </YStack>
+                </XStack>
               )
             })}
-          </XStack>
+          </YStack>
         </YStack>
 
-        <Divider />
-
         {/* 스프레드 선택 */}
-        <YStack gap='$5'>
-          <YStack>
-            <SectionLabel>02 — Spread</SectionLabel>
-            <SectionTitle>어떤 스프레드로 볼까요?</SectionTitle>
-            <Paragraph fontFamily='$body' fontSize='$3' color='$colorFocus' lineHeight='$5'>
-              질문의 성격에 맞는 스프레드를 선택하세요
-            </Paragraph>
-          </YStack>
-
+        <YStack marginBottom='$8'>
+          <Text
+            fontFamily='$body'
+            fontSize={11}
+            fontWeight='500'
+            letterSpacing={2}
+            textTransform='uppercase'
+            color='$colorFocus'
+            opacity={0.5}
+            marginBottom='$4'
+          >
+            스프레드 선택
+          </Text>
           <SpreadSelector selectedSpread={selectedSpread} onSelect={setSelectedSpread} />
         </YStack>
 
-        <Divider />
-
         {/* 질문 입력 */}
-        <YStack gap='$5'>
-          <YStack>
-            <SectionLabel>03 — Question</SectionLabel>
-            <SectionTitle>질문을 입력해주세요</SectionTitle>
-            <Paragraph fontFamily='$body' fontSize='$3' color='$colorFocus' lineHeight='$5'>
-              카드에게 솔직하게 물어보세요
-            </Paragraph>
-          </YStack>
+        <YStack marginBottom='$8'>
+          <Text
+            fontFamily='$body'
+            fontSize={11}
+            fontWeight='500'
+            letterSpacing={2}
+            textTransform='uppercase'
+            color='$colorFocus'
+            opacity={0.5}
+            marginBottom='$4'
+          >
+            질문 입력
+          </Text>
 
           {/* 예시 질문 */}
-          <YStack gap='$2'>
-            <Text
-              fontFamily='$body'
-              fontSize={10}
-              fontWeight='500'
-              letterSpacing={3}
-              textTransform='uppercase'
-              color='$colorFocus'
-              marginBottom='$1'
-            >
-              예시 질문
-            </Text>
+          <YStack gap='$2' marginBottom='$4'>
             {EXAMPLE_QUESTIONS.map((q) => {
               const isSelected = question === q
               return (
@@ -196,25 +184,35 @@ export function QueryScreen() {
                   paddingVertical='$3'
                   paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(201,169,110,0.5)' : '$borderColor'}
-                  backgroundColor={isSelected ? 'rgba(201,169,110,0.06)' : 'transparent'}
+                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(240,235,224,0.08)'}
+                  backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
                   pressStyle={{ opacity: 0.6 }}
                   onPress={() => setQuestion(q)}
                   cursor='pointer'
+                  // @ts-ignore
+                  style={{ transition: 'all 0.15s ease' }}
                 >
                   <YStack
-                    width={5}
-                    height={5}
-                    borderRadius={3}
-                    backgroundColor={isSelected ? '#c9a96e' : '$borderColor'}
+                    width={16}
+                    height={16}
+                    borderRadius={8}
+                    borderWidth={1}
+                    borderColor={isSelected ? '#c9a96e' : 'rgba(240,235,224,0.25)'}
+                    alignItems='center'
+                    justifyContent='center'
                     flexShrink={0}
-                  />
+                  >
+                    {isSelected && (
+                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#c9a96e' />
+                    )}
+                  </YStack>
                   <Text
                     flex={1}
                     fontFamily='$body'
-                    fontSize='$3'
-                    color={isSelected ? '#c9a96e' : '$colorFocus'}
-                    fontWeight={isSelected ? '500' : '400'}
+                    fontSize={13}
+                    color={isSelected ? '$color' : '$colorFocus'}
+                    opacity={isSelected ? 1 : 0.7}
+                    lineHeight={20}
                   >
                     {q}
                   </Text>
@@ -238,8 +236,6 @@ export function QueryScreen() {
           />
         </YStack>
 
-        <Divider />
-
         {/* CTA */}
         <XStack justifyContent='flex-end'>
           <OraculeButton
@@ -248,7 +244,7 @@ export function QueryScreen() {
             onPress={handleDraw}
             disabled={question.trim() === ''}
             opacity={question.trim() === '' ? 0.35 : 1}
-            minWidth={200}
+            minWidth={160}
           >
             카드 뽑기
           </OraculeButton>

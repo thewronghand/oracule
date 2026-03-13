@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Paragraph, ScrollView, Separator, XStack, YStack, Text, styled } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
 import { LoadingSpinner, OraculeButton, SpreadLayout } from '@t4/ui'
 import { createParam } from 'solito'
 import { useLink } from 'solito/link'
@@ -15,20 +15,11 @@ import { getCharacterById } from 'app/types/character'
 
 const { useParam } = createParam<{ id: string }>()
 
-const SectionLabel = styled(Text, {
-  fontFamily: '$body',
-  fontSize: 10,
-  fontWeight: '500',
-  letterSpacing: 4,
-  textTransform: 'uppercase',
-  color: '#c9a96e',
-})
-
 const Divider = styled(YStack, {
   width: '100%',
   height: 1,
   backgroundColor: '$borderColor',
-  opacity: 0.5,
+  opacity: 0.3,
   marginVertical: '$6',
 })
 
@@ -36,36 +27,34 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
   const hasCardReadings = interp.cardReadings.length > 0
 
   return (
-    <YStack gap='$6'>
+    <YStack gap='$5'>
       {/* 카드별 해석 */}
       {hasCardReadings && (
-        <YStack gap='$4'>
+        <YStack gap='$0'>
           {interp.cardReadings.map((card, i) => (
             <YStack
               key={i}
               gap='$3'
               paddingVertical='$5'
-              paddingHorizontal='$5'
-              borderWidth={1}
-              borderColor='$borderColor'
-              borderLeftWidth={2}
-              borderLeftColor='#c9a96e'
+              borderBottomWidth={1}
+              borderBottomColor='rgba(240,235,224,0.08)'
             >
               <XStack alignItems='center' gap='$3'>
                 <Text
                   fontFamily='$body'
                   fontSize={10}
                   fontWeight='500'
-                  letterSpacing={3}
+                  letterSpacing={2}
                   textTransform='uppercase'
-                  color='#c9a96e'
+                  color='$colorFocus'
+                  opacity={0.5}
                 >
                   {card.position}
                 </Text>
-                <YStack width={20} height={1} backgroundColor='$borderColor' opacity={0.5} />
+                <YStack width={1} height={12} backgroundColor='rgba(240,235,224,0.2)' />
                 <Text
                   fontFamily='$heading'
-                  fontSize={18}
+                  fontSize={16}
                   fontWeight='400'
                   fontStyle='italic'
                   color='$color'
@@ -73,7 +62,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
                   {card.cardName}
                 </Text>
               </XStack>
-              <Paragraph fontFamily='$body' lineHeight='$6' fontSize='$3' color='$colorFocus'>
+              <Paragraph fontFamily='$body' lineHeight={24} fontSize={14} color='$colorFocus' opacity={0.8}>
                 {card.interpretation}
               </Paragraph>
             </YStack>
@@ -84,16 +73,19 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
       {hasCardReadings && <Divider />}
 
       {/* 종합 해석 */}
-      <YStack
-        gap='$4'
-        paddingVertical='$6'
-        paddingHorizontal='$5'
-        borderWidth={1}
-        borderColor='rgba(201,169,110,0.3)'
-        backgroundColor='rgba(201,169,110,0.04)'
-      >
-        <SectionLabel>{hasCardReadings ? '종합 해석' : '해석'}</SectionLabel>
-        <Paragraph fontFamily='$body' lineHeight='$7' fontSize='$4' color='$color'>
+      <YStack gap='$3'>
+        <Text
+          fontFamily='$body'
+          fontSize={11}
+          fontWeight='500'
+          letterSpacing={2}
+          textTransform='uppercase'
+          color='$colorFocus'
+          opacity={0.5}
+        >
+          {hasCardReadings ? '종합 해석' : '해석'}
+        </Text>
+        <Paragraph fontFamily='$body' lineHeight={26} fontSize={14} color='$colorFocus' opacity={0.85}>
           {interp.content}
         </Paragraph>
       </YStack>
@@ -136,7 +128,7 @@ export function ResultScreen(): React.ReactNode {
   const content = match(readingQuery)
     .with(error, () => (
       <YStack flex={1} alignItems='center' justifyContent='center' padding='$6' gap='$4'>
-        <Paragraph fontFamily='$body' color='$red10' textAlign='center' fontSize='$4'>
+        <Paragraph fontFamily='$body' color='$red10' textAlign='center' fontSize={14}>
           리딩 결과를 불러오지 못했습니다.
         </Paragraph>
       </YStack>
@@ -157,46 +149,55 @@ export function ResultScreen(): React.ReactNode {
       return (
         <ScrollView flex={1}>
           <YStack
-            maxWidth={720}
+            maxWidth={640}
             width='100%'
             alignSelf='center'
-            paddingHorizontal={48}
-            paddingTop={56}
-            paddingBottom={96}
+            paddingHorizontal={24}
+            paddingTop={40}
+            paddingBottom={80}
             gap='$0'
-            $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
-            $sm={{ paddingHorizontal: '$6' }}
+            $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
           >
             {/* 페이지 헤더 */}
             <YStack marginBottom='$8' gap='$2'>
-              <SectionLabel>Reading Result</SectionLabel>
+              <Text
+                fontFamily='$body'
+                fontSize={11}
+                fontWeight='500'
+                letterSpacing={3}
+                textTransform='uppercase'
+                color='$colorFocus'
+                opacity={0.5}
+                marginBottom='$2'
+              >
+                Reading Result
+              </Text>
               <Text
                 fontFamily='$heading'
-                fontSize={48}
+                fontSize={34}
                 fontWeight='300'
-                letterSpacing={-1}
+                letterSpacing={-0.5}
                 color='$color'
-                lineHeight={50}
-                $xs={{ fontSize: 36, lineHeight: 38 }}
+                lineHeight={40}
               >
                 {interp.title}
               </Text>
               {interp.summary && (
                 <Text
-                  fontFamily='$heading'
-                  fontSize={18}
-                  fontStyle='italic'
-                  color='#c9a96e'
-                  letterSpacing={0.3}
+                  fontFamily='$body'
+                  fontSize={14}
+                  color='$colorFocus'
+                  opacity={0.65}
                   marginTop='$1'
+                  lineHeight={22}
                 >
                   {interp.summary}
                 </Text>
               )}
               {character.id !== 'default' && (
                 <XStack alignItems='center' gap='$2' marginTop='$2'>
-                  <Text fontSize={16}>{character.emoji}</Text>
-                  <Text fontFamily='$body' fontSize='$2' color='$colorFocus' letterSpacing={0.3}>
+                  <Text fontSize={14}>{character.emoji}</Text>
+                  <Text fontFamily='$body' fontSize={12} color='$colorFocus' opacity={0.5}>
                     {character.name}의 해석
                   </Text>
                 </XStack>
@@ -205,31 +206,25 @@ export function ResultScreen(): React.ReactNode {
 
             <Divider />
 
-            {/* 질문 박스 */}
-            <YStack
-              paddingVertical='$5'
-              paddingHorizontal='$6'
-              borderWidth={1}
-              borderColor='rgba(201,169,110,0.4)'
-              marginBottom='$0'
-            >
+            {/* 질문 */}
+            <YStack marginBottom='$0' gap='$2'>
               <Text
                 fontFamily='$body'
-                fontSize={10}
+                fontSize={11}
                 fontWeight='500'
-                letterSpacing={4}
+                letterSpacing={2}
                 textTransform='uppercase'
-                color='#c9a96e'
-                marginBottom='$3'
+                color='$colorFocus'
+                opacity={0.5}
               >
                 질문
               </Text>
               <Text
                 fontFamily='$heading'
-                fontSize={22}
+                fontSize={20}
                 fontWeight='400'
                 color='$color'
-                lineHeight={30}
+                lineHeight={28}
                 fontStyle='italic'
               >
                 {reading.question}
@@ -260,11 +255,11 @@ export function ResultScreen(): React.ReactNode {
                     variant='secondary'
                     customSize='md'
                     onPress={handleShare}
-                    borderColor='$borderColor'
+                    borderColor='rgba(240,235,224,0.15)'
                   >
                     <XStack alignItems='center' gap='$2'>
-                      <Share2 size={13} color='$colorFocus' />
-                      <Text fontFamily='$body' fontSize='$2' color='$colorFocus' letterSpacing={1.5} textTransform='uppercase'>
+                      <Share2 size={12} color='$colorFocus' />
+                      <Text fontFamily='$body' fontSize={12} color='$colorFocus' letterSpacing={1}>
                         {copied ? '복사됨 ✓' : '링크 복사'}
                       </Text>
                     </XStack>
@@ -273,11 +268,11 @@ export function ResultScreen(): React.ReactNode {
                     variant='secondary'
                     customSize='md'
                     onPress={handleKakaoShare}
-                    borderColor='rgba(201,169,110,0.4)'
+                    borderColor='rgba(201,169,110,0.3)'
                   >
                     <XStack alignItems='center' gap='$2'>
-                      <MessageCircle size={13} color='#c9a96e' />
-                      <Text fontFamily='$body' fontSize='$2' color='#c9a96e' letterSpacing={1.5} textTransform='uppercase'>
+                      <MessageCircle size={12} color='#c9a96e' />
+                      <Text fontFamily='$body' fontSize={12} color='#c9a96e' letterSpacing={1}>
                         카카오 공유
                       </Text>
                     </XStack>
@@ -286,8 +281,8 @@ export function ResultScreen(): React.ReactNode {
               )}
               <OraculeButton variant='primary' customSize='md' {...queryLink}>
                 <XStack alignItems='center' gap='$2'>
-                  <RefreshCw size={13} color='$background' />
-                  <Text fontFamily='$body' fontSize='$2' color='$background' letterSpacing={1.5} textTransform='uppercase'>
+                  <RefreshCw size={12} color='$background' />
+                  <Text fontFamily='$body' fontSize={12} color='$background' letterSpacing={1}>
                     새 리딩
                   </Text>
                 </XStack>
