@@ -1,14 +1,32 @@
 import type { Provider } from '@supabase/supabase-js'
 import { useState } from 'react'
-import { H2, Paragraph, XStack, YStack, Text, styled, Spinner } from 'tamagui'
+import { Paragraph, XStack, YStack, Text, styled, Spinner } from 'tamagui'
 import { OraculeButton } from '@t4/ui/src/Button'
 import { useSupabase } from 'app/utils/supabase/hooks/useSupabase'
 import { useRouter } from 'solito/router'
 import { SolitoImage } from 'solito/image'
 
+const Label = styled(Text, {
+  fontFamily: '$body',
+  fontSize: 10,
+  fontWeight: '500',
+  letterSpacing: 4,
+  textTransform: 'uppercase',
+  color: '#c9a96e',
+})
+
+const HeroTitle = styled(Text, {
+  fontFamily: '$heading',
+  fontSize: 80,
+  fontWeight: '300',
+  letterSpacing: -2,
+  color: '#f0ebe0',
+  lineHeight: 76,
+  $xs: { fontSize: 52, lineHeight: 50 },
+})
+
 const BrandButton = styled(YStack, {
-  borderRadius: '$4',
-  paddingVertical: '$3',
+  paddingVertical: '$4',
   paddingHorizontal: '$5',
   alignItems: 'center',
   justifyContent: 'center',
@@ -20,9 +38,9 @@ const BrandButton = styled(YStack, {
         backgroundColor: '#FEE500',
       },
       google: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#f0ebe0',
         borderWidth: 1,
-        borderColor: '$gray6',
+        borderColor: '#e0dbd0',
       },
     },
   } as const,
@@ -49,93 +67,174 @@ export function LoginScreen() {
   }
 
   return (
-    <YStack
-      flex={1}
-      justifyContent='center'
-      alignItems='center'
-      padding='$6'
-      backgroundColor='$background'
-      gap='$6'
-    >
-      {/* 헤더 */}
-      <YStack alignItems='center' gap='$3'>
-        <Text fontSize='$2' color='$purple8' letterSpacing={3} fontWeight='500' opacity={0.8}>
-          WELCOME
-        </Text>
+    <XStack flex={1} backgroundColor='$background'>
+      {/* 좌측 — 이미지 패널 (데스크탑) */}
+      <YStack
+        flex={1}
+        position='relative'
+        display='none'
+        $gtSm={{ display: 'flex' }}
+      >
+        {/* Unsplash 배경 */}
+        <YStack
+          position='absolute'
+          top={0} left={0} right={0} bottom={0}
+          // @ts-ignore
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=1200&q=80&auto=format&fit=crop)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        {/* 오버레이 */}
+        <YStack
+          position='absolute'
+          top={0} left={0} right={0} bottom={0}
+          // @ts-ignore
+          style={{
+            background: 'linear-gradient(135deg, rgba(14,13,11,0.7) 0%, rgba(14,13,11,0.3) 100%)',
+          }}
+        />
 
-        <H2 textAlign='center' fontSize='$9' fontWeight='700' letterSpacing={2} color='$purple10'>
-          Oracule
-        </H2>
-
-        <Paragraph textAlign='center' size='$4' color='$purple7' opacity={0.85}>
-          로그인하고 나만의 타로 기록을 시작하세요
-        </Paragraph>
+        {/* 좌측 에디토리얼 텍스트 */}
+        <YStack
+          position='absolute'
+          bottom={56}
+          left={48}
+          right={48}
+          gap='$3'
+        >
+          <XStack alignItems='center' gap='$3'>
+            <YStack width={24} height={1} backgroundColor='#c9a96e' opacity={0.8} />
+            <Label>Tarot · Oracle</Label>
+          </XStack>
+          <HeroTitle>Ora&shy;cule</HeroTitle>
+          <Text
+            fontFamily='$heading'
+            fontSize={16}
+            fontStyle='italic'
+            color='rgba(240,235,224,0.65)'
+            letterSpacing={0.5}
+          >
+            당신의 이야기를 타로에게
+          </Text>
+        </YStack>
       </YStack>
 
-      {/* 구분선 */}
-      <YStack width={260} height={1} backgroundColor='$purple6' opacity={0.2} />
+      {/* 우측 — 로그인 폼 */}
+      <YStack
+        width='100%'
+        $gtSm={{ width: 420 }}
+        justifyContent='center'
+        paddingHorizontal={48}
+        paddingVertical={64}
+        gap='$0'
+        borderLeftWidth={1}
+        borderLeftColor='$borderColor'
+        $xs={{ paddingHorizontal: '$6' }}
+      >
+        {/* 모바일용 타이틀 */}
+        <YStack marginBottom='$8' $gtSm={{ display: 'none' }}>
+          <Label marginBottom='$3'>Tarot · Oracle</Label>
+          <Text
+            fontFamily='$heading'
+            fontSize={56}
+            fontWeight='300'
+            letterSpacing={-1}
+            color='$color'
+            lineHeight={52}
+          >
+            Oracule
+          </Text>
+        </YStack>
 
-      {/* 소셜 로그인 버튼 */}
-      <YStack gap='$3' width='100%' maxWidth={320}>
-        {/* 카카오 로그인 */}
-        <BrandButton
-          provider='kakao'
-          onPress={() => handleOAuthSignIn('kakao')}
-          opacity={loading && loading !== 'kakao' ? 0.5 : 1}
-          disabled={!!loading}
-        >
-          <XStack alignItems='center' gap='$2'>
-            {loading === 'kakao' ? (
-              <Spinner size='small' color='#191919' />
-            ) : (
-              <SolitoImage
-                src='/auth/kakao-logo.svg'
-                width={20}
-                height={20}
-                alt='Kakao'
-                style={{ width: 20, height: 20 }}
-              />
-            )}
-            <Text fontSize='$4' fontWeight='600' color='#191919'>
-              카카오로 시작하기
-            </Text>
-          </XStack>
-        </BrandButton>
+        {/* 섹션 헤더 */}
+        <YStack marginBottom='$8'>
+          <Label marginBottom='$4'>Welcome</Label>
+          <Text
+            fontFamily='$heading'
+            fontSize={36}
+            fontWeight='400'
+            color='$color'
+            lineHeight={38}
+            letterSpacing={-0.5}
+          >
+            로그인하고{'\n'}기록을 시작하세요
+          </Text>
+        </YStack>
 
-        {/* Google 로그인 */}
-        <BrandButton
-          provider='google'
-          onPress={() => handleOAuthSignIn('google')}
-          opacity={loading && loading !== 'google' ? 0.5 : 1}
-          disabled={!!loading}
-        >
-          <XStack alignItems='center' gap='$2'>
-            {loading === 'google' ? (
-              <Spinner size='small' color='#444' />
-            ) : (
-              <SolitoImage
-                src='/auth/google-logo.svg'
-                width={20}
-                height={20}
-                alt='Google'
-                style={{ width: 20, height: 20 }}
-              />
-            )}
-            <Text fontSize='$4' fontWeight='600' color='#333333'>
-              Google로 시작하기
-            </Text>
-          </XStack>
-        </BrandButton>
-      </YStack>
+        {/* 가로 구분선 */}
+        <YStack width='100%' height={1} backgroundColor='$borderColor' marginBottom='$8' />
 
-      {/* 비로그인 안내 */}
-      <YStack alignItems='center' gap='$2' marginTop='$2'>
-        <OraculeButton variant='ghost' onPress={() => replace('/')}>
-          <Text color='$purple7' fontSize='$3'>
+        {/* 소셜 로그인 버튼들 */}
+        <YStack gap='$3' width='100%'>
+          <BrandButton
+            provider='kakao'
+            onPress={() => handleOAuthSignIn('kakao')}
+            opacity={loading && loading !== 'kakao' ? 0.4 : 1}
+            disabled={!!loading}
+          >
+            <XStack alignItems='center' gap='$3'>
+              {loading === 'kakao' ? (
+                <Spinner size='small' color='#191919' />
+              ) : (
+                <SolitoImage
+                  src='/auth/kakao-logo.svg'
+                  width={18}
+                  height={18}
+                  alt='Kakao'
+                  style={{ width: 18, height: 18 }}
+                />
+              )}
+              <Text fontFamily='$body' fontSize='$3' fontWeight='500' color='#191919' letterSpacing={1.5} textTransform='uppercase'>
+                카카오로 시작하기
+              </Text>
+            </XStack>
+          </BrandButton>
+
+          <BrandButton
+            provider='google'
+            onPress={() => handleOAuthSignIn('google')}
+            opacity={loading && loading !== 'google' ? 0.4 : 1}
+            disabled={!!loading}
+          >
+            <XStack alignItems='center' gap='$3'>
+              {loading === 'google' ? (
+                <Spinner size='small' color='#444' />
+              ) : (
+                <SolitoImage
+                  src='/auth/google-logo.svg'
+                  width={18}
+                  height={18}
+                  alt='Google'
+                  style={{ width: 18, height: 18 }}
+                />
+              )}
+              <Text fontFamily='$body' fontSize='$3' fontWeight='500' color='#333333' letterSpacing={1.5} textTransform='uppercase'>
+                Google로 시작하기
+              </Text>
+            </XStack>
+          </BrandButton>
+        </YStack>
+
+        {/* 비로그인 */}
+        <YStack marginTop='$6' alignItems='center'>
+          <Text
+            fontFamily='$body'
+            fontSize='$2'
+            color='$colorFocus'
+            letterSpacing={0.5}
+            cursor='pointer'
+            pressStyle={{ opacity: 0.6 }}
+            onPress={() => replace('/')}
+            opacity={0.65}
+            // @ts-ignore
+            style={{ textDecoration: 'underline', textUnderlineOffset: 3 }}
+          >
             로그인 없이 둘러보기
           </Text>
-        </OraculeButton>
+        </YStack>
       </YStack>
-    </YStack>
+    </XStack>
   )
 }
