@@ -17,7 +17,7 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
             key={option.value}
             borderTopWidth={index === 0 ? 1 : 0}
             borderBottomWidth={1}
-            borderColor='rgba(240,235,224,0.08)'
+            borderColor='rgba(232,232,232,0.08)'
             paddingVertical='$4'
             paddingHorizontal='$3'
             gap='$4'
@@ -38,7 +38,7 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
                 height={16}
                 borderRadius={8}
                 borderWidth={1}
-                borderColor={isSelected ? '#c9a96e' : 'rgba(240,235,224,0.25)'}
+                borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
                 alignItems='center'
                 justifyContent='center'
                 // @ts-ignore

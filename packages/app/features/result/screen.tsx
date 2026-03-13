@@ -37,7 +37,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
               gap='$3'
               paddingVertical='$5'
               borderBottomWidth={1}
-              borderBottomColor='rgba(240,235,224,0.08)'
+              borderBottomColor='rgba(232,232,232,0.08)'
             >
               <XStack alignItems='center' gap='$3'>
                 <Text
@@ -51,7 +51,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
                 >
                   {card.position}
                 </Text>
-                <YStack width={1} height={12} backgroundColor='rgba(240,235,224,0.2)' />
+                <YStack width={1} height={12} backgroundColor='rgba(232,232,232,0.2)' />
                 <Text
                   fontFamily='$heading'
                   fontSize={16}
@@ -255,7 +255,7 @@ export function ResultScreen(): React.ReactNode {
                     variant='secondary'
                     customSize='md'
                     onPress={handleShare}
-                    borderColor='rgba(240,235,224,0.15)'
+                    borderColor='rgba(232,232,232,0.15)'
                   >
                     <XStack alignItems='center' gap='$2'>
                       <Share2 size={12} color='$colorFocus' />

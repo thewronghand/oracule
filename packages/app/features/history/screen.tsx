@@ -50,7 +50,7 @@ function ReadingItem({
   return (
     <XStack
       borderBottomWidth={1}
-      borderBottomColor='rgba(240,235,224,0.08)'
+      borderBottomColor='rgba(232,232,232,0.08)'
       paddingVertical='$5'
       gap='$4'
       cursor='pointer'
@@ -69,7 +69,7 @@ function ReadingItem({
       </YStack>
 
       {/* 세로 구분선 */}
-      <YStack width={1} backgroundColor='rgba(240,235,224,0.08)' />
+      <YStack width={1} backgroundColor='rgba(232,232,232,0.08)' />
 
       {/* 콘텐츠 */}
       <YStack flex={1} gap='$2'>
@@ -205,7 +205,7 @@ function EmptyState() {
       <Paragraph fontFamily='$body' color='$colorFocus' fontSize={13} textAlign='center' opacity={0.5}>
         타로 리딩을 받으면 이곳에 기록이 쌓여요.
       </Paragraph>
-      <OraculeButton variant='secondary' {...homeLink} customSize='md' borderColor='rgba(240,235,224,0.15)'>
+      <OraculeButton variant='secondary' {...homeLink} customSize='md' borderColor='rgba(232,232,232,0.15)'>
         타로 보러 가기
       </OraculeButton>
     </YStack>
@@ -274,7 +274,7 @@ export function HistoryScreen() {
           </Text>
         </YStack>
 
-        <YStack width='100%' height={1} backgroundColor='rgba(240,235,224,0.08)' marginBottom='$0' />
+        <YStack width='100%' height={1} backgroundColor='rgba(232,232,232,0.08)' marginBottom='$0' />
 
         {match(readingsQuery)
           .with(loading, () => (

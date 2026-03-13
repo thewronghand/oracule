@@ -4,24 +4,24 @@ import { shorthands } from '@tamagui/shorthands'
 import { themes as baseThemes, tokens } from '@tamagui/themes'
 import { createTamagui, createFont } from 'tamagui'
 
-// 에디토리얼 다크 테마 — 깊은 슬레이트에 크림 & 앰버 강조
+// 모던 미니멀 다크 테마 — 순수 다크에 쿨 화이트
 const darkOverrides = {
-  background: '#0e0d0b',        // 깊은 흑갈색
-  backgroundHover: '#161410',
-  backgroundPress: '#0a0908',
-  backgroundFocus: '#161410',
-  backgroundStrong: '#080706',
-  backgroundTransparent: 'rgba(14, 13, 11, 0)',
-  borderColor: '#2a2620',
-  borderColorHover: '#3d3830',
+  background: '#0a0a0a',        // 순수 다크
+  backgroundHover: '#141414',
+  backgroundPress: '#080808',
+  backgroundFocus: '#141414',
+  backgroundStrong: '#060606',
+  backgroundTransparent: 'rgba(10, 10, 10, 0)',
+  borderColor: '#1f1f1f',
+  borderColorHover: '#2a2a2a',
   borderColorFocus: '#c9a96e',
-  borderColorPress: '#1e1c17',
-  color: '#f0ebe0',             // 따뜻한 크림
-  colorHover: '#faf6ed',
-  colorPress: '#d9d0be',
-  colorFocus: '#b5aa96',
-  colorTransparent: 'rgba(240, 235, 224, 0)',
-  placeholderColor: '#6b6355',
+  borderColorPress: '#181818',
+  color: '#e8e8e8',             // 쿨 화이트
+  colorHover: '#f0f0f0',
+  colorPress: '#c8c8c8',
+  colorFocus: '#888888',
+  colorTransparent: 'rgba(232, 232, 232, 0)',
+  placeholderColor: '#444444',
   shadowColor: 'rgba(0, 0, 0, 0.6)',
   shadowColorHover: 'rgba(0, 0, 0, 0.7)',
   shadowColorPress: 'rgba(0, 0, 0, 0.8)',

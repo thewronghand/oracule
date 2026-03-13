@@ -279,7 +279,7 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
           >
             내일 새로운 카드가 기다립니다
           </Text>
-          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='rgba(240,235,224,0.15)'>
+          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='rgba(232,232,232,0.15)'>
             홈으로
           </OraculeButton>
         </XStack>
@@ -317,7 +317,7 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       rotate={isShuffling ? offset.rotate : '0deg'}
       scale={isShuffling ? 1 : 0.95}
       zIndex={5 - index}
-      backgroundColor='#161410'
+      backgroundColor='#0f0f0f'
     >
       <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
@@ -353,7 +353,7 @@ function PickCard({ index, onPick, disabled }: { index: number; onPick: () => vo
       pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: 'rgba(201,169,110,0.7)' }}
       hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: 'rgba(201,169,110,0.5)' }}
       onPress={disabled ? undefined : onPick}
-      backgroundColor='#161410'
+      backgroundColor='#0f0f0f'
     >
       <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
@@ -501,7 +501,7 @@ function DrawFortuneView() {
                       paddingVertical='$4'
                       paddingHorizontal='$4'
                       borderWidth={1}
-                      borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(240,235,224,0.08)'}
+                      borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(232,232,232,0.08)'}
                       backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
                       pressStyle={{ opacity: 0.7 }}
                       onPress={() => setSelectedCharacter(character.id)}
@@ -514,7 +514,7 @@ function DrawFortuneView() {
                         height={16}
                         borderRadius={8}
                         borderWidth={1}
-                        borderColor={isSelected ? '#c9a96e' : 'rgba(240,235,224,0.25)'}
+                        borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
                         alignItems='center'
                         justifyContent='center'
                         flexShrink={0}
@@ -660,7 +660,7 @@ function DrawFortuneView() {
                 height={240}
                 borderWidth={1}
                 borderColor='rgba(201,169,110,0.3)'
-                backgroundColor='#161410'
+                backgroundColor='#0f0f0f'
                 alignItems='center'
                 justifyContent='center'
               >
@@ -752,7 +752,7 @@ function FortuneCalendar() {
               cursor='pointer'
               pressStyle={{ opacity: 0.5 }}
               borderWidth={1}
-              borderColor='rgba(240,235,224,0.12)'
+              borderColor='rgba(232,232,232,0.12)'
               onPress={handlePrevMonth}
             >
               <ChevronLeft size={16} color='$colorFocus' />
@@ -762,7 +762,7 @@ function FortuneCalendar() {
               cursor='pointer'
               pressStyle={{ opacity: 0.5 }}
               borderWidth={1}
-              borderColor='rgba(240,235,224,0.12)'
+              borderColor='rgba(232,232,232,0.12)'
               onPress={handleNextMonth}
             >
               <ChevronRight size={16} color='$colorFocus' />
@@ -902,7 +902,7 @@ export function FortuneScreen() {
       {/* 탭 바 */}
       <XStack
         borderBottomWidth={1}
-        borderBottomColor='rgba(240,235,224,0.08)'
+        borderBottomColor='rgba(232,232,232,0.08)'
         paddingHorizontal={24}
         $gtSm={{ paddingHorizontal: 48 }}
       >

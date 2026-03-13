@@ -86,7 +86,7 @@ export function QueryScreen() {
                   paddingVertical='$4'
                   paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(240,235,224,0.08)'}
+                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(232,232,232,0.08)'}
                   backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
                   pressStyle={{ opacity: 0.7 }}
                   onPress={() => setSelectedCharacter(character.id)}
@@ -100,7 +100,7 @@ export function QueryScreen() {
                     height={16}
                     borderRadius={8}
                     borderWidth={1}
-                    borderColor={isSelected ? '#c9a96e' : 'rgba(240,235,224,0.25)'}
+                    borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
                     alignItems='center'
                     justifyContent='center'
                     flexShrink={0}
@@ -184,7 +184,7 @@ export function QueryScreen() {
                   paddingVertical='$3'
                   paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(240,235,224,0.08)'}
+                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(232,232,232,0.08)'}
                   backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
                   pressStyle={{ opacity: 0.6 }}
                   onPress={() => setQuestion(q)}
@@ -197,7 +197,7 @@ export function QueryScreen() {
                     height={16}
                     borderRadius={8}
                     borderWidth={1}
-                    borderColor={isSelected ? '#c9a96e' : 'rgba(240,235,224,0.25)'}
+                    borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
                     alignItems='center'
                     justifyContent='center'
                     flexShrink={0}

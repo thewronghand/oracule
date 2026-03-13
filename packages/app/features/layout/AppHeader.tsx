@@ -1,40 +1,7 @@
-import { XStack, Text, YStack, Avatar, styled } from 'tamagui'
+import { XStack, Text, YStack, Avatar } from 'tamagui'
 import { useUser } from 'app/utils/supabase/hooks/useUser'
 import { useSupabase } from 'app/utils/supabase/hooks/useSupabase'
 import { useLink } from 'solito/link'
-import { LogOut, History } from '@tamagui/lucide-icons'
-
-const HeaderContainer = styled(XStack, {
-  width: '100%',
-  height: 52,
-  paddingHorizontal: '$6',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  backgroundColor: '$background',
-  borderBottomWidth: 1,
-  borderBottomColor: '$borderColor',
-  $xs: { paddingHorizontal: '$4' },
-})
-
-const LogoText = styled(Text, {
-  fontFamily: '$heading',
-  fontSize: 22,
-  fontWeight: '400',
-  letterSpacing: 2,
-  color: '$color',
-})
-
-const NavText = styled(Text, {
-  fontFamily: '$body',
-  fontSize: 11,
-  fontWeight: '400',
-  letterSpacing: 2.5,
-  textTransform: 'uppercase',
-  color: '$colorFocus',
-  cursor: 'pointer',
-  pressStyle: { opacity: 0.5 },
-  hoverStyle: { color: '$color' },
-})
 
 function getInitial(name?: string | null, email?: string | null): string {
   if (name) return name.charAt(0).toUpperCase()
@@ -48,6 +15,7 @@ export function AppHeader() {
   const loginLink = useLink({ href: '/login' })
   const homeLink = useLink({ href: '/' })
   const historyLink = useLink({ href: '/history' })
+  const fortuneLink = useLink({ href: '/fortune' })
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -57,68 +25,101 @@ export function AppHeader() {
   const displayName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email
 
   return (
-    <HeaderContainer>
+    <XStack
+      width='100%'
+      height={48}
+      paddingHorizontal={24}
+      alignItems='center'
+      justifyContent='space-between'
+      backgroundColor='$background'
+      borderBottomWidth={1}
+      borderBottomColor='rgba(255,255,255,0.06)'
+      $gtSm={{ paddingHorizontal: 48 }}
+    >
       {/* 로고 */}
       <YStack {...homeLink} cursor='pointer'>
-        <LogoText>Oracule</LogoText>
+        <Text
+          fontFamily='$body'
+          fontSize={15}
+          fontWeight='500'
+          letterSpacing={0.5}
+          color='$color'
+        >
+          Oracule
+        </Text>
       </YStack>
 
       {/* 우측 */}
       {isLoading ? null : user ? (
         <XStack alignItems='center' gap='$5'>
+          <YStack {...fortuneLink} cursor='pointer' pressStyle={{ opacity: 0.5 }}>
+            <Text
+              fontFamily='$body'
+              fontSize={13}
+              color='$colorFocus'
+              // @ts-ignore
+              style={{ transition: 'color 0.15s ease' }}
+            >
+              운세
+            </Text>
+          </YStack>
           <YStack {...historyLink} cursor='pointer' pressStyle={{ opacity: 0.5 }}>
-            <NavText>History</NavText>
+            <Text
+              fontFamily='$body'
+              fontSize={13}
+              color='$colorFocus'
+              // @ts-ignore
+              style={{ transition: 'color 0.15s ease' }}
+            >
+              히스토리
+            </Text>
           </YStack>
 
-          <XStack alignItems='center' gap='$3'>
+          {/* 아바타 */}
+          <XStack
+            alignItems='center'
+            gap='$2'
+            cursor='pointer'
+            pressStyle={{ opacity: 0.6 }}
+            onPress={handleLogout}
+          >
             {avatarUrl ? (
-              <Avatar circular size='$2'>
+              <Avatar circular size={28}>
                 <Avatar.Image src={avatarUrl} />
-                <Avatar.Fallback
-                  backgroundColor='rgba(201,169,110,0.15)'
-                  borderWidth={1}
-                  borderColor='rgba(201,169,110,0.3)'
-                >
-                  <Text fontFamily='$body' fontSize='$2' color='#c9a96e'>
+                <Avatar.Fallback backgroundColor='rgba(232,232,232,0.08)'>
+                  <Text fontFamily='$body' fontSize={11} color='$colorFocus'>
                     {getInitial(displayName)}
                   </Text>
                 </Avatar.Fallback>
               </Avatar>
             ) : (
               <YStack
-                width={26}
-                height={26}
-                borderRadius={13}
-                backgroundColor='rgba(201,169,110,0.12)'
-                borderWidth={1}
-                borderColor='rgba(201,169,110,0.3)'
+                width={28}
+                height={28}
+                borderRadius={14}
+                backgroundColor='rgba(232,232,232,0.08)'
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontFamily='$body' fontSize='$1' color='#c9a96e' fontWeight='500'>
+                <Text fontFamily='$body' fontSize={11} color='$colorFocus' fontWeight='500'>
                   {getInitial(displayName)}
                 </Text>
               </YStack>
             )}
-            <NavText numberOfLines={1} maxWidth={100}>
-              {typeof displayName === 'string'
-                ? displayName.split('@')[0]
-                : displayName}
-            </NavText>
           </XStack>
-
-          <YStack
-            cursor='pointer'
-            padding='$1'
-            pressStyle={{ opacity: 0.5 }}
-            onPress={handleLogout}
-          >
-            <LogOut size={15} color='$colorFocus' />
-          </YStack>
         </XStack>
       ) : (
-        <NavText {...loginLink}>Login</NavText>
+        <Text
+          {...loginLink}
+          fontFamily='$body'
+          fontSize={13}
+          color='$colorFocus'
+          cursor='pointer'
+          pressStyle={{ opacity: 0.5 }}
+        >
+          로그인
+        </Text>
       )}
-    </HeaderContainer>
+    </XStack>
   )
 }
