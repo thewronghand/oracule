@@ -12,7 +12,8 @@ const Label = styled(Text, {
   fontWeight: '500',
   letterSpacing: 4,
   textTransform: 'uppercase',
-  color: '#e59c97',
+  color: '$colorFocus',
+  opacity: 0.6,
 })
 
 const HeroTitle = styled(Text, {
@@ -81,9 +82,9 @@ export function LoginScreen() {
           top={0} left={0} right={0} bottom={0}
           // @ts-ignore
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=1200&q=80&auto=format&fit=crop)',
+            backgroundImage: 'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: 'center 40%',
           }}
         />
         {/* 오버레이 */}
@@ -105,7 +106,7 @@ export function LoginScreen() {
           gap='$3'
         >
           <XStack alignItems='center' gap='$3'>
-            <YStack width={24} height={1} backgroundColor='#e59c97' opacity={0.8} />
+            <YStack width={24} height={1} backgroundColor='rgba(255,255,255,0.4)' />
             <Label>Tarot · Oracle</Label>
           </XStack>
           <HeroTitle>Ora&shy;cule</HeroTitle>
