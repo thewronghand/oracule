@@ -37,7 +37,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
               gap='$3'
               paddingVertical='$5'
               borderBottomWidth={1}
-              borderBottomColor='rgba(232,232,232,0.08)'
+              borderBottomColor='rgba(0,0,0,0.07)'
             >
               <XStack alignItems='center' gap='$3'>
                 <Text
@@ -51,7 +51,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
                 >
                   {card.position}
                 </Text>
-                <YStack width={1} height={12} backgroundColor='rgba(232,232,232,0.2)' />
+                <YStack width={1} height={12} backgroundColor='rgba(0,0,0,0.12)' />
                 <Text
                   fontFamily='$heading'
                   fontSize={16}
@@ -255,7 +255,7 @@ export function ResultScreen(): React.ReactNode {
                     variant='secondary'
                     customSize='md'
                     onPress={handleShare}
-                    borderColor='rgba(232,232,232,0.15)'
+                    borderColor='rgba(0,0,0,0.10)'
                   >
                     <XStack alignItems='center' gap='$2'>
                       <Share2 size={12} color='$colorFocus' />
@@ -268,11 +268,11 @@ export function ResultScreen(): React.ReactNode {
                     variant='secondary'
                     customSize='md'
                     onPress={handleKakaoShare}
-                    borderColor='rgba(201,169,110,0.3)'
+                    borderColor='rgba(229,156,151,0.3)'
                   >
                     <XStack alignItems='center' gap='$2'>
-                      <MessageCircle size={12} color='#c9a96e' />
-                      <Text fontFamily='$body' fontSize={12} color='#c9a96e' letterSpacing={1}>
+                      <MessageCircle size={12} color='#e59c97' />
+                      <Text fontFamily='$body' fontSize={12} color='#e59c97' letterSpacing={1}>
                         카카오 공유
                       </Text>
                     </XStack>

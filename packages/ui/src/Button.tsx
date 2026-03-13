@@ -2,10 +2,10 @@ import { Button, styled } from 'tamagui'
 
 export const OraculeButton = styled(Button, {
   name: 'OraculeButton',
-  borderRadius: 0,           // 에디토리얼: 둥근 모서리 없이 날카롭게
+  borderRadius: 8,
   fontWeight: '500',
   fontFamily: '$body',
-  letterSpacing: 1.5,
+  letterSpacing: 0.3,
   pressStyle: {
     opacity: 0.75,
     scale: 0.98,
@@ -14,8 +14,8 @@ export const OraculeButton = styled(Button, {
   variants: {
     variant: {
       primary: {
-        backgroundColor: '$color',      // 크림 배경
-        color: '$background',           // 다크 텍스트 — 반전
+        backgroundColor: '#e59c97',
+        color: '#ffffff',
         borderWidth: 0,
       },
       secondary: {

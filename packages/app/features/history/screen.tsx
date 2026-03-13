@@ -50,12 +50,12 @@ function ReadingItem({
   return (
     <XStack
       borderBottomWidth={1}
-      borderBottomColor='rgba(232,232,232,0.08)'
+      borderBottomColor='rgba(0,0,0,0.07)'
       paddingVertical='$5'
       gap='$4'
       cursor='pointer'
       pressStyle={{ opacity: 0.6 }}
-      hoverStyle={{ backgroundColor: 'rgba(201,169,110,0.02)' }}
+      hoverStyle={{ backgroundColor: 'rgba(229,156,151,0.02)' }}
       {...link}
     >
       {/* 날짜 컬럼 */}
@@ -69,7 +69,7 @@ function ReadingItem({
       </YStack>
 
       {/* 세로 구분선 */}
-      <YStack width={1} backgroundColor='rgba(232,232,232,0.08)' />
+      <YStack width={1} backgroundColor='rgba(0,0,0,0.07)' />
 
       {/* 콘텐츠 */}
       <YStack flex={1} gap='$2'>
@@ -205,7 +205,7 @@ function EmptyState() {
       <Paragraph fontFamily='$body' color='$colorFocus' fontSize={13} textAlign='center' opacity={0.5}>
         타로 리딩을 받으면 이곳에 기록이 쌓여요.
       </Paragraph>
-      <OraculeButton variant='secondary' {...homeLink} customSize='md' borderColor='rgba(232,232,232,0.15)'>
+      <OraculeButton variant='secondary' {...homeLink} customSize='md' borderColor='rgba(0,0,0,0.10)'>
         타로 보러 가기
       </OraculeButton>
     </YStack>
@@ -274,7 +274,7 @@ export function HistoryScreen() {
           </Text>
         </YStack>
 
-        <YStack width='100%' height={1} backgroundColor='rgba(232,232,232,0.08)' marginBottom='$0' />
+        <YStack width='100%' height={1} backgroundColor='rgba(0,0,0,0.07)' marginBottom='$0' />
 
         {match(readingsQuery)
           .with(loading, () => (

@@ -19,7 +19,7 @@ const SectionLabel = styled(Text, {
   fontWeight: '500',
   letterSpacing: 4,
   textTransform: 'uppercase',
-  color: '#c9a96e',
+  color: '#e59c97',
 })
 
 const Divider = styled(YStack, {
@@ -46,7 +46,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
               borderWidth={1}
               borderColor='$borderColor'
               borderLeftWidth={2}
-              borderLeftColor='#c9a96e'
+              borderLeftColor='#e59c97'
             >
               <XStack alignItems='center' gap='$3'>
                 <Text
@@ -55,7 +55,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
                   fontWeight='500'
                   letterSpacing={3}
                   textTransform='uppercase'
-                  color='#c9a96e'
+                  color='#e59c97'
                 >
                   {card.position}
                 </Text>
@@ -85,8 +85,8 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         paddingVertical='$6'
         paddingHorizontal='$5'
         borderWidth={1}
-        borderColor='rgba(201,169,110,0.3)'
-        backgroundColor='rgba(201,169,110,0.04)'
+        borderColor='rgba(229,156,151,0.3)'
+        backgroundColor='rgba(229,156,151,0.04)'
       >
         <SectionLabel>{hasCardReadings ? '종합 해석' : '해석'}</SectionLabel>
         <Paragraph fontFamily='$body' lineHeight='$7' fontSize='$4' color='$color'>
@@ -143,7 +143,7 @@ export function ShareScreen(): React.ReactNode {
           >
             {/* 공유 배지 */}
             <XStack alignItems='center' gap='$3' marginBottom='$8'>
-              <YStack width={24} height={1} backgroundColor='#c9a96e' opacity={0.6} />
+              <YStack width={24} height={1} backgroundColor='#e59c97' opacity={0.6} />
               <SectionLabel>Shared Reading</SectionLabel>
             </XStack>
 
@@ -165,7 +165,7 @@ export function ShareScreen(): React.ReactNode {
                   fontFamily='$heading'
                   fontSize={18}
                   fontStyle='italic'
-                  color='#c9a96e'
+                  color='#e59c97'
                   letterSpacing={0.3}
                   marginTop='$1'
                 >
@@ -189,7 +189,7 @@ export function ShareScreen(): React.ReactNode {
               paddingVertical='$5'
               paddingHorizontal='$6'
               borderWidth={1}
-              borderColor='rgba(201,169,110,0.4)'
+              borderColor='rgba(229,156,151,0.4)'
             >
               <Text
                 fontFamily='$body'
@@ -197,7 +197,7 @@ export function ShareScreen(): React.ReactNode {
                 fontWeight='500'
                 letterSpacing={4}
                 textTransform='uppercase'
-                color='#c9a96e'
+                color='#e59c97'
                 marginBottom='$3'
               >
                 질문

@@ -4,52 +4,52 @@ import { shorthands } from '@tamagui/shorthands'
 import { themes as baseThemes, tokens } from '@tamagui/themes'
 import { createTamagui, createFont } from 'tamagui'
 
-// 모던 미니멀 다크 테마 — 순수 다크에 쿨 화이트
-const darkOverrides = {
-  background: '#0a0a0a',        // 순수 다크
-  backgroundHover: '#141414',
-  backgroundPress: '#080808',
-  backgroundFocus: '#141414',
-  backgroundStrong: '#060606',
-  backgroundTransparent: 'rgba(10, 10, 10, 0)',
-  borderColor: '#1f1f1f',
-  borderColorHover: '#2a2a2a',
-  borderColorFocus: '#c9a96e',
-  borderColorPress: '#181818',
-  color: '#e8e8e8',             // 쿨 화이트
-  colorHover: '#f0f0f0',
-  colorPress: '#c8c8c8',
-  colorFocus: '#888888',
-  colorTransparent: 'rgba(232, 232, 232, 0)',
-  placeholderColor: '#444444',
-  shadowColor: 'rgba(0, 0, 0, 0.6)',
-  shadowColorHover: 'rgba(0, 0, 0, 0.7)',
-  shadowColorPress: 'rgba(0, 0, 0, 0.8)',
-  shadowColorFocus: 'rgba(0, 0, 0, 0.6)',
+// 모던 미니멀 라이트 테마 — Vercel 스타일, 로즈 액센트
+const lightOverrides = {
+  background: '#fafafa',
+  backgroundHover: '#f5f5f5',
+  backgroundPress: '#efefef',
+  backgroundFocus: '#f5f5f5',
+  backgroundStrong: '#ffffff',
+  backgroundTransparent: 'rgba(250, 250, 250, 0)',
+  borderColor: '#e5e5e5',
+  borderColorHover: '#d4d4d4',
+  borderColorFocus: '#e59c97',
+  borderColorPress: '#d4d4d4',
+  color: '#111111',
+  colorHover: '#000000',
+  colorPress: '#333333',
+  colorFocus: '#666666',
+  colorTransparent: 'rgba(17, 17, 17, 0)',
+  placeholderColor: '#a3a3a3',
+  shadowColor: 'rgba(0, 0, 0, 0.06)',
+  shadowColorHover: 'rgba(0, 0, 0, 0.1)',
+  shadowColorPress: 'rgba(0, 0, 0, 0.12)',
+  shadowColorFocus: 'rgba(229, 156, 151, 0.2)',
 }
 
 const themes = Object.fromEntries(
   Object.entries(baseThemes).map(([key, value]) => {
-    if (key === 'dark') {
-      return [key, { ...value, ...darkOverrides }]
+    if (key === 'light') {
+      return [key, { ...value, ...lightOverrides }]
     }
-    if (key.startsWith('dark_')) {
+    if (key.startsWith('light_')) {
       return [
         key,
         {
           ...value,
-          background: darkOverrides.background,
-          backgroundHover: darkOverrides.backgroundHover,
-          backgroundPress: darkOverrides.backgroundPress,
-          backgroundFocus: darkOverrides.backgroundFocus,
-          borderColor: darkOverrides.borderColor,
-          borderColorHover: darkOverrides.borderColorHover,
-          borderColorFocus: darkOverrides.borderColorFocus,
-          borderColorPress: darkOverrides.borderColorPress,
-          shadowColor: darkOverrides.shadowColor,
-          shadowColorHover: darkOverrides.shadowColorHover,
-          shadowColorPress: darkOverrides.shadowColorPress,
-          shadowColorFocus: darkOverrides.shadowColorFocus,
+          background: lightOverrides.background,
+          backgroundHover: lightOverrides.backgroundHover,
+          backgroundPress: lightOverrides.backgroundPress,
+          backgroundFocus: lightOverrides.backgroundFocus,
+          borderColor: lightOverrides.borderColor,
+          borderColorHover: lightOverrides.borderColorHover,
+          borderColorFocus: lightOverrides.borderColorFocus,
+          borderColorPress: lightOverrides.borderColorPress,
+          shadowColor: lightOverrides.shadowColor,
+          shadowColorHover: lightOverrides.shadowColorHover,
+          shadowColorPress: lightOverrides.shadowColorPress,
+          shadowColorFocus: lightOverrides.shadowColorFocus,
         },
       ]
     }
@@ -59,9 +59,9 @@ const themes = Object.fromEntries(
 
 import { animations } from './animations'
 
-// 에디토리얼 디스플레이 폰트: Cormorant Garamond
+// 디스플레이/헤딩 폰트: Inter (모던 산세리프)
 const headingFont = createFont({
-  family: '"Cormorant Garamond", Georgia, serif',
+  family: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
   size: {
     1: 12,
     2: 14,
@@ -76,55 +76,55 @@ const headingFont = createFont({
     true: 16,
   },
   lineHeight: {
-    1: 16,
+    1: 18,
     2: 20,
-    3: 22,
-    4: 26,
-    5: 30,
-    6: 36,
-    7: 44,
-    8: 58,
-    9: 70,
-    10: 84,
-    true: 22,
+    3: 24,
+    4: 28,
+    5: 32,
+    6: 38,
+    7: 46,
+    8: 60,
+    9: 72,
+    10: 86,
+    true: 24,
   },
   weight: {
-    1: '300',
-    2: '300',
-    3: '400',
-    4: '400',
-    5: '400',
-    6: '500',
-    7: '500',
-    8: '600',
-    9: '600',
-    10: '600',
-    true: '400',
+    1: '400',
+    2: '400',
+    3: '500',
+    4: '500',
+    5: '500',
+    6: '600',
+    7: '600',
+    8: '700',
+    9: '700',
+    10: '700',
+    true: '500',
   },
   letterSpacing: {
-    1: 2,
-    2: 1.5,
-    3: 1,
-    4: 0.5,
-    5: 0,
+    1: 0.2,
+    2: 0.1,
+    3: 0,
+    4: -0.2,
+    5: -0.3,
     6: -0.5,
-    7: -1,
-    8: -1.5,
-    9: -2,
-    10: -3,
-    true: 0,
+    7: -0.8,
+    8: -1.2,
+    9: -1.5,
+    10: -2,
+    true: -0.2,
   },
   face: {
-    300: { normal: 'Cormorant Garamond', italic: 'Cormorant Garamond' },
-    400: { normal: 'Cormorant Garamond', italic: 'Cormorant Garamond' },
-    500: { normal: 'Cormorant Garamond', italic: 'Cormorant Garamond' },
-    600: { normal: 'Cormorant Garamond', italic: 'Cormorant Garamond' },
+    400: { normal: 'Inter', italic: 'Inter' },
+    500: { normal: 'Inter', italic: 'Inter' },
+    600: { normal: 'Inter', italic: 'Inter' },
+    700: { normal: 'Inter', italic: 'Inter' },
   },
 })
 
-// 본문 폰트: DM Sans
+// 본문 폰트: Inter
 const bodyFont = createFont({
-  family: '"DM Sans", -apple-system, BlinkMacSystemFont, sans-serif',
+  family: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
   size: {
     1: 11,
     2: 12,
@@ -152,35 +152,35 @@ const bodyFont = createFont({
     true: 20,
   },
   weight: {
-    1: '300',
-    2: '300',
+    1: '400',
+    2: '400',
     3: '400',
     4: '400',
     5: '400',
     6: '500',
     7: '500',
-    8: '500',
-    9: '500',
-    10: '500',
+    8: '600',
+    9: '600',
+    10: '600',
     true: '400',
   },
   letterSpacing: {
-    1: 0.8,
-    2: 0.5,
-    3: 0.3,
-    4: 0,
-    5: 0,
-    6: -0.2,
-    7: -0.3,
-    8: -0.5,
+    1: 0.2,
+    2: 0.1,
+    3: 0,
+    4: -0.1,
+    5: -0.2,
+    6: -0.3,
+    7: -0.4,
+    8: -0.6,
     9: -0.8,
     10: -1,
     true: 0,
   },
   face: {
-    300: { normal: 'DM Sans', italic: 'DM Sans' },
-    400: { normal: 'DM Sans', italic: 'DM Sans' },
-    500: { normal: 'DM Sans', italic: 'DM Sans' },
+    400: { normal: 'Inter', italic: 'Inter' },
+    500: { normal: 'Inter', italic: 'Inter' },
+    600: { normal: 'Inter', italic: 'Inter' },
   },
 })
 

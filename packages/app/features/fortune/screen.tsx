@@ -279,7 +279,7 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
           >
             내일 새로운 카드가 기다립니다
           </Text>
-          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='rgba(232,232,232,0.15)'>
+          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='rgba(0,0,0,0.10)'>
             홈으로
           </OraculeButton>
         </XStack>
@@ -309,7 +309,7 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       width={90}
       height={135}
       borderWidth={1}
-      borderColor='rgba(201,169,110,0.3)'
+      borderColor='rgba(229,156,151,0.3)'
       overflow='hidden'
       animation='bouncy'
       x={isShuffling ? offset.x : 0}
@@ -317,18 +317,18 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       rotate={isShuffling ? offset.rotate : '0deg'}
       scale={isShuffling ? 1 : 0.95}
       zIndex={5 - index}
-      backgroundColor='#0f0f0f'
+      backgroundColor='#f5f5f5'
     >
       <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
           width={70}
           height={115}
           borderWidth={1}
-          borderColor='rgba(201,169,110,0.15)'
+          borderColor='rgba(229,156,151,0.15)'
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={20} opacity={0.3} color='#c9a96e'>✦</Text>
+          <Text fontSize={20} opacity={0.3} color='#e59c97'>✦</Text>
         </YStack>
       </YStack>
     </YStack>
@@ -344,27 +344,27 @@ function PickCard({ index, onPick, disabled }: { index: number; onPick: () => vo
       width={80}
       height={120}
       borderWidth={1}
-      borderColor='rgba(201,169,110,0.3)'
+      borderColor='rgba(229,156,151,0.3)'
       overflow='hidden'
       animation='bouncy'
       x={xOffsets[index]}
       rotate={`${angles[index]}deg`}
       cursor={disabled ? 'default' : 'pointer'}
-      pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: 'rgba(201,169,110,0.7)' }}
-      hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: 'rgba(201,169,110,0.5)' }}
+      pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: 'rgba(229,156,151,0.7)' }}
+      hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: 'rgba(229,156,151,0.5)' }}
       onPress={disabled ? undefined : onPick}
-      backgroundColor='#0f0f0f'
+      backgroundColor='#f5f5f5'
     >
       <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
           width={62}
           height={100}
           borderWidth={1}
-          borderColor='rgba(201,169,110,0.15)'
+          borderColor='rgba(229,156,151,0.15)'
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={16} opacity={0.3} color='#c9a96e'>✦</Text>
+          <Text fontSize={16} opacity={0.3} color='#e59c97'>✦</Text>
         </YStack>
       </YStack>
     </YStack>
@@ -501,8 +501,8 @@ function DrawFortuneView() {
                       paddingVertical='$4'
                       paddingHorizontal='$4'
                       borderWidth={1}
-                      borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(232,232,232,0.08)'}
-                      backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
+                      borderColor={isSelected ? 'rgba(229,156,151,0.4)' : 'rgba(0,0,0,0.07)'}
+                      backgroundColor={isSelected ? 'rgba(229,156,151,0.05)' : 'transparent'}
                       pressStyle={{ opacity: 0.7 }}
                       onPress={() => setSelectedCharacter(character.id)}
                       cursor='pointer'
@@ -514,13 +514,13 @@ function DrawFortuneView() {
                         height={16}
                         borderRadius={8}
                         borderWidth={1}
-                        borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
+                        borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
                         alignItems='center'
                         justifyContent='center'
                         flexShrink={0}
                       >
                         {isSelected && (
-                          <YStack width={8} height={8} borderRadius={4} backgroundColor='#c9a96e' />
+                          <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
                         )}
                       </YStack>
                       <YStack flex={1}>
@@ -659,12 +659,12 @@ function DrawFortuneView() {
                 width={160}
                 height={240}
                 borderWidth={1}
-                borderColor='rgba(201,169,110,0.3)'
-                backgroundColor='#0f0f0f'
+                borderColor='rgba(229,156,151,0.3)'
+                backgroundColor='#f5f5f5'
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize={28} opacity={0.25} color='#c9a96e'>✦</Text>
+                <Text fontSize={28} opacity={0.25} color='#e59c97'>✦</Text>
               </YStack>
             )}
           </YStack>
@@ -752,7 +752,7 @@ function FortuneCalendar() {
               cursor='pointer'
               pressStyle={{ opacity: 0.5 }}
               borderWidth={1}
-              borderColor='rgba(232,232,232,0.12)'
+              borderColor='rgba(0,0,0,0.10)'
               onPress={handlePrevMonth}
             >
               <ChevronLeft size={16} color='$colorFocus' />
@@ -762,7 +762,7 @@ function FortuneCalendar() {
               cursor='pointer'
               pressStyle={{ opacity: 0.5 }}
               borderWidth={1}
-              borderColor='rgba(232,232,232,0.12)'
+              borderColor='rgba(0,0,0,0.10)'
               onPress={handleNextMonth}
             >
               <ChevronRight size={16} color='$colorFocus' />
@@ -811,9 +811,9 @@ function FortuneCalendar() {
                   height={44}
                   alignItems='center'
                   justifyContent='center'
-                  backgroundColor={isSelected ? 'rgba(201,169,110,0.08)' : 'transparent'}
+                  backgroundColor={isSelected ? 'rgba(229,156,151,0.08)' : 'transparent'}
                   borderWidth={isSelected ? 1 : 0}
-                  borderColor='rgba(201,169,110,0.4)'
+                  borderColor='rgba(229,156,151,0.4)'
                   cursor={hasFortune ? 'pointer' : 'default'}
                   opacity={hasFortune ? 1 : 0.25}
                   pressStyle={hasFortune ? { opacity: 0.6 } : undefined}
@@ -823,7 +823,7 @@ function FortuneCalendar() {
                     fontFamily='$body'
                     fontSize={13}
                     fontWeight={hasFortune ? '500' : '300'}
-                    color={isSelected ? '#c9a96e' : '$color'}
+                    color={isSelected ? '#e59c97' : '$color'}
                   >
                     {dayNum}
                   </Text>
@@ -832,7 +832,7 @@ function FortuneCalendar() {
                       width={3}
                       height={3}
                       borderRadius={2}
-                      backgroundColor={isSelected ? '#c9a96e' : 'rgba(201,169,110,0.5)'}
+                      backgroundColor={isSelected ? '#e59c97' : 'rgba(229,156,151,0.5)'}
                       position='absolute'
                       bottom={5}
                     />
@@ -902,7 +902,7 @@ export function FortuneScreen() {
       {/* 탭 바 */}
       <XStack
         borderBottomWidth={1}
-        borderBottomColor='rgba(232,232,232,0.08)'
+        borderBottomColor='rgba(0,0,0,0.07)'
         paddingHorizontal={24}
         $gtSm={{ paddingHorizontal: 48 }}
       >
@@ -913,7 +913,7 @@ export function FortuneScreen() {
             paddingHorizontal='$2'
             marginRight='$5'
             borderBottomWidth={2}
-            borderBottomColor={activeTab === tab ? '#c9a96e' : 'transparent'}
+            borderBottomColor={activeTab === tab ? '#e59c97' : 'transparent'}
             cursor='pointer'
             pressStyle={{ opacity: 0.6 }}
             onPress={() => setActiveTab(tab)}

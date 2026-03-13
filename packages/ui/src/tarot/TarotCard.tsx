@@ -147,8 +147,8 @@ function WebFlipCard({
         <div
           style={{
             ...frontStyle,
-            background: '#1a1040',
-            border: isReversed ? '2px solid #e05252' : '1.5px solid rgba(183,134,11,0.5)',
+            background: '#f0f0f0',
+            border: isReversed ? '2px solid #e05252' : '1.5px solid rgba(229,156,151,0.5)',
           }}
         >
           <img

@@ -12,15 +12,15 @@ const Label = styled(Text, {
   fontWeight: '500',
   letterSpacing: 4,
   textTransform: 'uppercase',
-  color: '#c9a96e',
+  color: '#e59c97',
 })
 
 const HeroTitle = styled(Text, {
   fontFamily: '$heading',
   fontSize: 80,
-  fontWeight: '300',
+  fontWeight: '700',
   letterSpacing: -2,
-  color: '#f0ebe0',
+  color: '#ffffff',
   lineHeight: 76,
   $xs: { fontSize: 52, lineHeight: 50 },
 })
@@ -38,9 +38,9 @@ const BrandButton = styled(YStack, {
         backgroundColor: '#FEE500',
       },
       google: {
-        backgroundColor: '#f0ebe0',
+        backgroundColor: '#ffffff',
         borderWidth: 1,
-        borderColor: '#e0dbd0',
+        borderColor: '#e5e5e5',
       },
     },
   } as const,
@@ -105,7 +105,7 @@ export function LoginScreen() {
           gap='$3'
         >
           <XStack alignItems='center' gap='$3'>
-            <YStack width={24} height={1} backgroundColor='#c9a96e' opacity={0.8} />
+            <YStack width={24} height={1} backgroundColor='#e59c97' opacity={0.8} />
             <Label>Tarot · Oracle</Label>
           </XStack>
           <HeroTitle>Ora&shy;cule</HeroTitle>
@@ -113,7 +113,7 @@ export function LoginScreen() {
             fontFamily='$heading'
             fontSize={16}
             fontStyle='italic'
-            color='rgba(240,235,224,0.65)'
+            color='rgba(255,255,255,0.75)'
             letterSpacing={0.5}
           >
             당신의 이야기를 타로에게

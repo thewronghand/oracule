@@ -33,7 +33,7 @@ export function AppHeader() {
       justifyContent='space-between'
       backgroundColor='$background'
       borderBottomWidth={1}
-      borderBottomColor='rgba(255,255,255,0.06)'
+      borderBottomColor='rgba(0,0,0,0.08)'
       $gtSm={{ paddingHorizontal: 48 }}
     >
       {/* 로고 */}
@@ -86,7 +86,7 @@ export function AppHeader() {
             {avatarUrl ? (
               <Avatar circular size={28}>
                 <Avatar.Image src={avatarUrl} />
-                <Avatar.Fallback backgroundColor='rgba(232,232,232,0.08)'>
+                <Avatar.Fallback backgroundColor='rgba(0,0,0,0.07)'>
                   <Text fontFamily='$body' fontSize={11} color='$colorFocus'>
                     {getInitial(displayName)}
                   </Text>
@@ -97,7 +97,7 @@ export function AppHeader() {
                 width={28}
                 height={28}
                 borderRadius={14}
-                backgroundColor='rgba(232,232,232,0.08)'
+                backgroundColor='rgba(0,0,0,0.07)'
                 alignItems='center'
                 justifyContent='center'
               >

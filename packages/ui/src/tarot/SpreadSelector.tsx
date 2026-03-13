@@ -17,7 +17,7 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
             key={option.value}
             borderTopWidth={index === 0 ? 1 : 0}
             borderBottomWidth={1}
-            borderColor='rgba(232,232,232,0.08)'
+            borderColor='rgba(0,0,0,0.07)'
             paddingVertical='$4'
             paddingHorizontal='$3'
             gap='$4'
@@ -28,7 +28,7 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
             // @ts-ignore
             style={{
               transition: 'background-color 0.15s ease',
-              backgroundColor: isSelected ? 'rgba(201, 169, 110, 0.04)' : 'transparent',
+              backgroundColor: isSelected ? 'rgba(229, 156, 151, 0.04)' : 'transparent',
             }}
           >
             {/* 라디오 인디케이터 */}
@@ -38,14 +38,14 @@ export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps
                 height={16}
                 borderRadius={8}
                 borderWidth={1}
-                borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
+                borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
                 alignItems='center'
                 justifyContent='center'
                 // @ts-ignore
                 style={{ transition: 'border-color 0.15s ease', flexShrink: 0 }}
               >
                 {isSelected && (
-                  <YStack width={8} height={8} borderRadius={4} backgroundColor='#c9a96e' />
+                  <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
                 )}
               </YStack>
             </YStack>

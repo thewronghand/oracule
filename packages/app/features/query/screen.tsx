@@ -86,8 +86,8 @@ export function QueryScreen() {
                   paddingVertical='$4'
                   paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(232,232,232,0.08)'}
-                  backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
+                  borderColor={isSelected ? 'rgba(229,156,151,0.4)' : 'rgba(0,0,0,0.07)'}
+                  backgroundColor={isSelected ? 'rgba(229,156,151,0.05)' : 'transparent'}
                   pressStyle={{ opacity: 0.7 }}
                   onPress={() => setSelectedCharacter(character.id)}
                   cursor='pointer'
@@ -100,13 +100,13 @@ export function QueryScreen() {
                     height={16}
                     borderRadius={8}
                     borderWidth={1}
-                    borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
+                    borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
                     alignItems='center'
                     justifyContent='center'
                     flexShrink={0}
                   >
                     {isSelected && (
-                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#c9a96e' />
+                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
                     )}
                   </YStack>
 
@@ -184,8 +184,8 @@ export function QueryScreen() {
                   paddingVertical='$3'
                   paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(201,169,110,0.4)' : 'rgba(232,232,232,0.08)'}
-                  backgroundColor={isSelected ? 'rgba(201,169,110,0.05)' : 'transparent'}
+                  borderColor={isSelected ? 'rgba(229,156,151,0.4)' : 'rgba(0,0,0,0.07)'}
+                  backgroundColor={isSelected ? 'rgba(229,156,151,0.05)' : 'transparent'}
                   pressStyle={{ opacity: 0.6 }}
                   onPress={() => setQuestion(q)}
                   cursor='pointer'
@@ -197,13 +197,13 @@ export function QueryScreen() {
                     height={16}
                     borderRadius={8}
                     borderWidth={1}
-                    borderColor={isSelected ? '#c9a96e' : 'rgba(232,232,232,0.25)'}
+                    borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
                     alignItems='center'
                     justifyContent='center'
                     flexShrink={0}
                   >
                     {isSelected && (
-                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#c9a96e' />
+                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
                     )}
                   </YStack>
                   <Text
@@ -228,10 +228,10 @@ export function QueryScreen() {
             onChangeText={setQuestion}
             // @ts-ignore
             style={{
-              fontFamily: '"DM Sans", sans-serif',
+              fontFamily: 'Inter, sans-serif',
               fontSize: 14,
-              borderRadius: 0,
-              borderColor: question ? 'rgba(201,169,110,0.5)' : undefined,
+              borderRadius: 8,
+              borderColor: question ? 'rgba(229,156,151,0.6)' : undefined,
             }}
           />
         </YStack>
