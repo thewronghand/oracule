@@ -82,7 +82,7 @@ const Divider = styled(YStack, {
   width: '100%',
   height: 1,
   backgroundColor: '$borderColor',
-  opacity: 0.3,
+  
   marginVertical: '$6',
 })
 
@@ -100,7 +100,7 @@ function LoginPrompt() {
           letterSpacing={3}
           textTransform='uppercase'
           color='$colorFocus'
-          opacity={0.5}
+          opacity={0.6}
           marginBottom='$2'
         >
           Sign In Required
@@ -164,7 +164,7 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
               letterSpacing={3}
               textTransform='uppercase'
               color='$colorFocus'
-              opacity={0.5}
+              opacity={0.6}
             >
               Daily Fortune
             </Text>
@@ -233,7 +233,7 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
                 letterSpacing={2}
                 textTransform='uppercase'
                 color='$colorFocus'
-                opacity={0.5}
+                opacity={0.6}
               >
                 {drawnCard.direction}
               </Text>
@@ -249,7 +249,7 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
               letterSpacing={2}
               textTransform='uppercase'
               color='$colorFocus'
-              opacity={0.5}
+              opacity={0.6}
               marginBottom='$3'
             >
               오늘의 메시지
@@ -453,7 +453,7 @@ function DrawFortuneView() {
                 letterSpacing={3}
                 textTransform='uppercase'
                 color='$colorFocus'
-                opacity={0.5}
+                opacity={0.6}
                 marginBottom='$3'
               >
                 Daily Fortune
@@ -485,7 +485,7 @@ function DrawFortuneView() {
                 letterSpacing={2}
                 textTransform='uppercase'
                 color='$colorFocus'
-                opacity={0.5}
+                opacity={0.6}
                 marginBottom='$4'
               >
                 해석자 선택
@@ -582,7 +582,7 @@ function DrawFortuneView() {
               letterSpacing={3}
               textTransform='uppercase'
               color='$colorFocus'
-              opacity={0.5}
+              opacity={0.6}
               marginBottom='$2'
             >
               Shuffling
@@ -612,7 +612,7 @@ function DrawFortuneView() {
               letterSpacing={3}
               textTransform='uppercase'
               color='$colorFocus'
-              opacity={0.5}
+              opacity={0.6}
               marginBottom='$2'
             >
               Choose
@@ -642,7 +642,7 @@ function DrawFortuneView() {
               letterSpacing={3}
               textTransform='uppercase'
               color='$colorFocus'
-              opacity={0.5}
+              opacity={0.6}
               marginBottom='$2'
             >
               Revealing
@@ -730,7 +730,7 @@ function FortuneCalendar() {
           letterSpacing={3}
           textTransform='uppercase'
           color='$colorFocus'
-          opacity={0.5}
+          opacity={0.6}
           marginBottom='$3'
         >
           Archive
@@ -913,7 +913,7 @@ export function FortuneScreen() {
             paddingHorizontal='$2'
             marginRight='$5'
             borderBottomWidth={2}
-            borderBottomColor={activeTab === tab ? '#e59c97' : 'transparent'}
+            borderBottomColor={activeTab === tab ? '#111111' : 'transparent'}
             cursor='pointer'
             pressStyle={{ opacity: 0.6 }}
             onPress={() => setActiveTab(tab)}

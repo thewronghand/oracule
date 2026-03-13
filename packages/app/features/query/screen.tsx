@@ -44,7 +44,7 @@ export function QueryScreen() {
             letterSpacing={3}
             textTransform='uppercase'
             color='$colorFocus'
-            opacity={0.5}
+            opacity={0.6}
             marginBottom='$3'
           >
             New Reading
@@ -70,7 +70,7 @@ export function QueryScreen() {
             letterSpacing={2}
             textTransform='uppercase'
             color='$colorFocus'
-            opacity={0.5}
+            opacity={0.6}
             marginBottom='$4'
           >
             해석자 선택
@@ -149,7 +149,7 @@ export function QueryScreen() {
             letterSpacing={2}
             textTransform='uppercase'
             color='$colorFocus'
-            opacity={0.5}
+            opacity={0.6}
             marginBottom='$4'
           >
             스프레드 선택
@@ -166,7 +166,7 @@ export function QueryScreen() {
             letterSpacing={2}
             textTransform='uppercase'
             color='$colorFocus'
-            opacity={0.5}
+            opacity={0.6}
             marginBottom='$4'
           >
             질문 입력

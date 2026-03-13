@@ -93,7 +93,7 @@ function ReadingItem({
             letterSpacing={2}
             textTransform='uppercase'
             color='$colorFocus'
-            opacity={0.5}
+            opacity={0.6}
           >
             {spreadName}
           </Text>
@@ -121,7 +121,7 @@ function ReadingItem({
             numberOfLines={2}
             lineHeight={18}
             marginTop='$1'
-            opacity={0.5}
+            opacity={0.6}
           >
             {summary}
           </Text>
@@ -159,7 +159,7 @@ function LoginPrompt() {
           letterSpacing={3}
           textTransform='uppercase'
           color='$colorFocus'
-          opacity={0.5}
+          opacity={0.6}
           marginBottom='$2'
         >
           Access Required
@@ -196,7 +196,7 @@ function EmptyState() {
           fontWeight='300'
           fontStyle='italic'
           color='$colorFocus'
-          opacity={0.5}
+          opacity={0.6}
           textAlign='center'
         >
           아직 기록이 없어요
@@ -257,7 +257,7 @@ export function HistoryScreen() {
             letterSpacing={3}
             textTransform='uppercase'
             color='$colorFocus'
-            opacity={0.5}
+            opacity={0.6}
             marginBottom='$3'
           >
             Archive

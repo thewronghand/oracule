@@ -19,7 +19,7 @@ const Divider = styled(YStack, {
   width: '100%',
   height: 1,
   backgroundColor: '$borderColor',
-  opacity: 0.3,
+  
   marginVertical: '$6',
 })
 
@@ -47,7 +47,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
                   letterSpacing={2}
                   textTransform='uppercase'
                   color='$colorFocus'
-                  opacity={0.5}
+                  opacity={0.6}
                 >
                   {card.position}
                 </Text>
@@ -81,7 +81,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
           letterSpacing={2}
           textTransform='uppercase'
           color='$colorFocus'
-          opacity={0.5}
+          opacity={0.6}
         >
           {hasCardReadings ? '종합 해석' : '해석'}
         </Text>
@@ -167,7 +167,7 @@ export function ResultScreen(): React.ReactNode {
                 letterSpacing={3}
                 textTransform='uppercase'
                 color='$colorFocus'
-                opacity={0.5}
+                opacity={0.6}
                 marginBottom='$2'
               >
                 Reading Result
@@ -215,7 +215,7 @@ export function ResultScreen(): React.ReactNode {
                 letterSpacing={2}
                 textTransform='uppercase'
                 color='$colorFocus'
-                opacity={0.5}
+                opacity={0.6}
               >
                 질문
               </Text>

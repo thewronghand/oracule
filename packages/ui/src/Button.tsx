@@ -14,7 +14,7 @@ export const OraculeButton = styled(Button, {
   variants: {
     variant: {
       primary: {
-        backgroundColor: '#e59c97',
+        backgroundColor: '#111111',
         color: '#ffffff',
         borderWidth: 0,
       },

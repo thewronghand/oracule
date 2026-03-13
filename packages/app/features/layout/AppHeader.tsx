@@ -33,7 +33,7 @@ export function AppHeader() {
       justifyContent='space-between'
       backgroundColor='$background'
       borderBottomWidth={1}
-      borderBottomColor='rgba(0,0,0,0.08)'
+      borderBottomColor='#e5e5e5'
       $gtSm={{ paddingHorizontal: 48 }}
     >
       {/* 로고 */}
