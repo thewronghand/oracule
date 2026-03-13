@@ -8,62 +8,109 @@ interface SpreadSelectorProps {
 
 export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps) {
   return (
-    <XStack flexWrap='wrap' gap='$3' justifyContent='center' padding='$4'>
-      {spreadOptions.map((option) => {
+    <YStack gap={0}>
+      {spreadOptions.map((option, index) => {
         const isSelected = selectedSpread === option.value
 
         return (
-          <YStack
+          <XStack
             key={option.value}
-            width={160}
-            borderRadius={12}
-            borderWidth={isSelected ? 2 : 1}
-            borderColor={isSelected ? '$purple8' : '$borderColor'}
-            backgroundColor={isSelected ? '$purple2' : '$backgroundStrong'}
-            padding='$3'
-            gap='$2'
-            pressStyle={{ scale: 0.97, opacity: 0.85 }}
+            borderTopWidth={index === 0 ? 1 : 0}
+            borderBottomWidth={1}
+            borderColor='rgba(240, 235, 224, 0.12)'
+            paddingVertical='$5'
+            paddingHorizontal='$2'
+            gap='$5'
             cursor='pointer'
+            pressStyle={{ opacity: 0.7 }}
             onPress={() => onSelect(option.value)}
+            alignItems='flex-start'
+            // @ts-ignore
+            style={{
+              transition: 'background-color 0.15s ease',
+              backgroundColor: isSelected ? 'rgba(201, 169, 110, 0.06)' : 'transparent',
+            }}
           >
-            {/* 카드 수 배지 */}
-            <XStack justifyContent='space-between' alignItems='center'>
-              <YStack
-                backgroundColor={isSelected ? '$purple5' : '$background'}
-                borderRadius={6}
-                paddingHorizontal='$2'
-                paddingVertical={2}
-              >
+            {/* 선택 인디케이터 */}
+            <YStack
+              width={2}
+              alignSelf='stretch'
+              minHeight={60}
+              backgroundColor={isSelected ? '#c9a96e' : 'rgba(240, 235, 224, 0.15)'}
+              // @ts-ignore
+              style={{ transition: 'background-color 0.15s ease', flexShrink: 0 }}
+            />
+
+            {/* 콘텐츠 */}
+            <YStack flex={1} gap='$2'>
+              <XStack alignItems='center' gap='$3'>
+                {/* 카드 수 레이블 */}
                 <Text
-                  fontSize='$1'
-                  color={isSelected ? '$purple11' : '$colorFocus'}
-                  fontWeight='600'
+                  fontFamily='$body'
+                  fontSize={10}
+                  fontWeight='500'
+                  letterSpacing={3}
+                  textTransform='uppercase'
+                  color={isSelected ? '#c9a96e' : 'rgba(240, 235, 224, 0.4)'}
+                  // @ts-ignore
+                  style={{ transition: 'color 0.15s ease' }}
                 >
-                  {option.cardCount}장
+                  {option.cardCount} cards
                 </Text>
-              </YStack>
-              {isSelected && (
-                <YStack width={8} height={8} borderRadius={4} backgroundColor='$purple8' />
-              )}
-            </XStack>
 
-            {/* 스프레드 이름 */}
+                {isSelected && (
+                  <Text
+                    fontFamily='$body'
+                    fontSize={10}
+                    letterSpacing={2}
+                    textTransform='uppercase'
+                    color='#c9a96e'
+                    opacity={0.6}
+                  >
+                    ✦ selected
+                  </Text>
+                )}
+              </XStack>
+
+              {/* 스프레드 이름 */}
+              <Text
+                fontFamily='$heading'
+                fontSize={22}
+                fontWeight='300'
+                letterSpacing={-0.5}
+                color={isSelected ? '#f0ebe0' : 'rgba(240, 235, 224, 0.7)'}
+                // @ts-ignore
+                style={{ transition: 'color 0.15s ease' }}
+              >
+                {option.label}
+              </Text>
+
+              {/* 설명 */}
+              <Text
+                fontFamily='$body'
+                fontSize={13}
+                color='rgba(240, 235, 224, 0.45)'
+                lineHeight={20}
+                letterSpacing={0.2}
+              >
+                {option.description}
+              </Text>
+            </YStack>
+
+            {/* 우측 번호 */}
             <Text
-              fontSize='$3'
-              fontWeight='700'
-              color={isSelected ? '$purple11' : '$color'}
-              numberOfLines={2}
+              fontFamily='$heading'
+              fontSize={13}
+              color={isSelected ? 'rgba(201, 169, 110, 0.5)' : 'rgba(240, 235, 224, 0.12)'}
+              letterSpacing={1}
+              // @ts-ignore
+              style={{ transition: 'color 0.15s ease', flexShrink: 0, paddingTop: 2 }}
             >
-              {option.label}
+              {String(index + 1).padStart(2, '0')}
             </Text>
-
-            {/* 설명 */}
-            <Text fontSize='$1' color='$colorFocus' numberOfLines={3} lineHeight={16}>
-              {option.description}
-            </Text>
-          </YStack>
+          </XStack>
         )
       })}
-    </XStack>
+    </YStack>
   )
 }
