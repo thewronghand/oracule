@@ -28,7 +28,6 @@ function CardBack({
   width = 120,
   height = 180,
   opacity = 1,
-  borderColor = '$yellow8',
   glowColor,
   children,
 }: {
@@ -45,17 +44,17 @@ function CardBack({
       height={height}
       borderRadius={12}
       borderWidth={1.5}
-      borderColor={borderColor}
-      backgroundColor='$purple10'
+      borderColor='rgba(229,156,151,0.4)'
+      backgroundColor='#0a0a0a'
       alignItems='center'
       justifyContent='center'
       opacity={opacity}
-      shadowColor={glowColor ?? '$shadowColor'}
+      shadowColor={glowColor ?? 'rgba(0,0,0,0.4)'}
       shadowOpacity={glowColor ? 0.6 : 0.35}
       shadowRadius={glowColor ? 10 : 5}
       shadowOffset={{ width: 0, height: 3 }}
     >
-      {/* 이중 안쪽 테두리 */}
+      {/* 안쪽 테두리 */}
       <YStack
         position='absolute'
         top={6}
@@ -64,8 +63,16 @@ function CardBack({
         bottom={6}
         borderRadius={8}
         borderWidth={1}
-        borderColor='$yellow6'
-        opacity={0.5}
+        borderColor='rgba(255,255,255,0.06)'
+      />
+      {/* 중앙 로즈 다이아몬드 */}
+      <YStack
+        width={18}
+        height={18}
+        borderWidth={1}
+        borderColor='rgba(229,156,151,0.5)'
+        rotate='45deg'
+        borderRadius={2}
       />
       {children}
     </YStack>
@@ -166,7 +173,7 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
         <Paragraph textAlign='center' color='$color3'>
           세 더미를 순서대로 터치하세요
         </Paragraph>
-        <Text fontSize='$4' fontWeight='700' color='$accentBackground'>
+        <Text fontSize='$4' fontWeight='700' color='#e59c97'>
           {tappedStacks.length} / 3
         </Text>
       </YStack>
@@ -198,7 +205,7 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
                       width={96}
                       height={144 + heightBonus}
                       opacity={1 - layer * 0.08}
-                      borderColor={isTapped ? '$green8' : '$yellow8'}
+                      borderColor={isTapped ? '#111111' : 'rgba(229,156,151,0.4)'}
                     >
                       {layer === 0 && isTapped && (
                         <Text fontSize='$7' fontWeight='700' color='$green10'>
@@ -261,7 +268,7 @@ function DrawPhaseView({
         <Text
           fontSize='$5'
           fontWeight='700'
-          color={selectedIndices.length === cardCount ? '$green10' : '$accentBackground'}
+          color={selectedIndices.length === cardCount ? '#111111' : '#e59c97'}
         >
           {selectedIndices.length} / {cardCount} 장 선택됨
         </Text>
@@ -283,7 +290,7 @@ function DrawPhaseView({
                 <CardBack
                   width={80}
                   height={120}
-                  borderColor={isSelected ? '$green8' : '$yellow8'}
+                  borderColor={isSelected ? '#e59c97' : 'rgba(229,156,151,0.25)'}
                   glowColor={isSelected ? '$green8' : undefined}
                 >
                   {isSelected && (
@@ -414,15 +421,15 @@ function PhaseIndicator({ currentPhase }: { currentPhase: DrawPhase }) {
                 height={32}
                 borderRadius={16}
                 backgroundColor={
-                  isDone ? '$green8' : isActive ? '$accentBackground' : '$backgroundStrong'
+                  isDone ? '#111111' : isActive ? '#111111' : 'transparent'
                 }
                 alignItems='center'
                 justifyContent='center'
-                borderWidth={isActive ? 2 : isDone ? 0 : 1}
-                borderColor={isActive ? '$yellow8' : '$backgroundStrong'}
-                shadowColor={isActive ? '$accentBackground' : undefined}
-                shadowOpacity={isActive ? 0.5 : 0}
-                shadowRadius={isActive ? 8 : 0}
+                borderWidth={isActive || isDone ? 0 : 1}
+                borderColor='rgba(0,0,0,0.15)'
+                shadowColor={undefined}
+                shadowOpacity={0}
+                shadowRadius={0}
               >
                 <Text
                   fontSize='$2'
@@ -524,7 +531,7 @@ export function DrawScreen() {
       <PhaseIndicator currentPhase={phase} />
 
       <YStack alignItems='center' paddingHorizontal='$4' paddingBottom='$2'>
-        <H3 color='$accentBackground' fontSize='$3'>
+        <H3 color='$colorFocus' fontSize='$3' opacity={0.6}>
           {spreadInfo.name}
         </H3>
       </YStack>

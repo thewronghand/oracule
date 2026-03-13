@@ -78,8 +78,8 @@ function WebFlipCard({
         <div
           style={{
             ...faceStyle,
-            background: 'linear-gradient(135deg, #2d1b69 0%, #4a1a6e 50%, #1a1040 100%)',
-            border: '1.5px solid #b7860b',
+            background: '#0a0a0a',
+            border: '1.5px solid rgba(229,156,151,0.4)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -89,41 +89,42 @@ function WebFlipCard({
           <div
             style={{
               position: 'absolute',
-              top: 5,
-              left: 5,
-              right: 5,
-              bottom: 5,
+              top: 6,
+              left: 6,
+              right: 6,
+              bottom: 6,
               borderRadius: 8,
-              border: '1px solid rgba(183,134,11,0.45)',
+              border: '1px solid rgba(255,255,255,0.06)',
               pointerEvents: 'none',
             }}
           />
-          {/* 내부 장식 테두리 */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 10,
-              left: 10,
-              right: 10,
-              bottom: 10,
-              borderRadius: 5,
-              border: '1px solid rgba(183,134,11,0.25)',
-              pointerEvents: 'none',
-            }}
-          />
-          {/* 대각선 패턴 (SVG) */}
+          {/* 별 패턴 (SVG) */}
           <svg
-            style={{ position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none' }}
+            style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
             width={width}
             height={height}
           >
             <defs>
-              <pattern id='diag' patternUnits='userSpaceOnUse' width='12' height='12'>
-                <line x1='0' y1='12' x2='12' y2='0' stroke='#e9c46a' strokeWidth='0.8' />
+              <pattern id='stars' patternUnits='userSpaceOnUse' width='20' height='20'>
+                <circle cx='10' cy='10' r='0.7' fill='rgba(255,255,255,0.25)' />
+                <circle cx='3' cy='3' r='0.4' fill='rgba(255,255,255,0.15)' />
+                <circle cx='17' cy='5' r='0.5' fill='rgba(255,255,255,0.18)' />
+                <circle cx='6' cy='16' r='0.4' fill='rgba(255,255,255,0.12)' />
+                <circle cx='15' cy='15' r='0.6' fill='rgba(255,255,255,0.2)' />
               </pattern>
             </defs>
-            <rect width={width} height={height} fill='url(#diag)' />
+            <rect width={width} height={height} fill='url(#stars)' />
           </svg>
+          {/* 중앙 로즈 다이아몬드 */}
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              border: '1px solid rgba(229,156,151,0.5)',
+              transform: 'rotate(45deg)',
+              borderRadius: 2,
+            }}
+          />
           {/* 코너 장식 */}
           {['topleft', 'topright', 'bottomleft', 'bottomright'].map((pos) => (
             <div
@@ -134,10 +135,10 @@ function WebFlipCard({
                 bottom: pos.startsWith('bottom') ? 14 : undefined,
                 left: pos.endsWith('left') ? 14 : undefined,
                 right: pos.endsWith('right') ? 14 : undefined,
-                width: 6,
-                height: 6,
+                width: 4,
+                height: 4,
                 borderRadius: '50%',
-                background: 'rgba(233,196,106,0.6)',
+                background: 'rgba(229,156,151,0.4)',
               }}
             />
           ))}
