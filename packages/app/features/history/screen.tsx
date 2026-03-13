@@ -1,5 +1,5 @@
 import React from 'react'
-import { H2, Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
 import { LoadingSpinner, OraculeButton } from '@t4/ui'
 import { useLink } from 'solito/link'
 import { match } from 'ts-pattern'
@@ -9,25 +9,24 @@ import { useUser } from 'app/utils/supabase/hooks/useUser'
 import { SPREAD_INFO, type SpreadType } from 'app/types/spread'
 import { getCharacterById } from 'app/types/character'
 import { parseInterpretation } from 'app/utils/parseInterpretation'
-import { Clock, Trash2, BookOpen, LogIn } from '@tamagui/lucide-icons'
+import { Trash2 } from '@tamagui/lucide-icons'
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr)
-  const month = date.getMonth() + 1
-  const day = date.getDate()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
   const hours = date.getHours()
   const minutes = String(date.getMinutes()).padStart(2, '0')
-  return `${month}/${day} ${hours}:${minutes}`
+  return `${month}.${day}  ${hours}:${minutes}`
 }
 
-const ReadingCard = styled(YStack, {
-  backgroundColor: '$backgroundHover',
-  borderRadius: '$4',
-  padding: '$4',
-  borderWidth: 1,
-  borderColor: '$borderColor',
-  cursor: 'pointer',
-  pressStyle: { opacity: 0.8, scale: 0.99 },
+const SectionLabel = styled(Text, {
+  fontFamily: '$body',
+  fontSize: 10,
+  fontWeight: '500',
+  letterSpacing: 4,
+  textTransform: 'uppercase',
+  color: '#c9a96e',
 })
 
 interface ReadingItemProps {
@@ -58,82 +57,139 @@ function ReadingItem({
   const summary = parsed?.summary
 
   return (
-    <ReadingCard {...link}>
-      <XStack justifyContent='space-between' alignItems='flex-start'>
-        <YStack flex={1} gap='$2'>
-          <XStack alignItems='center' gap='$2'>
-            <Clock size={14} color='$purple8' />
-            <Text fontSize='$2' color='$colorSubtle'>
-              {formatDate(createdAt)}
-            </Text>
-          </XStack>
+    <XStack
+      borderBottomWidth={1}
+      borderBottomColor='$borderColor'
+      paddingVertical='$5'
+      gap='$4'
+      cursor='pointer'
+      pressStyle={{ opacity: 0.6 }}
+      hoverStyle={{ backgroundColor: 'rgba(201,169,110,0.03)' }}
+      {...link}
+    >
+      {/* 날짜 컬럼 */}
+      <YStack width={64} flexShrink={0} gap='$1' paddingTop='$1'>
+        <Text
+          fontFamily='$body'
+          fontSize={10}
+          letterSpacing={1}
+          color='$colorFocus'
+          opacity={0.7}
+        >
+          {formatDate(createdAt).split('  ')[0]}
+        </Text>
+        <Text
+          fontFamily='$body'
+          fontSize={10}
+          letterSpacing={1}
+          color='$colorFocus'
+          opacity={0.5}
+        >
+          {formatDate(createdAt).split('  ')[1]}
+        </Text>
+      </YStack>
 
-          <Text fontSize='$4' fontWeight='600' color='$color' numberOfLines={2}>
-            {question}
+      {/* 세로 구분선 */}
+      <YStack width={1} backgroundColor='$borderColor' opacity={0.4} />
+
+      {/* 콘텐츠 */}
+      <YStack flex={1} gap='$2'>
+        <Text
+          fontFamily='$heading'
+          fontSize={20}
+          fontWeight='400'
+          fontStyle='italic'
+          color='$color'
+          numberOfLines={2}
+          lineHeight={26}
+        >
+          {question}
+        </Text>
+
+        <XStack gap='$3' alignItems='center' marginTop='$1'>
+          <Text
+            fontFamily='$body'
+            fontSize={10}
+            fontWeight='500'
+            letterSpacing={2}
+            textTransform='uppercase'
+            color='#c9a96e'
+            opacity={0.8}
+          >
+            {spreadName}
           </Text>
-
-          <XStack gap='$2' flexWrap='wrap'>
-            <Text
-              fontSize='$2'
-              color='$purple10'
-              backgroundColor='$purple3'
-              paddingHorizontal='$2'
-              paddingVertical='$1'
-              borderRadius='$2'
-            >
-              {spreadName}
-            </Text>
-            {character.id !== 'default' && (
+          {character.id !== 'default' && (
+            <>
+              <YStack width={3} height={3} borderRadius={2} backgroundColor='$borderColor' />
               <Text
-                fontSize='$2'
-                color='$yellow10'
-                backgroundColor='$yellow3'
-                paddingHorizontal='$2'
-                paddingVertical='$1'
-                borderRadius='$2'
+                fontFamily='$body'
+                fontSize={10}
+                fontWeight='500'
+                letterSpacing={2}
+                textTransform='uppercase'
+                color='$colorFocus'
               >
                 {character.name}
               </Text>
-            )}
-          </XStack>
-
-          {summary && (
-            <Text fontSize='$3' color='$colorSubtle' numberOfLines={2}>
-              {summary}
-            </Text>
+            </>
           )}
-        </YStack>
+        </XStack>
 
-        <YStack
-          padding='$2'
-          cursor='pointer'
-          pressStyle={{ opacity: 0.6 }}
-          opacity={isDeleting ? 0.3 : 0.6}
-          onPress={(e) => {
-            e.stopPropagation()
-            if (!isDeleting) onDelete(id)
-          }}
-        >
-          <Trash2 size={18} color='$red9' />
-        </YStack>
-      </XStack>
-    </ReadingCard>
+        {summary && (
+          <Text
+            fontFamily='$body'
+            fontSize='$2'
+            color='$colorFocus'
+            numberOfLines={2}
+            lineHeight='$4'
+            marginTop='$1'
+            opacity={0.7}
+          >
+            {summary}
+          </Text>
+        )}
+      </YStack>
+
+      {/* 삭제 버튼 */}
+      <YStack
+        padding='$2'
+        cursor='pointer'
+        pressStyle={{ opacity: 0.5 }}
+        opacity={isDeleting ? 0.2 : 0.4}
+        onPress={(e) => {
+          e.stopPropagation()
+          if (!isDeleting) onDelete(id)
+        }}
+        alignSelf='flex-start'
+        marginTop='$1'
+      >
+        <Trash2 size={15} color='$colorFocus' />
+      </YStack>
+    </XStack>
   )
 }
 
 function LoginPrompt() {
   const loginLink = useLink({ href: '/login' })
-
   return (
-    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$4'>
-      <LogIn size={48} color='$purple8' />
-      <H2 textAlign='center' color='$color'>
-        로그인이 필요해요
-      </H2>
-      <Paragraph textAlign='center' color='$colorSubtle'>
+    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$6'>
+      <YStack gap='$2'>
+        <SectionLabel>Access Required</SectionLabel>
+        <Text
+          fontFamily='$heading'
+          fontSize={40}
+          fontWeight='300'
+          letterSpacing={-1}
+          color='$color'
+          lineHeight={42}
+        >
+          로그인이{'\n'}필요해요
+        </Text>
+      </YStack>
+      <Paragraph fontFamily='$body' color='$colorFocus' fontSize='$3'>
         타로 리딩 기록을 보려면 먼저 로그인해주세요.
       </Paragraph>
-      <OraculeButton variant='primary' {...loginLink}>
+      <OraculeButton variant='primary' {...loginLink} customSize='lg'>
         로그인하기
       </OraculeButton>
     </YStack>
@@ -142,17 +198,25 @@ function LoginPrompt() {
 
 function EmptyState() {
   const homeLink = useLink({ href: '/' })
-
   return (
-    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$4'>
-      <BookOpen size={48} color='$purple8' />
-      <H2 textAlign='center' color='$color'>
-        아직 리딩 기록이 없어요
-      </H2>
-      <Paragraph textAlign='center' color='$colorSubtle'>
+    <YStack paddingVertical='$12' alignItems='center' gap='$5'>
+      <YStack gap='$2' alignItems='center'>
+        <SectionLabel>Empty</SectionLabel>
+        <Text
+          fontFamily='$heading'
+          fontSize={36}
+          fontWeight='300'
+          fontStyle='italic'
+          color='$colorFocus'
+          textAlign='center'
+        >
+          아직 기록이 없어요
+        </Text>
+      </YStack>
+      <Paragraph fontFamily='$body' color='$colorFocus' fontSize='$3' textAlign='center'>
         타로 리딩을 받으면 이곳에 기록이 쌓여요.
       </Paragraph>
-      <OraculeButton variant='primary' {...homeLink}>
+      <OraculeButton variant='secondary' {...homeLink} customSize='lg' borderColor='$borderColor'>
         타로 보러 가기
       </OraculeButton>
     </YStack>
@@ -182,33 +246,54 @@ export function HistoryScreen() {
     )
   }
 
-  if (!user) {
-    return <LoginPrompt />
-  }
+  if (!user) return <LoginPrompt />
 
   return (
-    <ScrollView>
-      <YStack flex={1} padding='$4' gap='$4' maxWidth={640} width='100%' alignSelf='center'>
-        <H2 color='$purple10'>리딩 히스토리</H2>
+    <ScrollView backgroundColor='$background'>
+      <YStack
+        maxWidth={720}
+        width='100%'
+        alignSelf='center'
+        paddingHorizontal={48}
+        paddingTop={56}
+        paddingBottom={96}
+        $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
+        $sm={{ paddingHorizontal: '$6' }}
+      >
+        {/* 페이지 헤더 */}
+        <YStack marginBottom='$8' gap='$2'>
+          <SectionLabel>Archive</SectionLabel>
+          <Text
+            fontFamily='$heading'
+            fontSize={56}
+            fontWeight='300'
+            letterSpacing={-1.5}
+            color='$color'
+            lineHeight={54}
+            $xs={{ fontSize: 40, lineHeight: 40 }}
+          >
+            리딩 히스토리
+          </Text>
+        </YStack>
+
+        {/* 헤더 구분선 */}
+        <YStack width='100%' height={1} backgroundColor='$borderColor' opacity={0.5} marginBottom='$0' />
 
         {match(readingsQuery)
           .with(loading, () => (
-            <YStack flex={1} justifyContent='center' alignItems='center' paddingVertical='$8'>
+            <YStack paddingVertical='$12' justifyContent='center' alignItems='center'>
               <LoadingSpinner />
             </YStack>
           ))
           .with(error, () => (
-            <YStack padding='$4' alignItems='center'>
-              <Paragraph color='$red9'>기록을 불러오지 못했어요.</Paragraph>
+            <YStack paddingVertical='$8' alignItems='center'>
+              <Paragraph fontFamily='$body' color='$red10'>기록을 불러오지 못했어요.</Paragraph>
             </YStack>
           ))
           .with(success, ({ data }) => {
-            if (!data || data.length === 0) {
-              return <EmptyState />
-            }
-
+            if (!data || data.length === 0) return <EmptyState />
             return (
-              <YStack gap='$3'>
+              <YStack>
                 {data.map((reading) => (
                   <ReadingItem
                     key={reading.id}

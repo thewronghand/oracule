@@ -6,35 +6,34 @@ import { LogOut, History } from '@tamagui/lucide-icons'
 
 const HeaderContainer = styled(XStack, {
   width: '100%',
-  height: 56,
-  paddingHorizontal: '$4',
+  height: 52,
+  paddingHorizontal: '$6',
   alignItems: 'center',
   justifyContent: 'space-between',
   backgroundColor: '$background',
   borderBottomWidth: 1,
-  borderBottomColor: '$purple4',
+  borderBottomColor: '$borderColor',
+  $xs: { paddingHorizontal: '$4' },
 })
 
-const HeaderTitle = styled(Text, {
-  fontSize: '$5',
-  fontWeight: '700',
+const LogoText = styled(Text, {
+  fontFamily: '$heading',
+  fontSize: 22,
+  fontWeight: '400',
   letterSpacing: 2,
-  color: '$purple10',
+  color: '$color',
 })
 
-const LoginButton = styled(Text, {
-  fontSize: '$3',
-  fontWeight: '500',
-  color: '$purple9',
+const NavText = styled(Text, {
+  fontFamily: '$body',
+  fontSize: 11,
+  fontWeight: '400',
+  letterSpacing: 2.5,
+  textTransform: 'uppercase',
+  color: '$colorFocus',
   cursor: 'pointer',
-  pressStyle: { opacity: 0.7 },
-})
-
-const LogoutButton = styled(YStack, {
-  cursor: 'pointer',
-  padding: '$1',
-  borderRadius: '$2',
-  pressStyle: { opacity: 0.7 },
+  pressStyle: { opacity: 0.5 },
+  hoverStyle: { color: '$color' },
 })
 
 function getInitial(name?: string | null, email?: string | null): string {
@@ -61,49 +60,64 @@ export function AppHeader() {
     <HeaderContainer>
       {/* 로고 */}
       <YStack {...homeLink} cursor='pointer'>
-        <HeaderTitle>Oracule</HeaderTitle>
+        <LogoText>Oracule</LogoText>
       </YStack>
 
-      {/* 우측: 로그인 상태 */}
+      {/* 우측 */}
       {isLoading ? null : user ? (
-        <XStack alignItems='center' gap='$3'>
-          <YStack {...historyLink} cursor='pointer' pressStyle={{ opacity: 0.7 }} padding='$1'>
-            <History size={20} color='$purple8' />
+        <XStack alignItems='center' gap='$5'>
+          <YStack {...historyLink} cursor='pointer' pressStyle={{ opacity: 0.5 }}>
+            <NavText>History</NavText>
           </YStack>
-          <XStack alignItems='center' gap='$2'>
+
+          <XStack alignItems='center' gap='$3'>
             {avatarUrl ? (
               <Avatar circular size='$2'>
                 <Avatar.Image src={avatarUrl} />
-                <Avatar.Fallback backgroundColor='$purple6'>
-                  <Text fontSize='$2' color='white'>
+                <Avatar.Fallback
+                  backgroundColor='rgba(201,169,110,0.15)'
+                  borderWidth={1}
+                  borderColor='rgba(201,169,110,0.3)'
+                >
+                  <Text fontFamily='$body' fontSize='$2' color='#c9a96e'>
                     {getInitial(displayName)}
                   </Text>
                 </Avatar.Fallback>
               </Avatar>
             ) : (
               <YStack
-                width={28}
-                height={28}
-                borderRadius={14}
-                backgroundColor='$purple6'
+                width={26}
+                height={26}
+                borderRadius={13}
+                backgroundColor='rgba(201,169,110,0.12)'
+                borderWidth={1}
+                borderColor='rgba(201,169,110,0.3)'
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize='$2' color='white' fontWeight='600'>
+                <Text fontFamily='$body' fontSize='$1' color='#c9a96e' fontWeight='500'>
                   {getInitial(displayName)}
                 </Text>
               </YStack>
             )}
-            <Text fontSize='$3' color='$color' maxWidth={120} numberOfLines={1}>
-              {displayName}
-            </Text>
+            <NavText numberOfLines={1} maxWidth={100}>
+              {typeof displayName === 'string'
+                ? displayName.split('@')[0]
+                : displayName}
+            </NavText>
           </XStack>
-          <LogoutButton onPress={handleLogout}>
-            <LogOut size={18} color='$purple8' />
-          </LogoutButton>
+
+          <YStack
+            cursor='pointer'
+            padding='$1'
+            pressStyle={{ opacity: 0.5 }}
+            onPress={handleLogout}
+          >
+            <LogOut size={15} color='$colorFocus' />
+          </YStack>
         </XStack>
       ) : (
-        <LoginButton {...loginLink}>로그인</LoginButton>
+        <NavText {...loginLink}>Login</NavText>
       )}
     </HeaderContainer>
   )

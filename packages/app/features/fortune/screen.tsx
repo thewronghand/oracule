@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react'
-import { H2, H3, Paragraph, ScrollView, Separator, XStack, YStack, Text } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
 import { LoadingSpinner, OraculeButton, TarotCard } from '@t4/ui'
 import { useLink } from 'solito/link'
 import { trpc } from 'app/utils/trpc'
@@ -9,16 +9,15 @@ import { getCardImageUrl } from 'app/utils/cardImage'
 import { CHARACTERS, type CharacterId } from 'app/types/character'
 import { getCharacterById } from 'app/types/character'
 import type { DrawnTarotCard } from 'app/types/card'
-import type { ReadingInterpretation } from 'app/types/reading'
-import { LogIn, ChevronLeft, ChevronRight, Calendar, Sun } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 
-// 운세 해석 JSON 파싱 (이중 stringify + 마크다운 코드블록 + content 내 중첩 JSON 대응)
+// ─── 파싱 유틸 ────────────────────────────────────────────────────────────────
+
 function parseFortuneInterpretation(raw: string): {
   title: string
   summary: string
   content: string
 } {
-  // 마크다운 코드블록 제거 헬퍼
   const stripCodeBlock = (text: string): string => {
     const trimmed = text.trim()
     if (trimmed.startsWith('```')) {
@@ -27,13 +26,10 @@ function parseFortuneInterpretation(raw: string): {
     return trimmed
   }
 
-  // JSON에서 { title, summary, content } 추출 (content가 또 JSON이면 재귀 파싱)
   const extractFortune = (
     obj: Record<string, unknown>
   ): { title: string; summary: string; content: string } => {
     const content = typeof obj.content === 'string' ? obj.content : ''
-
-    // content가 마크다운 코드블록이거나 JSON 문자열이면 내부를 한 번 더 파싱
     const innerStr = stripCodeBlock(content)
     try {
       const inner: unknown = JSON.parse(innerStr)
@@ -41,11 +37,11 @@ function parseFortuneInterpretation(raw: string): {
         return extractFortune(inner as Record<string, unknown>)
       }
     } catch {
-      // content는 일반 텍스트
+      // 일반 텍스트
     }
-
     return {
-      title: typeof obj.title === 'string' && obj.title !== '타로 리딩 결과' ? obj.title : '오늘의 운세',
+      title:
+        typeof obj.title === 'string' && obj.title !== '타로 리딩 결과' ? obj.title : '오늘의 운세',
       summary: typeof obj.summary === 'string' ? obj.summary : '',
       content,
     }
@@ -54,23 +50,16 @@ function parseFortuneInterpretation(raw: string): {
   try {
     const cleaned = stripCodeBlock(raw)
     const parsed: unknown = JSON.parse(cleaned)
-
-    // 이중 stringify: 파싱 결과가 문자열이면 한 번 더 파싱
-    if (typeof parsed === 'string') {
-      return parseFortuneInterpretation(parsed)
-    }
-
+    if (typeof parsed === 'string') return parseFortuneInterpretation(parsed)
     if (typeof parsed === 'object' && parsed !== null && 'content' in parsed) {
       return extractFortune(parsed as Record<string, unknown>)
     }
   } catch {
     // JSON 파싱 실패
   }
-
   return { title: '오늘의 운세', summary: '', content: raw }
 }
 
-// DB fortune → DrawnTarotCard 변환
 function fortuneToDrawnCard(cardId: number, cardDirection: string): DrawnTarotCard {
   const card = tarotDeck[cardId]!
   const direction = cardDirection as '정방향' | '역방향'
@@ -87,24 +76,55 @@ function fortuneToDrawnCard(cardId: number, cardDirection: string): DrawnTarotCa
   }
 }
 
+// ─── 공통 스타일드 컴포넌트 ──────────────────────────────────────────────────
+
+const SectionLabel = styled(Text, {
+  fontFamily: '$body',
+  fontSize: 10,
+  fontWeight: '500',
+  letterSpacing: 4,
+  textTransform: 'uppercase',
+  color: '#c9a96e',
+})
+
+const Divider = styled(YStack, {
+  width: '100%',
+  height: 1,
+  backgroundColor: '$borderColor',
+  opacity: 0.5,
+  marginVertical: '$6',
+})
+
+// ─── 로그인 필요 ─────────────────────────────────────────────────────────────
+
 function LoginPrompt() {
   const loginLink = useLink({ href: '/login' })
-
   return (
-    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$4'>
-      <LogIn size={48} color='$purple8' />
-      <H2 textAlign='center' color='$color'>
-        로그인이 필요해요
-      </H2>
-      <Paragraph textAlign='center' color='$colorSubtle'>
+    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$6'>
+      <YStack gap='$2'>
+        <SectionLabel>Sign In Required</SectionLabel>
+        <Text
+          fontFamily='$heading'
+          fontSize={40}
+          fontWeight='300'
+          letterSpacing={-1}
+          color='$color'
+          lineHeight={42}
+        >
+          로그인이{'\n'}필요해요
+        </Text>
+      </YStack>
+      <Paragraph fontFamily='$body' color='$colorFocus' fontSize='$3'>
         오늘의 운세를 보려면 먼저 로그인해주세요.
       </Paragraph>
-      <OraculeButton variant='primary' {...loginLink}>
+      <OraculeButton variant='primary' {...loginLink} customSize='lg'>
         로그인하기
       </OraculeButton>
     </YStack>
   )
 }
+
+// ─── 운세 결과 뷰 ─────────────────────────────────────────────────────────────
 
 interface FortuneResultProps {
   cardId: number
@@ -114,13 +134,7 @@ interface FortuneResultProps {
   date: string
 }
 
-function FortuneResult({
-  cardId,
-  cardDirection,
-  interpretation,
-  characterId,
-  date,
-}: FortuneResultProps) {
+function FortuneResult({ cardId, cardDirection, interpretation, characterId, date }: FortuneResultProps) {
   const interp = parseFortuneInterpretation(interpretation)
   const drawnCard = fortuneToDrawnCard(cardId, cardDirection)
   const character = getCharacterById(characterId)
@@ -129,92 +143,113 @@ function FortuneResult({
   return (
     <ScrollView>
       <YStack
-        padding='$4'
-        gap='$6'
-        paddingBottom='$12'
-        maxWidth={640}
+        maxWidth={720}
         width='100%'
         alignSelf='center'
+        paddingHorizontal={48}
+        paddingTop={56}
+        paddingBottom={96}
+        gap='$0'
+        $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
+        $sm={{ paddingHorizontal: '$6' }}
       >
         {/* 헤더 */}
-        <YStack alignItems='center' gap='$3' paddingTop='$2'>
-          <Text fontSize='$2' color='$colorSubtle'>
-            {date}
-          </Text>
-          <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
+        <YStack marginBottom='$8' gap='$2'>
+          <XStack alignItems='center' gap='$3' marginBottom='$2'>
+            <SectionLabel>Daily Fortune</SectionLabel>
+            <YStack flex={1} height={1} backgroundColor='$borderColor' opacity={0.3} />
+            <Text fontFamily='$body' fontSize={10} letterSpacing={2} color='$colorFocus' opacity={0.6}>
+              {date}
+            </Text>
+          </XStack>
+          <Text
+            fontFamily='$heading'
+            fontSize={48}
+            fontWeight='300'
+            letterSpacing={-1}
+            color='$color'
+            lineHeight={50}
+            $xs={{ fontSize: 36, lineHeight: 38 }}
+          >
             {interp.title}
-          </H2>
+          </Text>
+          {interp.summary ? (
+            <Text
+              fontFamily='$heading'
+              fontSize={18}
+              fontStyle='italic'
+              color='#c9a96e'
+              letterSpacing={0.3}
+              marginTop='$1'
+            >
+              {interp.summary}
+            </Text>
+          ) : null}
           {character.id !== 'default' && (
-            <XStack alignItems='center' gap='$2'>
-              <Text fontSize={18}>{character.emoji}</Text>
-              <Text fontSize='$3' color='$colorSubtle' fontWeight='500'>
+            <XStack alignItems='center' gap='$2' marginTop='$2'>
+              <Text fontSize={16}>{character.emoji}</Text>
+              <Text fontFamily='$body' fontSize='$2' color='$colorFocus'>
                 {character.name}의 해석
               </Text>
             </XStack>
           )}
-          {interp.summary ? (
-            <Paragraph textAlign='center' color='$colorSubtle' fontSize='$3' fontStyle='italic'>
-              {interp.summary}
-            </Paragraph>
-          ) : null}
-          <YStack width={160} height={1} backgroundColor='$borderColor' opacity={0.3} />
         </YStack>
+
+        <Divider />
 
         {/* 카드 */}
-        <YStack alignItems='center'>
-          <TarotCard card={drawnCard} isRevealed size='lg' />
-          <XStack alignItems='center' gap='$2' marginTop='$3'>
-            <Text fontSize='$4' fontWeight='600' color='$color'>
-              {drawnCard.name.ko}
-            </Text>
-            <Text fontSize='$3' color='$colorSubtle'>
-              ({drawnCard.direction})
-            </Text>
-          </XStack>
-        </YStack>
+        <XStack gap='$6' alignItems='flex-start' $xs={{ flexDirection: 'column', alignItems: 'center' }}>
+          <YStack alignItems='center' gap='$3' flexShrink={0}>
+            <TarotCard card={drawnCard} isRevealed size='lg' />
+            <YStack alignItems='center' gap='$1'>
+              <Text fontFamily='$heading' fontSize={20} fontWeight='400' fontStyle='italic' color='$color'>
+                {drawnCard.name.ko}
+              </Text>
+              <Text fontFamily='$body' fontSize={10} letterSpacing={3} textTransform='uppercase' color='$colorFocus' opacity={0.6}>
+                {drawnCard.direction}
+              </Text>
+            </YStack>
+          </YStack>
 
-        <Separator borderColor='$borderColor' opacity={0.3} />
+          {/* 해석 */}
+          <YStack
+            flex={1}
+            gap='$4'
+            paddingVertical='$5'
+            paddingHorizontal='$5'
+            borderWidth={1}
+            borderColor='rgba(201,169,110,0.3)'
+            backgroundColor='rgba(201,169,110,0.04)'
+          >
+            <SectionLabel>오늘의 메시지</SectionLabel>
+            <Paragraph fontFamily='$body' lineHeight='$7' fontSize='$4' color='$color'>
+              {interp.content}
+            </Paragraph>
+          </YStack>
+        </XStack>
 
-        {/* 해석 */}
-        <YStack
-          gap='$4'
-          backgroundColor='$backgroundHover'
-          borderRadius='$4'
-          padding='$5'
-          borderWidth={1}
-          borderColor='$borderColor'
-          borderLeftWidth={3}
-          borderLeftColor='$accentBackground'
-        >
-          <Paragraph lineHeight='$7' fontSize='$4' color='$color'>
-            {interp.content}
-          </Paragraph>
-        </YStack>
+        <Divider />
 
-        {/* 안내 */}
-        <YStack alignItems='center' gap='$2' paddingVertical='$4'>
-          <Text fontSize='$3' color='$purple8' fontWeight='500'>
-            내일 다시 만나요
+        {/* 안내 + 홈 버튼 */}
+        <XStack justifyContent='space-between' alignItems='center'>
+          <Text fontFamily='$heading' fontSize={14} fontStyle='italic' color='$colorFocus' opacity={0.6}>
+            내일 새로운 카드가 당신을 기다립니다
           </Text>
-          <Text fontSize='$2' color='$colorSubtle'>
-            매일 새로운 카드가 당신을 기다립니다
-          </Text>
-        </YStack>
-
-        <OraculeButton variant='secondary' customSize='md' {...homeLink}>
-          홈으로 돌아가기
-        </OraculeButton>
+          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='$borderColor'>
+            홈으로
+          </OraculeButton>
+        </XStack>
       </YStack>
     </ScrollView>
   )
 }
 
+// ─── 카드 뒷면 (셔플용) ───────────────────────────────────────────────────────
+
 type DrawPhase = 'idle' | 'shuffling' | 'picking' | 'revealing' | 'done'
 
-// 셔플 중 카드 뒷면 컴포넌트
 function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
   const isShuffling = phase === 'shuffling'
-  // 각 카드마다 다른 위치/회전으로 셔플 애니메이션
   const offsets = [
     { x: 0, y: 0, rotate: '0deg' },
     { x: -30, y: -8, rotate: '-12deg' },
@@ -229,54 +264,38 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       position='absolute'
       width={90}
       height={135}
-      borderRadius='$3'
-      borderWidth={1.5}
-      borderColor='$purple8'
+      borderWidth={1}
+      borderColor='rgba(201,169,110,0.4)'
       overflow='hidden'
       animation='bouncy'
       x={isShuffling ? offset.x : 0}
       y={isShuffling ? offset.y : 0}
       rotate={isShuffling ? offset.rotate : '0deg'}
-      opacity={1}
       scale={isShuffling ? 1 : 0.95}
       zIndex={5 - index}
+      backgroundColor='#161410'
     >
-      {/* 카드 뒷면 디자인 */}
       <YStack
         flex={1}
-        backgroundColor='$purple10'
         alignItems='center'
         justifyContent='center'
       >
         <YStack
           width={70}
           height={115}
-          borderRadius='$2'
           borderWidth={1}
-          borderColor='$purple8'
+          borderColor='rgba(201,169,110,0.2)'
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={24} opacity={0.6}>
-            ✦
-          </Text>
+          <Text fontSize={20} opacity={0.4} color='#c9a96e'>✦</Text>
         </YStack>
       </YStack>
     </YStack>
   )
 }
 
-// 뽑기용 펼쳐진 카드
-function PickCard({
-  index,
-  onPick,
-  disabled,
-}: {
-  index: number
-  onPick: () => void
-  disabled: boolean
-}) {
-  // 5장 부채꼴 배치
+function PickCard({ index, onPick, disabled }: { index: number; onPick: () => void; disabled: boolean }) {
   const angles = [-20, -10, 0, 10, 20]
   const xOffsets = [-80, -40, 0, 40, 80]
 
@@ -284,41 +303,35 @@ function PickCard({
     <YStack
       width={80}
       height={120}
-      borderRadius='$3'
-      borderWidth={1.5}
-      borderColor='$purple8'
+      borderWidth={1}
+      borderColor='rgba(201,169,110,0.4)'
       overflow='hidden'
       animation='bouncy'
       x={xOffsets[index]}
       rotate={`${angles[index]}deg`}
       cursor={disabled ? 'default' : 'pointer'}
-      pressStyle={disabled ? undefined : { scale: 1.08, y: -10 }}
-      hoverStyle={disabled ? undefined : { scale: 1.05, y: -6, borderColor: '$yellow8' }}
+      pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: 'rgba(201,169,110,0.8)' }}
+      hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: 'rgba(201,169,110,0.6)' }}
       onPress={disabled ? undefined : onPick}
+      backgroundColor='#161410'
     >
-      <YStack
-        flex={1}
-        backgroundColor='$purple10'
-        alignItems='center'
-        justifyContent='center'
-      >
+      <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
           width={62}
           height={100}
-          borderRadius='$2'
           borderWidth={1}
-          borderColor='$purple8'
+          borderColor='rgba(201,169,110,0.2)'
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={18} opacity={0.6}>
-            ✦
-          </Text>
+          <Text fontSize={16} opacity={0.4} color='#c9a96e'>✦</Text>
         </YStack>
       </YStack>
     </YStack>
   )
 }
+
+// ─── 드로우 뷰 ────────────────────────────────────────────────────────────────
 
 function DrawFortuneView() {
   const [selectedCharacter, setSelectedCharacter] = useState<CharacterId>('default')
@@ -344,85 +357,97 @@ function DrawFortuneView() {
   })
 
   const handleStart = () => {
-    // 프론트에서 카드 뽑기 → 즉시 이미지 프리로드
     const cardId = Math.floor(Math.random() * 78)
     const direction: '정방향' | '역방향' = Math.random() > 0.5 ? '정방향' : '역방향'
     drawnCardRef.current = { cardId, direction }
-
     imageLoadedRef.current = false
     if (typeof window !== 'undefined') {
       const img = new window.Image()
-      img.onload = () => {
-        imageLoadedRef.current = true
-      }
+      img.onload = () => { imageLoadedRef.current = true }
       img.src = getCardImageUrl(cardId)
     }
-
     setPhase('shuffling')
     createMutation.mutate({ cardId, direction, characterId: selectedCharacter })
-
-    // 1.5초 셔플 후 picking으로 전환
-    setTimeout(() => {
-      setPhase('picking')
-    }, 1500)
+    setTimeout(() => { setPhase('picking') }, 1500)
   }
 
   const handlePick = (index: number) => {
     setPickedIndex(index)
     setPhase('revealing')
-
-    // 리빌 지연 로직: API 응답 + 이미지 로드 + 최소 2초 대기
     const checkAndTransition = () => {
       if (mutationCompletedAtRef.current && imageLoadedRef.current) {
-        // 응답 도착 + 이미지 로드 완료 → 2초 의도적 지연
         const elapsed = Date.now() - mutationCompletedAtRef.current
         const remaining = Math.max(0, 2000 - elapsed)
-        setTimeout(() => {
-          utils.fortune.getToday.invalidate()
-        }, remaining)
+        setTimeout(() => { utils.fortune.getToday.invalidate() }, remaining)
       } else {
-        // 아직 대기 중 → 100ms마다 폴링
         setTimeout(checkAndTransition, 100)
       }
     }
-
-    // 플립 애니메이션 시간(600ms) 후 체크 시작
     setTimeout(checkAndTransition, 600)
   }
 
   const revealData = mutationDataRef.current
-  const revealCard = revealData
-    ? fortuneToDrawnCard(revealData.cardId, revealData.cardDirection)
-    : null
+  const revealCard = revealData ? fortuneToDrawnCard(revealData.cardId, revealData.cardDirection) : null
 
   return (
     <>
-      {/* idle 상태 */}
+      {/* idle */}
       {phase === 'idle' && (
         <ScrollView>
           <YStack
-            padding='$4'
-            gap='$6'
-            paddingBottom='$12'
-            maxWidth={640}
+            maxWidth={720}
             width='100%'
             alignSelf='center'
+            paddingHorizontal={48}
+            paddingTop={56}
+            paddingBottom={96}
+            gap='$0'
+            $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
+            $sm={{ paddingHorizontal: '$6' }}
           >
-            <YStack alignItems='center' gap='$3' paddingTop='$4'>
-              <Sun size={40} color='$yellow8' />
-              <Text fontSize='$8' fontWeight='700' textAlign='center' color='$accentBackground' letterSpacing={1}>
+            {/* 헤더 */}
+            <YStack marginBottom='$8' gap='$2'>
+              <SectionLabel>Daily Fortune</SectionLabel>
+              <Text
+                fontFamily='$heading'
+                fontSize={56}
+                fontWeight='300'
+                letterSpacing={-1.5}
+                color='$color'
+                lineHeight={54}
+                $xs={{ fontSize: 40, lineHeight: 40 }}
+              >
                 오늘의 운세
               </Text>
-              <Paragraph textAlign='center' color='$colorSubtle' fontSize='$3'>
+              <Text
+                fontFamily='$heading'
+                fontSize={20}
+                fontStyle='italic'
+                color='#c9a96e'
+                letterSpacing={0.5}
+                marginTop='$1'
+              >
                 카드 한 장으로 오늘 하루를 점쳐보세요
-              </Paragraph>
-              <YStack width={160} height={1} backgroundColor='$borderColor' opacity={0.3} />
+              </Text>
             </YStack>
 
-            <YStack gap='$3'>
-              <Text fontSize='$6' fontWeight='700' color='$accentBackground' letterSpacing={0.5}>
-                누가 해석해줄까요?
-              </Text>
+            <Divider />
+
+            {/* 캐릭터 선택 */}
+            <YStack gap='$5' marginBottom='$0'>
+              <YStack>
+                <SectionLabel>Interpreter</SectionLabel>
+                <Text
+                  fontFamily='$heading'
+                  fontSize={32}
+                  fontWeight='400'
+                  color='$color'
+                  lineHeight={36}
+                  marginTop='$2'
+                >
+                  누가 해석해줄까요?
+                </Text>
+              </YStack>
               <XStack flexWrap='wrap' gap='$3'>
                 {CHARACTERS.map((character) => {
                   const isSelected = selectedCharacter === character.id
@@ -431,31 +456,27 @@ function DrawFortuneView() {
                       key={character.id}
                       flex={1}
                       minWidth='45%'
-                      backgroundColor={isSelected ? '$purple10' : '$backgroundHover'}
-                      borderRadius='$4'
-                      padding='$3'
-                      borderWidth={isSelected ? 1.5 : 1}
-                      borderColor={isSelected ? '$yellow8' : '$borderColor'}
-                      pressStyle={{ opacity: 0.7, scale: 0.98 }}
+                      backgroundColor={isSelected ? 'rgba(201,169,110,0.08)' : 'transparent'}
+                      borderWidth={1}
+                      borderColor={isSelected ? 'rgba(201,169,110,0.6)' : '$borderColor'}
+                      padding='$4'
+                      pressStyle={{ opacity: 0.7 }}
                       onPress={() => setSelectedCharacter(character.id)}
                       cursor='pointer'
-                      alignItems='center'
-                      gap='$1'
+                      gap='$2'
+                      $xs={{ minWidth: '100%' }}
                     >
-                      <Text fontSize={28}>{character.emoji}</Text>
+                      <Text fontSize={24}>{character.emoji}</Text>
                       <Text
+                        fontFamily='$body'
                         fontSize='$3'
-                        fontWeight={isSelected ? '700' : '500'}
-                        color={isSelected ? '$color' : '$colorSubtle'}
-                        textAlign='center'
+                        fontWeight={isSelected ? '500' : '400'}
+                        color={isSelected ? '#c9a96e' : '$color'}
+                        letterSpacing={0.3}
                       >
                         {character.name}
                       </Text>
-                      <Text
-                        fontSize='$1'
-                        color={isSelected ? '$color3' : '$colorSubtle'}
-                        textAlign='center'
-                      >
+                      <Text fontFamily='$body' fontSize='$2' color='$colorFocus' lineHeight='$4'>
                         {character.description}
                       </Text>
                     </YStack>
@@ -464,32 +485,21 @@ function DrawFortuneView() {
               </XStack>
             </YStack>
 
-            <Separator borderColor='$borderColor' opacity={0.3} />
+            <Divider />
 
-            <YStack alignItems='center' gap='$3'>
-              <YStack position='relative' alignItems='center' justifyContent='center'>
-                <YStack
-                  position='absolute'
-                  width={240}
-                  height={60}
-                  borderRadius='$6'
-                  backgroundColor='$purple8'
-                  opacity={0.18}
-                  scale={1.08}
-                />
-                <OraculeButton
-                  variant='primary'
-                  customSize='lg'
-                  minWidth={220}
-                  onPress={handleStart}
-                >
-                  오늘의 카드 뽑기
-                </OraculeButton>
-              </YStack>
-            </YStack>
+            <XStack justifyContent='flex-end'>
+              <OraculeButton
+                variant='primary'
+                customSize='lg'
+                minWidth={220}
+                onPress={handleStart}
+              >
+                오늘의 카드 뽑기
+              </OraculeButton>
+            </XStack>
 
             {createMutation.isError && (
-              <Paragraph textAlign='center' color='$red10' fontSize='$3'>
+              <Paragraph fontFamily='$body' textAlign='center' color='$red10' fontSize='$3' marginTop='$4'>
                 {createMutation.error?.message ?? '오류가 발생했습니다.'}
               </Paragraph>
             )}
@@ -497,45 +507,39 @@ function DrawFortuneView() {
         </ScrollView>
       )}
 
-      {/* shuffling 상태 */}
+      {/* shuffling */}
       {phase === 'shuffling' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$6'>
-          <Text fontSize='$8' fontWeight='700' color='$accentBackground' letterSpacing={1}>
-            카드를 섞는 중...
-          </Text>
-          <YStack
-            width={200}
-            height={200}
-            alignItems='center'
-            justifyContent='center'
-            position='relative'
-          >
+        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
+          <YStack gap='$2' alignItems='center'>
+            <SectionLabel>Shuffling</SectionLabel>
+            <Text fontFamily='$heading' fontSize={40} fontWeight='300' color='$color' letterSpacing={-0.5}>
+              카드를 섞는 중...
+            </Text>
+          </YStack>
+          <YStack width={200} height={200} alignItems='center' justifyContent='center' position='relative'>
             {[0, 1, 2, 3, 4].map((i) => (
               <ShuffleCard key={i} index={i} phase={phase} />
             ))}
           </YStack>
-          <Paragraph color='$colorSubtle' fontSize='$3'>
+          <Text fontFamily='$heading' fontSize={16} fontStyle='italic' color='$colorFocus' opacity={0.6}>
             마음을 가다듬고 카드를 고르세요
-          </Paragraph>
+          </Text>
         </YStack>
       )}
 
-      {/* picking 상태 */}
+      {/* picking */}
       {phase === 'picking' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$6'>
-          <Text fontSize='$8' fontWeight='700' color='$accentBackground' letterSpacing={1}>
-            카드를 골라주세요
-          </Text>
-          <Paragraph color='$colorSubtle' fontSize='$3'>
+        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
+          <YStack gap='$2' alignItems='center'>
+            <SectionLabel>Choose</SectionLabel>
+            <Text fontFamily='$heading' fontSize={40} fontWeight='300' color='$color' letterSpacing={-0.5}>
+              카드를 골라주세요
+            </Text>
+          </YStack>
+          <Text fontFamily='$heading' fontSize={16} fontStyle='italic' color='$colorFocus' opacity={0.6}>
             끌리는 카드 하나를 선택하세요
-          </Paragraph>
-          <XStack
-            justifyContent='center'
-            alignItems='center'
-            height={180}
-            width='100%'
-            position='relative'
-          >
+          </Text>
+          <XStack justifyContent='center' alignItems='center' height={180} width='100%' position='relative'>
             {[0, 1, 2, 3, 4].map((i) => (
               <PickCard key={i} index={i} onPick={() => handlePick(i)} disabled={false} />
             ))}
@@ -543,12 +547,15 @@ function DrawFortuneView() {
         </YStack>
       )}
 
-      {/* revealing 상태 */}
+      {/* revealing */}
       {phase === 'revealing' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$6'>
-          <Text fontSize='$8' fontWeight='700' color='$accentBackground' letterSpacing={1}>
-            카드를 확인하는 중...
-          </Text>
+        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
+          <YStack gap='$2' alignItems='center'>
+            <SectionLabel>Revealing</SectionLabel>
+            <Text fontFamily='$heading' fontSize={40} fontWeight='300' color='$color' letterSpacing={-0.5}>
+              카드를 확인하는 중...
+            </Text>
+          </YStack>
           <YStack alignItems='center'>
             {revealCard ? (
               <TarotCard card={revealCard} isRevealed size='lg' />
@@ -556,16 +563,13 @@ function DrawFortuneView() {
               <YStack
                 width={160}
                 height={240}
-                borderRadius='$4'
-                borderWidth={1.5}
-                borderColor='$purple8'
-                backgroundColor='$purple10'
+                borderWidth={1}
+                borderColor='rgba(201,169,110,0.4)'
+                backgroundColor='#161410'
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize={32} opacity={0.6}>
-                  ✦
-                </Text>
+                <Text fontSize={28} opacity={0.3} color='#c9a96e'>✦</Text>
               </YStack>
             )}
           </YStack>
@@ -576,7 +580,8 @@ function DrawFortuneView() {
   )
 }
 
-// 캘린더 컴포넌트
+// ─── 캘린더 ───────────────────────────────────────────────────────────────────
+
 function FortuneCalendar() {
   const now = new Date()
   const kstNow = new Date(now.getTime() + 9 * 60 * 60 * 1000)
@@ -589,70 +594,93 @@ function FortuneCalendar() {
   const fortuneMap = useMemo(() => {
     const map = new Map<string, NonNullable<typeof monthQuery.data>[number]>()
     if (monthQuery.data) {
-      for (const f of monthQuery.data) {
-        map.set(f.date, f)
-      }
+      for (const f of monthQuery.data) map.set(f.date, f)
     }
     return map
   }, [monthQuery.data])
 
   const selectedFortune = selectedDate ? fortuneMap.get(selectedDate) : null
-
-  // 캘린더 그리드 데이터
   const daysInMonth = new Date(year, month, 0).getDate()
   const firstDayOfWeek = new Date(year, month - 1, 1).getDay()
   const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
   const handlePrevMonth = () => {
-    if (month === 1) {
-      setMonth(12)
-      setYear(year - 1)
-    } else {
-      setMonth(month - 1)
-    }
+    if (month === 1) { setMonth(12); setYear(year - 1) }
+    else setMonth(month - 1)
     setSelectedDate(null)
   }
-
   const handleNextMonth = () => {
-    if (month === 12) {
-      setMonth(1)
-      setYear(year + 1)
-    } else {
-      setMonth(month + 1)
-    }
+    if (month === 12) { setMonth(1); setYear(year + 1) }
+    else setMonth(month + 1)
     setSelectedDate(null)
   }
 
   return (
-    <YStack gap='$4' maxWidth={640} width='100%' alignSelf='center'>
-      {/* 월 네비게이션 */}
-      <XStack justifyContent='space-between' alignItems='center' paddingHorizontal='$2'>
-        <YStack
-          padding='$2'
-          cursor='pointer'
-          pressStyle={{ opacity: 0.6 }}
-          onPress={handlePrevMonth}
-        >
-          <ChevronLeft size={24} color='$color' />
-        </YStack>
-        <Text fontSize='$5' fontWeight='600' color='$color'>
-          {year}년 {month}월
-        </Text>
-        <YStack
-          padding='$2'
-          cursor='pointer'
-          pressStyle={{ opacity: 0.6 }}
-          onPress={handleNextMonth}
-        >
-          <ChevronRight size={24} color='$color' />
-        </YStack>
-      </XStack>
+    <YStack
+      maxWidth={720}
+      width='100%'
+      alignSelf='center'
+      paddingHorizontal={48}
+      paddingTop={56}
+      paddingBottom={96}
+      gap='$0'
+      $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
+      $sm={{ paddingHorizontal: '$6' }}
+    >
+      {/* 헤더 */}
+      <YStack marginBottom='$8' gap='$2'>
+        <SectionLabel>Archive</SectionLabel>
+        <XStack alignItems='center' justifyContent='space-between'>
+          <Text
+            fontFamily='$heading'
+            fontSize={48}
+            fontWeight='300'
+            letterSpacing={-1}
+            color='$color'
+            lineHeight={50}
+            $xs={{ fontSize: 36 }}
+          >
+            {year}년 {month}월
+          </Text>
+          <XStack gap='$2'>
+            <YStack
+              padding='$2'
+              cursor='pointer'
+              pressStyle={{ opacity: 0.5 }}
+              borderWidth={1}
+              borderColor='$borderColor'
+              onPress={handlePrevMonth}
+            >
+              <ChevronLeft size={18} color='$colorFocus' />
+            </YStack>
+            <YStack
+              padding='$2'
+              cursor='pointer'
+              pressStyle={{ opacity: 0.5 }}
+              borderWidth={1}
+              borderColor='$borderColor'
+              onPress={handleNextMonth}
+            >
+              <ChevronRight size={18} color='$colorFocus' />
+            </YStack>
+          </XStack>
+        </XStack>
+      </YStack>
+
+      <YStack width='100%' height={1} backgroundColor='$borderColor' opacity={0.5} marginBottom='$4' />
 
       {/* 요일 헤더 */}
-      <XStack>
+      <XStack marginBottom='$2'>
         {WEEKDAYS.map((day) => (
-          <YStack key={day} flex={1} alignItems='center' padding='$1'>
-            <Text fontSize='$2' color='$colorSubtle' fontWeight='600'>
+          <YStack key={day} flex={1} alignItems='center' paddingVertical='$2'>
+            <Text
+              fontFamily='$body'
+              fontSize={10}
+              letterSpacing={2}
+              textTransform='uppercase'
+              color='$colorFocus'
+              opacity={0.5}
+            >
               {day}
             </Text>
           </YStack>
@@ -668,10 +696,7 @@ function FortuneCalendar() {
               if (dayNum < 1 || dayNum > daysInMonth) {
                 return <YStack key={dayIdx} flex={1} height={44} />
               }
-              const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(dayNum).padStart(
-                2,
-                '0'
-              )}`
+              const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`
               const hasFortune = fortuneMap.has(dateStr)
               const isSelected = selectedDate === dateStr
 
@@ -682,30 +707,28 @@ function FortuneCalendar() {
                   height={44}
                   alignItems='center'
                   justifyContent='center'
-                  borderRadius='$2'
-                  backgroundColor={isSelected ? '$purple10' : 'transparent'}
+                  backgroundColor={isSelected ? 'rgba(201,169,110,0.1)' : 'transparent'}
                   borderWidth={isSelected ? 1 : 0}
-                  borderColor='$yellow8'
+                  borderColor='rgba(201,169,110,0.5)'
                   cursor={hasFortune ? 'pointer' : 'default'}
-                  opacity={hasFortune ? 1 : 0.4}
-                  pressStyle={hasFortune ? { opacity: 0.7 } : undefined}
-                  onPress={() => {
-                    if (hasFortune) setSelectedDate(dateStr)
-                  }}
+                  opacity={hasFortune ? 1 : 0.3}
+                  pressStyle={hasFortune ? { opacity: 0.6 } : undefined}
+                  onPress={() => { if (hasFortune) setSelectedDate(dateStr) }}
                 >
                   <Text
+                    fontFamily='$body'
                     fontSize='$3'
-                    fontWeight={hasFortune ? '600' : '400'}
-                    color={isSelected ? '$color' : hasFortune ? '$color' : '$colorSubtle'}
+                    fontWeight={hasFortune ? '500' : '300'}
+                    color={isSelected ? '#c9a96e' : '$color'}
                   >
                     {dayNum}
                   </Text>
                   {hasFortune && (
                     <YStack
-                      width={6}
-                      height={6}
-                      borderRadius={3}
-                      backgroundColor={isSelected ? '$yellow8' : '$purple8'}
+                      width={4}
+                      height={4}
+                      borderRadius={2}
+                      backgroundColor={isSelected ? '#c9a96e' : 'rgba(201,169,110,0.6)'}
                       position='absolute'
                       bottom={4}
                     />
@@ -717,16 +740,10 @@ function FortuneCalendar() {
         ))}
       </YStack>
 
-      {/* 선택된 날짜의 운세 미리보기 */}
+      {/* 선택된 날짜 운세 */}
       {selectedFortune && (
-        <YStack
-          backgroundColor='$backgroundHover'
-          borderRadius='$4'
-          padding='$4'
-          borderWidth={1}
-          borderColor='$borderColor'
-          gap='$3'
-        >
+        <YStack marginTop='$6'>
+          <Divider />
           <FortuneResult
             cardId={selectedFortune.cardId}
             cardDirection={selectedFortune.cardDirection}
@@ -738,13 +755,15 @@ function FortuneCalendar() {
       )}
 
       {monthQuery.isLoading && (
-        <YStack alignItems='center' paddingVertical='$4'>
+        <YStack alignItems='center' paddingVertical='$6'>
           <LoadingSpinner />
         </YStack>
       )}
     </YStack>
   )
 }
+
+// ─── 메인 FortuneScreen ───────────────────────────────────────────────────────
 
 type TabType = 'today' | 'calendar'
 
@@ -776,59 +795,54 @@ export function FortuneScreen() {
 
   return (
     <YStack flex={1} backgroundColor='$background'>
-      {/* 탭 바 */}
+      {/* 탭 바 — 에디토리얼 스타일 */}
       <XStack
-        paddingHorizontal='$4'
-        paddingTop='$4'
-        gap='$3'
-        maxWidth={640}
-        width='100%'
-        alignSelf='center'
+        borderBottomWidth={1}
+        borderBottomColor='$borderColor'
+        paddingHorizontal={48}
+        $xs={{ paddingHorizontal: '$5' }}
+        $sm={{ paddingHorizontal: '$6' }}
       >
         <YStack
-          flex={1}
-          paddingVertical='$2'
-          alignItems='center'
-          borderBottomWidth={2}
-          borderBottomColor={activeTab === 'today' ? '$accentBackground' : 'transparent'}
+          paddingVertical='$4'
+          paddingHorizontal='$2'
+          marginRight='$6'
+          borderBottomWidth={1}
+          borderBottomColor={activeTab === 'today' ? '#c9a96e' : 'transparent'}
           cursor='pointer'
-          pressStyle={{ opacity: 0.7 }}
+          pressStyle={{ opacity: 0.6 }}
           onPress={() => setActiveTab('today')}
         >
-          <XStack alignItems='center' gap='$2'>
-            <Sun size={16} color={activeTab === 'today' ? '$accentBackground' : '$colorSubtle'} />
-            <Text
-              fontSize='$3'
-              fontWeight={activeTab === 'today' ? '700' : '400'}
-              color={activeTab === 'today' ? '$accentBackground' : '$colorSubtle'}
-            >
-              오늘의 운세
-            </Text>
-          </XStack>
+          <Text
+            fontFamily='$body'
+            fontSize={11}
+            fontWeight='500'
+            letterSpacing={3}
+            textTransform='uppercase'
+            color={activeTab === 'today' ? '#c9a96e' : '$colorFocus'}
+          >
+            Today
+          </Text>
         </YStack>
         <YStack
-          flex={1}
-          paddingVertical='$2'
-          alignItems='center'
-          borderBottomWidth={2}
-          borderBottomColor={activeTab === 'calendar' ? '$accentBackground' : 'transparent'}
+          paddingVertical='$4'
+          paddingHorizontal='$2'
+          borderBottomWidth={1}
+          borderBottomColor={activeTab === 'calendar' ? '#c9a96e' : 'transparent'}
           cursor='pointer'
-          pressStyle={{ opacity: 0.7 }}
+          pressStyle={{ opacity: 0.6 }}
           onPress={() => setActiveTab('calendar')}
         >
-          <XStack alignItems='center' gap='$2'>
-            <Calendar
-              size={16}
-              color={activeTab === 'calendar' ? '$accentBackground' : '$colorSubtle'}
-            />
-            <Text
-              fontSize='$3'
-              fontWeight={activeTab === 'calendar' ? '700' : '400'}
-              color={activeTab === 'calendar' ? '$accentBackground' : '$colorSubtle'}
-            >
-              히스토리
-            </Text>
-          </XStack>
+          <Text
+            fontFamily='$body'
+            fontSize={11}
+            fontWeight='500'
+            letterSpacing={3}
+            textTransform='uppercase'
+            color={activeTab === 'calendar' ? '#c9a96e' : '$colorFocus'}
+          >
+            History
+          </Text>
         </YStack>
       </XStack>
 
@@ -851,9 +865,7 @@ export function FortuneScreen() {
         )
       ) : (
         <ScrollView>
-          <YStack padding='$4' paddingBottom='$12'>
-            <FortuneCalendar />
-          </YStack>
+          <FortuneCalendar />
         </ScrollView>
       )}
     </YStack>
