@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { Paragraph, XStack, YStack, Text, styled } from 'tamagui'
 import { OraculeButton } from '@t4/ui/src/Button'
 import { useLink } from 'solito/link'
@@ -38,12 +37,6 @@ const Label = styled(Text, {
 export function HomeScreen() {
   const queryLink = useLink({ href: '/query' })
   const fortuneLink = useLink({ href: '/fortune' })
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 80)
-    return () => clearTimeout(t)
-  }, [])
 
   return (
     <YStack flex={1} backgroundColor='$background' overflow='hidden'>
@@ -94,10 +87,11 @@ export function HomeScreen() {
           paddingHorizontal={48}
           paddingBottom={72}
           gap='$0'
-          opacity={visible ? 1 : 0}
-          y={visible ? 0 : 32}
-          animation='lazy'
           $xs={{ paddingHorizontal: '$5', paddingBottom: 56 }}
+          // @ts-ignore
+          style={{
+            animation: 'heroFadeUp 0.8s ease-out 0.1s both',
+          }}
         >
           {/* 에디토리얼 라벨 */}
           <XStack alignItems='center' gap='$3' marginBottom='$5'>

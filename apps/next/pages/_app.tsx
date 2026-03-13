@@ -73,6 +73,10 @@ const Metadata = () => (
         body, #root, #__next {
           min-width: 100% !important;
         }
+        @keyframes heroFadeUp {
+          from { opacity: 0; transform: translateY(28px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
       `}
     </style>
     {/* Favicons */}
