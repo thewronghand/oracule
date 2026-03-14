@@ -23,7 +23,7 @@ const { useParam } = createParam<{ spreadType: string; question: string; charact
 
 type DrawPhase = 'shuffle' | 'cut' | 'draw' | 'reveal'
 
-// 카드 뒷면 미니 컴포넌트 (재사용)
+// 카드 뒷면 미니 컴포넌트 (재사용) — fortune screen 스타일 통일
 function CardBack({
   width = 120,
   height = 180,
@@ -43,38 +43,25 @@ function CardBack({
       width={width}
       height={height}
       borderRadius={12}
-      borderWidth={1.5}
-      borderColor='rgba(229,156,151,0.4)'
-      backgroundColor='#0a0a0a'
+      borderWidth={1}
+      borderColor='rgba(229,156,151,0.3)'
+      backgroundColor='#f5f5f5'
       alignItems='center'
       justifyContent='center'
+      overflow='hidden'
       opacity={opacity}
-      shadowColor={glowColor ?? 'rgba(0,0,0,0.4)'}
-      shadowOpacity={glowColor ? 0.6 : 0.35}
-      shadowRadius={glowColor ? 10 : 5}
-      shadowOffset={{ width: 0, height: 3 }}
     >
-      {/* 안쪽 테두리 */}
       <YStack
-        position='absolute'
-        top={6}
-        left={6}
-        right={6}
-        bottom={6}
-        borderRadius={8}
+        width={width * 0.82}
+        height={height * 0.85}
         borderWidth={1}
-        borderColor='rgba(255,255,255,0.06)'
-      />
-      {/* 중앙 로즈 다이아몬드 */}
-      <YStack
-        width={18}
-        height={18}
-        borderWidth={1}
-        borderColor='rgba(229,156,151,0.5)'
-        rotate='45deg'
-        borderRadius={2}
-      />
-      {children}
+        borderColor='rgba(229,156,151,0.15)'
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Text fontSize={glowColor ? 22 : 18} opacity={0.3} color='#e59c97'>✦</Text>
+        {children}
+      </YStack>
     </YStack>
   )
 }
@@ -218,10 +205,9 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
                       width={96}
                       height={144 + heightBonus}
                       opacity={1 - layer * 0.08}
-                      borderColor={isTapped ? '#111111' : 'rgba(229,156,151,0.4)'}
                     >
                       {layer === 0 && isTapped && (
-                        <Text fontFamily='$heading' fontSize={28} fontWeight='300' color='rgba(255,255,255,0.7)'>
+                        <Text fontFamily='$heading' fontSize={28} fontWeight='300' color='#e59c97' opacity={1}>
                           {tapOrder + 1}
                         </Text>
                       )}
@@ -314,11 +300,10 @@ function DrawPhaseView({
                 <CardBack
                   width={80}
                   height={120}
-                  borderColor={isSelected ? '#e59c97' : 'rgba(229,156,151,0.25)'}
-                  glowColor={isSelected ? '$green8' : undefined}
+                  glowColor={isSelected ? '#e59c97' : undefined}
                 >
                   {isSelected && (
-                    <Text fontSize='$5' fontWeight='700' color='$green8'>
+                    <Text fontSize='$4' fontWeight='700' color='#e59c97' opacity={1}>
                       {selectOrder + 1}
                     </Text>
                   )}
