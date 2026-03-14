@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
 import { LoadingSpinner, OraculeButton, SpreadLayout } from '@t4/ui'
 import { createParam } from 'solito'
@@ -33,7 +33,7 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         <YStack gap='$0'>
           {interp.cardReadings.map((card, i) => (
             <YStack
-              key={i}
+              key={card.position ?? i}
               gap='$3'
               paddingVertical='$5'
               borderBottomWidth={1}
@@ -107,7 +107,6 @@ export function ResultScreen(): React.ReactNode {
     try {
       await navigator.clipboard.writeText(url)
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
     } catch {
       // 클립보드 접근 불가 시 무시
     }
@@ -276,7 +275,7 @@ export function ResultScreen(): React.ReactNode {
                     borderColor='rgba(0,0,0,0.10)'
                   >
                     <XStack alignItems='center' gap='$2'>
-                      <Share2 size={12} color='$colorFocus' />
+                      <Share2 size={16} color='$colorFocus' />
                       <Text fontFamily='$body' fontSize={12} color='$colorFocus' letterSpacing={1}>
                         {copied ? '복사됨 ✓' : '링크 복사'}
                       </Text>
@@ -289,7 +288,7 @@ export function ResultScreen(): React.ReactNode {
                     borderColor='rgba(229,156,151,0.3)'
                   >
                     <XStack alignItems='center' gap='$2'>
-                      <MessageCircle size={12} color='#e59c97' />
+                      <MessageCircle size={16} color='#e59c97' />
                       <Text fontFamily='$body' fontSize={12} color='#e59c97' letterSpacing={1}>
                         카카오 공유
                       </Text>
@@ -299,7 +298,7 @@ export function ResultScreen(): React.ReactNode {
               )}
               <OraculeButton variant='primary' customSize='md' {...queryLink}>
                 <XStack alignItems='center' gap='$2'>
-                  <RefreshCw size={12} color='$background' />
+                  <RefreshCw size={16} color='$background' />
                   <Text fontFamily='$body' fontSize={12} color='$background' letterSpacing={1}>
                     새 리딩
                   </Text>
@@ -311,6 +310,12 @@ export function ResultScreen(): React.ReactNode {
       )
     })
     .otherwise(() => null)
+
+  useEffect(() => {
+    if (!copied) return
+    const timer = setTimeout(() => setCopied(false), 2000)
+    return () => clearTimeout(timer)
+  }, [copied])
 
   return (
     <YStack flex={1} backgroundColor='$background'>
