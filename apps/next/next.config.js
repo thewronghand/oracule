@@ -16,7 +16,7 @@ const boolVals = {
 }
 
 const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV !== 'production'
 
 const disableBrowserLogs =
   boolVals[process.env.DISABLE_BROWSER_LOGS] ?? process.env.NODE_ENV === 'production'
@@ -34,10 +34,10 @@ const optimizeCss = false
 const plugins = [
   withPWA,
   withTamagui({
-    config: join(__dirname, 'tamagui.config.ts'),
+    config: './tamagui.config.ts',
     components: ['tamagui', '@t4/ui'],
     importsWhitelist: ['constants.js', 'colors.js'],
-    outputCSS: process.env.NODE_ENV === 'production' ? join(__dirname, 'public/tamagui.css') : null,
+    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     logTimings: true,
     disableExtraction,
     shouldExtract: (path) => {

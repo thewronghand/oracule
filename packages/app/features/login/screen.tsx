@@ -1,51 +1,9 @@
 import type { Provider } from '@supabase/supabase-js'
 import { useState } from 'react'
-import { Paragraph, XStack, YStack, Text, styled, Spinner } from 'tamagui'
-import { OraculeButton } from '@t4/ui/src/Button'
+import { XStack, YStack, Text, Spinner } from 'tamagui'
 import { useSupabase } from 'app/utils/supabase/hooks/useSupabase'
 import { useRouter } from 'solito/router'
 import { SolitoImage } from 'solito/image'
-
-const Label = styled(Text, {
-  fontFamily: '$body',
-  fontSize: 10,
-  fontWeight: '500',
-  letterSpacing: 4,
-  textTransform: 'uppercase',
-  color: '$colorFocus',
-  opacity: 0.6,
-})
-
-const HeroTitle = styled(Text, {
-  fontFamily: '$heading',
-  fontSize: 80,
-  fontWeight: '700',
-  letterSpacing: -2,
-  color: '#ffffff',
-  lineHeight: 76,
-  $xs: { fontSize: 52, lineHeight: 50 },
-})
-
-const BrandButton = styled(YStack, {
-  paddingVertical: '$4',
-  paddingHorizontal: '$5',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-  pressStyle: { opacity: 0.8, scale: 0.98 },
-  variants: {
-    provider: {
-      kakao: {
-        backgroundColor: '#FEE500',
-      },
-      google: {
-        backgroundColor: '#ffffff',
-        borderWidth: 1,
-        borderColor: '#e5e5e5',
-      },
-    },
-  } as const,
-})
 
 export function LoginScreen() {
   const { replace } = useRouter()
@@ -103,9 +61,29 @@ export function LoginScreen() {
         <YStack position='absolute' bottom={56} left={48} right={48} gap='$3'>
           <XStack alignItems='center' gap='$3'>
             <YStack width={24} height={1} backgroundColor='rgba(255,255,255,0.4)' />
-            <Label>Tarot · Oracle</Label>
+            <Text
+              fontFamily='$body'
+              fontSize={10}
+              fontWeight='500'
+              letterSpacing={4}
+              textTransform='uppercase'
+              color='$colorFocus'
+              opacity={0.6}
+            >
+              Tarot · Oracle
+            </Text>
           </XStack>
-          <HeroTitle>Ora&shy;cule</HeroTitle>
+          <Text
+            fontFamily='$heading'
+            fontSize={80}
+            fontWeight='700'
+            letterSpacing={-2}
+            color='#ffffff'
+            lineHeight={76}
+            $xs={{ fontSize: 52, lineHeight: 50 }}
+          >
+            Ora­cule
+          </Text>
           <Text
             fontFamily='$heading'
             fontSize={16}
@@ -132,7 +110,18 @@ export function LoginScreen() {
       >
         {/* 모바일용 타이틀 */}
         <YStack marginBottom='$8' $gtSm={{ display: 'none' }}>
-          <Label marginBottom='$3'>Tarot · Oracle</Label>
+          <Text
+            fontFamily='$body'
+            fontSize={10}
+            fontWeight='500'
+            letterSpacing={4}
+            textTransform='uppercase'
+            color='$colorFocus'
+            opacity={0.6}
+            marginBottom='$3'
+          >
+            Tarot · Oracle
+          </Text>
           <Text
             fontFamily='$heading'
             fontSize={56}
@@ -147,7 +136,18 @@ export function LoginScreen() {
 
         {/* 섹션 헤더 */}
         <YStack marginBottom='$8'>
-          <Label marginBottom='$4'>Welcome</Label>
+          <Text
+            fontFamily='$body'
+            fontSize={10}
+            fontWeight='500'
+            letterSpacing={4}
+            textTransform='uppercase'
+            color='$colorFocus'
+            opacity={0.6}
+            marginBottom='$4'
+          >
+            Welcome
+          </Text>
           <Text
             fontFamily='$heading'
             fontSize={36}
@@ -165,8 +165,14 @@ export function LoginScreen() {
 
         {/* 소셜 로그인 버튼들 */}
         <YStack gap='$3' width='100%'>
-          <BrandButton
-            provider='kakao'
+          <YStack
+            paddingVertical='$4'
+            paddingHorizontal='$5'
+            alignItems='center'
+            justifyContent='center'
+            cursor='pointer'
+            pressStyle={{ opacity: 0.8, scale: 0.98 }}
+            backgroundColor='#FEE500'
             onPress={() => handleOAuthSignIn('kakao')}
             opacity={loading && loading !== 'kakao' ? 0.4 : 1}
             disabled={!!loading}
@@ -194,10 +200,18 @@ export function LoginScreen() {
                 카카오로 시작하기
               </Text>
             </XStack>
-          </BrandButton>
+          </YStack>
 
-          <BrandButton
-            provider='google'
+          <YStack
+            paddingVertical='$4'
+            paddingHorizontal='$5'
+            alignItems='center'
+            justifyContent='center'
+            cursor='pointer'
+            pressStyle={{ opacity: 0.8, scale: 0.98 }}
+            backgroundColor='#ffffff'
+            borderWidth={1}
+            borderColor='#e5e5e5'
             onPress={() => handleOAuthSignIn('google')}
             opacity={loading && loading !== 'google' ? 0.4 : 1}
             disabled={!!loading}
@@ -225,7 +239,7 @@ export function LoginScreen() {
                 Google로 시작하기
               </Text>
             </XStack>
-          </BrandButton>
+          </YStack>
         </YStack>
 
         {/* 비로그인 */}
