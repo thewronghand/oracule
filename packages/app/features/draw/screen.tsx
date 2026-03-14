@@ -60,7 +60,9 @@ function CardBack({
         alignItems='center'
         justifyContent='center'
       >
-        <Text fontSize={glowColor ? 22 : 18} opacity={0.3} color={ROSE}>✦</Text>
+        <Text fontSize={glowColor ? 22 : 18} opacity={0.3} color={ROSE}>
+          ✦
+        </Text>
         {children}
       </YStack>
     </YStack>
@@ -89,10 +91,24 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
       style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
     >
       <YStack alignItems='center' gap='$2'>
-        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
+        <Text
+          fontFamily='$heading'
+          fontSize={34}
+          fontWeight='300'
+          letterSpacing={-0.5}
+          color='$color'
+          lineHeight={40}
+          textAlign='center'
+        >
           카드를 셔플합니다
         </Text>
-        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
+        <Text
+          fontFamily='$body'
+          fontSize={14}
+          color='$colorFocus'
+          opacity={0.55}
+          textAlign='center'
+        >
           카드를 섞어 운명의 배열을 만듭니다
         </Text>
       </YStack>
@@ -112,11 +128,15 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
             y={-i * 5}
             rotate={`${(i - 2) * 0.5}deg`}
             // @ts-ignore
-            style={isShuffling ? {
-              animation: `cardShuffle 0.4s cubic-bezier(0.25,1,0.5,1) ${i * 40}ms both`,
-            } : {
-              transition: 'transform 0.3s cubic-bezier(0.25,1,0.5,1)',
-            }}
+            style={
+              isShuffling
+                ? {
+                    animation: `cardShuffle 0.4s cubic-bezier(0.25,1,0.5,1) ${i * 40}ms both`,
+                  }
+                : {
+                    transition: 'transform 0.3s cubic-bezier(0.25,1,0.5,1)',
+                  }
+            }
           >
             <CardBack width={120} height={180} opacity={1 - i * 0.05} />
           </YStack>
@@ -166,10 +186,24 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
       style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
     >
       <YStack alignItems='center' gap='$2'>
-        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
+        <Text
+          fontFamily='$heading'
+          fontSize={34}
+          fontWeight='300'
+          letterSpacing={-0.5}
+          color='$color'
+          lineHeight={40}
+          textAlign='center'
+        >
           카드를 컷합니다
         </Text>
-        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
+        <Text
+          fontFamily='$body'
+          fontSize={14}
+          color='$colorFocus'
+          opacity={0.55}
+          textAlign='center'
+        >
           세 더미를 순서대로 터치하세요
         </Text>
         <Text fontSize='$4' fontWeight='700' color={ROSE}>
@@ -191,7 +225,10 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
               onPress={() => handleTapStack(stackIndex)}
               cursor={!isTapped ? 'pointer' : 'default'}
               // @ts-ignore
-              style={{ transition: 'transform 0.2s cubic-bezier(0.25,1,0.5,1)', animation: `cardAppear 0.35s cubic-bezier(0.22,1,0.36,1) ${stackIndex * 80}ms both` }}
+              style={{
+                transition: 'transform 0.2s cubic-bezier(0.25,1,0.5,1)',
+                animation: `cardAppear 0.35s cubic-bezier(0.22,1,0.36,1) ${stackIndex * 80}ms both`,
+              }}
             >
               {/* 카드 여러 장 쌓인 효과 */}
               <YStack
@@ -202,13 +239,15 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
               >
                 {[2, 1, 0].map((layer) => (
                   <YStack key={layer} position='absolute' top={layer * 3} left={layer * 2}>
-                    <CardBack
-                      width={96}
-                      height={144 + heightBonus}
-                      opacity={1 - layer * 0.08}
-                    >
+                    <CardBack width={96} height={144 + heightBonus} opacity={1 - layer * 0.08}>
                       {layer === 0 && isTapped && (
-                        <Text fontFamily='$heading' fontSize={28} fontWeight='300' color={ROSE} opacity={1}>
+                        <Text
+                          fontFamily='$heading'
+                          fontSize={28}
+                          fontWeight='300'
+                          color={ROSE}
+                          opacity={1}
+                        >
                           {tapOrder + 1}
                         </Text>
                       )}
@@ -265,10 +304,24 @@ function DrawPhaseView({
       style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
     >
       <YStack alignItems='center' gap='$2'>
-        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
+        <Text
+          fontFamily='$heading'
+          fontSize={34}
+          fontWeight='300'
+          letterSpacing={-0.5}
+          color='$color'
+          lineHeight={40}
+          textAlign='center'
+        >
           카드를 선택하세요
         </Text>
-        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
+        <Text
+          fontFamily='$body'
+          fontSize={14}
+          color='$colorFocus'
+          opacity={0.55}
+          textAlign='center'
+        >
           마음이 이끄는 카드를 {cardCount}장 골라주세요
         </Text>
         <Text
@@ -295,14 +348,12 @@ function DrawPhaseView({
                 // @ts-ignore
                 style={{
                   transition: 'transform 0.2s cubic-bezier(0.25,1,0.5,1)',
-                  animation: `cardAppear 0.35s cubic-bezier(0.22,1,0.36,1) ${(index % 7) * 30}ms both`,
+                  animation: `cardAppear 0.35s cubic-bezier(0.22,1,0.36,1) ${
+                    (index % 7) * 30
+                  }ms both`,
                 }}
               >
-                <CardBack
-                  width={80}
-                  height={120}
-                  glowColor={isSelected ? ROSE : undefined}
-                >
+                <CardBack width={80} height={120} glowColor={isSelected ? ROSE : undefined}>
                   {isSelected && (
                     <Text fontSize='$4' fontWeight='700' color={ROSE} opacity={1}>
                       {selectOrder + 1}
@@ -361,10 +412,24 @@ function RevealPhase({
       style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
     >
       <YStack alignItems='center' gap='$2'>
-        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
+        <Text
+          fontFamily='$heading'
+          fontSize={34}
+          fontWeight='300'
+          letterSpacing={-0.5}
+          color='$color'
+          lineHeight={40}
+          textAlign='center'
+        >
           카드가 공개됩니다
         </Text>
-        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
+        <Text
+          fontFamily='$body'
+          fontSize={14}
+          color='$colorFocus'
+          opacity={0.55}
+          textAlign='center'
+        >
           {allRevealed
             ? '모든 카드가 공개되었습니다'
             : `${revealedIndices.length} / ${drawnCards.length} 카드 공개 중...`}
@@ -442,9 +507,7 @@ function PhaseIndicator({ currentPhase }: { currentPhase: DrawPhase }) {
                 width={32}
                 height={32}
                 borderRadius={16}
-                backgroundColor={
-                  isDone ? '#111111' : isActive ? '#111111' : 'transparent'
-                }
+                backgroundColor={isDone ? '#111111' : isActive ? '#111111' : 'transparent'}
                 alignItems='center'
                 justifyContent='center'
                 borderWidth={isActive || isDone ? 0 : 1}

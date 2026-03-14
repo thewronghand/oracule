@@ -60,10 +60,22 @@ function ReadingItem({
     >
       {/* 날짜 컬럼 */}
       <YStack width={56} flexShrink={0} gap='$1' paddingTop='$1'>
-        <Text fontFamily='$body' fontSize={11} letterSpacing={0.5} color='$colorFocus' opacity={0.5}>
+        <Text
+          fontFamily='$body'
+          fontSize={11}
+          letterSpacing={0.5}
+          color='$colorFocus'
+          opacity={0.5}
+        >
           {formatDate(createdAt).split('  ')[0]}
         </Text>
-        <Text fontFamily='$body' fontSize={11} letterSpacing={0.5} color='$colorFocus' opacity={0.35}>
+        <Text
+          fontFamily='$body'
+          fontSize={11}
+          letterSpacing={0.5}
+          color='$colorFocus'
+          opacity={0.35}
+        >
           {formatDate(createdAt).split('  ')[1]}
         </Text>
       </YStack>
@@ -99,7 +111,12 @@ function ReadingItem({
           </Text>
           {character.id !== 'default' && (
             <>
-              <YStack width={2} height={2} borderRadius={1} backgroundColor='rgba(240,235,224,0.2)' />
+              <YStack
+                width={2}
+                height={2}
+                borderRadius={1}
+                backgroundColor='rgba(240,235,224,0.2)'
+              />
               <Text
                 fontFamily='$body'
                 fontSize={10}
@@ -154,17 +171,24 @@ function LoginPrompt() {
       {/* 배경 이미지 */}
       <YStack
         position='absolute'
-        top={0} left={0} right={0} bottom={0}
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
         // @ts-ignore
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
+          backgroundImage:
+            'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 40%',
         }}
       />
       <YStack
         position='absolute'
-        top={0} left={0} right={0} bottom={0}
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
         // @ts-ignore
         style={{
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.75) 100%)',
@@ -224,10 +248,21 @@ function EmptyState() {
           아직 기록이 없어요
         </Text>
       </YStack>
-      <Paragraph fontFamily='$body' color='$colorFocus' fontSize={13} textAlign='center' opacity={0.5}>
+      <Paragraph
+        fontFamily='$body'
+        color='$colorFocus'
+        fontSize={13}
+        textAlign='center'
+        opacity={0.5}
+      >
         타로 리딩을 받으면 이곳에 기록이 쌓여요.
       </Paragraph>
-      <OraculeButton variant='secondary' {...homeLink} customSize='md' borderColor='rgba(0,0,0,0.10)'>
+      <OraculeButton
+        variant='secondary'
+        {...homeLink}
+        customSize='md'
+        borderColor='rgba(0,0,0,0.10)'
+      >
         타로 보러 가기
       </OraculeButton>
     </YStack>
@@ -310,7 +345,9 @@ export function HistoryScreen() {
           ))
           .with(error, () => (
             <YStack paddingVertical='$8' alignItems='center'>
-              <Paragraph fontFamily='$body' color='$red10' fontSize={14}>기록을 불러오지 못했어요.</Paragraph>
+              <Paragraph fontFamily='$body' color='$red10' fontSize={14}>
+                기록을 불러오지 못했어요.
+              </Paragraph>
             </YStack>
           ))
           .with(success, ({ data }) => {
@@ -321,7 +358,9 @@ export function HistoryScreen() {
                   <YStack
                     key={reading.id}
                     // @ts-ignore
-                    style={{ animation: `phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) ${i * 50}ms both` }}
+                    style={{
+                      animation: `phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) ${i * 50}ms both`,
+                    }}
                   >
                     <ReadingItem
                       id={reading.id}

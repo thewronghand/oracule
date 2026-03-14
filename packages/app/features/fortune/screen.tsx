@@ -83,7 +83,7 @@ const Divider = styled(YStack, {
   width: '100%',
   height: 1,
   backgroundColor: '$borderColor',
-  
+
   marginVertical: '$6',
 })
 
@@ -96,17 +96,24 @@ function LoginPrompt() {
       {/* 배경 이미지 */}
       <YStack
         position='absolute'
-        top={0} left={0} right={0} bottom={0}
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
         // @ts-ignore
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
+          backgroundImage:
+            'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 40%',
         }}
       />
       <YStack
         position='absolute'
-        top={0} left={0} right={0} bottom={0}
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
         // @ts-ignore
         style={{
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.75) 100%)',
@@ -159,7 +166,13 @@ interface FortuneResultProps {
   date: string
 }
 
-function FortuneResult({ cardId, cardDirection, interpretation, characterId, date }: FortuneResultProps) {
+function FortuneResult({
+  cardId,
+  cardDirection,
+  interpretation,
+  characterId,
+  date,
+}: FortuneResultProps) {
   const interp = parseFortuneInterpretation(interpretation)
   const drawnCard = fortuneToDrawnCard(cardId, cardDirection)
   const character = getCharacterById(characterId)
@@ -178,7 +191,9 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
         $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
       >
         {/* 헤더 */}
-        <YStack marginBottom='$8' gap='$1'
+        <YStack
+          marginBottom='$8'
+          gap='$1'
           // @ts-ignore
           style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
         >
@@ -240,7 +255,10 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
         <Divider />
 
         {/* 카드 + 해석 */}
-        <XStack gap='$6' alignItems='flex-start' $xs={{ flexDirection: 'column', alignItems: 'center' }}
+        <XStack
+          gap='$6'
+          alignItems='flex-start'
+          $xs={{ flexDirection: 'column', alignItems: 'center' }}
           // @ts-ignore
           style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both' }}
         >
@@ -308,7 +326,12 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
           >
             내일 새로운 카드가 기다립니다
           </Text>
-          <OraculeButton variant='secondary' customSize='md' {...homeLink} borderColor='rgba(0,0,0,0.10)'>
+          <OraculeButton
+            variant='secondary'
+            customSize='md'
+            {...homeLink}
+            borderColor='rgba(0,0,0,0.10)'
+          >
             홈으로
           </OraculeButton>
         </XStack>
@@ -357,14 +380,20 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={20} opacity={0.3} color={ROSE}>✦</Text>
+          <Text fontSize={20} opacity={0.3} color={ROSE}>
+            ✦
+          </Text>
         </YStack>
       </YStack>
     </YStack>
   )
 }
 
-function PickCard({ index, onPick, disabled }: { index: number; onPick: () => void; disabled: boolean }) {
+function PickCard({
+  index,
+  onPick,
+  disabled,
+}: { index: number; onPick: () => void; disabled: boolean }) {
   const angles = [-20, -10, 0, 10, 20]
   const xOffsets = [-80, -40, 0, 40, 80]
 
@@ -393,7 +422,9 @@ function PickCard({ index, onPick, disabled }: { index: number; onPick: () => vo
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={16} opacity={0.3} color={ROSE}>✦</Text>
+          <Text fontSize={16} opacity={0.3} color={ROSE}>
+            ✦
+          </Text>
         </YStack>
       </YStack>
     </YStack>
@@ -432,12 +463,16 @@ function DrawFortuneView() {
     imageLoadedRef.current = false
     if (typeof window !== 'undefined') {
       const img = new window.Image()
-      img.onload = () => { imageLoadedRef.current = true }
+      img.onload = () => {
+        imageLoadedRef.current = true
+      }
       img.src = getCardImageUrl(cardId)
     }
     setPhase('shuffling')
     createMutation.mutate({ cardId, direction, characterId: selectedCharacter })
-    setTimeout(() => { setPhase('picking') }, 1500)
+    setTimeout(() => {
+      setPhase('picking')
+    }, 1500)
   }
 
   const handlePick = (index: number) => {
@@ -447,7 +482,9 @@ function DrawFortuneView() {
       if (mutationCompletedAtRef.current && imageLoadedRef.current) {
         const elapsed = Date.now() - mutationCompletedAtRef.current
         const remaining = Math.max(0, 2000 - elapsed)
-        setTimeout(() => { utils.fortune.getToday.invalidate() }, remaining)
+        setTimeout(() => {
+          utils.fortune.getToday.invalidate()
+        }, remaining)
       } else {
         setTimeout(checkAndTransition, 100)
       }
@@ -456,7 +493,9 @@ function DrawFortuneView() {
   }
 
   const revealData = mutationDataRef.current
-  const revealCard = revealData ? fortuneToDrawnCard(revealData.cardId, revealData.cardDirection) : null
+  const revealCard = revealData
+    ? fortuneToDrawnCard(revealData.cardId, revealData.cardDirection)
+    : null
 
   return (
     <>
@@ -501,7 +540,13 @@ function DrawFortuneView() {
               >
                 오늘의 운세
               </Text>
-              <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.6} lineHeight={22}>
+              <Text
+                fontFamily='$body'
+                fontSize={14}
+                color='$colorFocus'
+                opacity={0.6}
+                lineHeight={22}
+              >
                 카드 한 장으로 오늘 하루를 점쳐보세요
               </Text>
             </YStack>
@@ -588,18 +633,19 @@ function DrawFortuneView() {
             </YStack>
 
             <XStack justifyContent='flex-end'>
-              <OraculeButton
-                variant='primary'
-                customSize='lg'
-                minWidth={200}
-                onPress={handleStart}
-              >
+              <OraculeButton variant='primary' customSize='lg' minWidth={200} onPress={handleStart}>
                 오늘의 카드 뽑기
               </OraculeButton>
             </XStack>
 
             {createMutation.isError && (
-              <Paragraph fontFamily='$body' textAlign='center' color='$red10' fontSize='$3' marginTop='$4'>
+              <Paragraph
+                fontFamily='$body'
+                textAlign='center'
+                color='$red10'
+                fontSize='$3'
+                marginTop='$4'
+              >
                 {createMutation.error?.message ?? '오류가 발생했습니다.'}
               </Paragraph>
             )}
@@ -609,7 +655,11 @@ function DrawFortuneView() {
 
       {/* shuffling */}
       {phase === 'shuffling' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'
+        <YStack
+          flex={1}
+          justifyContent='center'
+          alignItems='center'
+          gap='$8'
           // @ts-ignore
           style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
         >
@@ -625,16 +675,34 @@ function DrawFortuneView() {
             >
               Shuffling
             </Text>
-            <Text fontFamily='$heading' fontSize={32} fontWeight='300' color='$color' letterSpacing={-0.5}>
+            <Text
+              fontFamily='$heading'
+              fontSize={32}
+              fontWeight='300'
+              color='$color'
+              letterSpacing={-0.5}
+            >
               카드를 섞는 중
             </Text>
           </YStack>
-          <YStack width={200} height={200} alignItems='center' justifyContent='center' position='relative'>
+          <YStack
+            width={200}
+            height={200}
+            alignItems='center'
+            justifyContent='center'
+            position='relative'
+          >
             {[0, 1, 2, 3, 4].map((i) => (
               <ShuffleCard key={i} index={i} phase={phase} />
             ))}
           </YStack>
-          <Text fontFamily='$body' fontSize={13} color='$colorFocus' opacity={0.4} fontStyle='italic'>
+          <Text
+            fontFamily='$body'
+            fontSize={13}
+            color='$colorFocus'
+            opacity={0.4}
+            fontStyle='italic'
+          >
             마음을 가다듬고 카드를 고르세요
           </Text>
         </YStack>
@@ -642,7 +710,11 @@ function DrawFortuneView() {
 
       {/* picking */}
       {phase === 'picking' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'
+        <YStack
+          flex={1}
+          justifyContent='center'
+          alignItems='center'
+          gap='$8'
           // @ts-ignore
           style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
         >
@@ -658,14 +730,32 @@ function DrawFortuneView() {
             >
               Choose
             </Text>
-            <Text fontFamily='$heading' fontSize={32} fontWeight='300' color='$color' letterSpacing={-0.5}>
+            <Text
+              fontFamily='$heading'
+              fontSize={32}
+              fontWeight='300'
+              color='$color'
+              letterSpacing={-0.5}
+            >
               카드를 골라주세요
             </Text>
           </YStack>
-          <Text fontFamily='$body' fontSize={13} color='$colorFocus' opacity={0.4} fontStyle='italic'>
+          <Text
+            fontFamily='$body'
+            fontSize={13}
+            color='$colorFocus'
+            opacity={0.4}
+            fontStyle='italic'
+          >
             끌리는 카드 하나를 선택하세요
           </Text>
-          <XStack justifyContent='center' alignItems='center' height={180} width='100%' position='relative'>
+          <XStack
+            justifyContent='center'
+            alignItems='center'
+            height={180}
+            width='100%'
+            position='relative'
+          >
             {[0, 1, 2, 3, 4].map((i) => (
               <PickCard key={i} index={i} onPick={() => handlePick(i)} disabled={false} />
             ))}
@@ -675,7 +765,11 @@ function DrawFortuneView() {
 
       {/* revealing */}
       {phase === 'revealing' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'
+        <YStack
+          flex={1}
+          justifyContent='center'
+          alignItems='center'
+          gap='$8'
           // @ts-ignore
           style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
         >
@@ -691,7 +785,13 @@ function DrawFortuneView() {
             >
               Revealing
             </Text>
-            <Text fontFamily='$heading' fontSize={32} fontWeight='300' color='$color' letterSpacing={-0.5}>
+            <Text
+              fontFamily='$heading'
+              fontSize={32}
+              fontWeight='300'
+              color='$color'
+              letterSpacing={-0.5}
+            >
               카드를 확인하는 중
             </Text>
           </YStack>
@@ -708,7 +808,9 @@ function DrawFortuneView() {
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize={28} opacity={0.25} color={ROSE}>✦</Text>
+                <Text fontSize={28} opacity={0.25} color={ROSE}>
+                  ✦
+                </Text>
               </YStack>
             )}
           </YStack>
@@ -744,13 +846,17 @@ function FortuneCalendar() {
   const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
   const handlePrevMonth = () => {
-    if (month === 1) { setMonth(12); setYear(year - 1) }
-    else setMonth(month - 1)
+    if (month === 1) {
+      setMonth(12)
+      setYear(year - 1)
+    } else setMonth(month - 1)
     setSelectedDate(null)
   }
   const handleNextMonth = () => {
-    if (month === 12) { setMonth(1); setYear(year + 1) }
-    else setMonth(month + 1)
+    if (month === 12) {
+      setMonth(1)
+      setYear(year + 1)
+    } else setMonth(month + 1)
     setSelectedDate(null)
   }
 
@@ -815,7 +921,13 @@ function FortuneCalendar() {
         </XStack>
       </YStack>
 
-      <YStack width='100%' height={1} backgroundColor='$borderColor' opacity={0.3} marginBottom='$4' />
+      <YStack
+        width='100%'
+        height={1}
+        backgroundColor='$borderColor'
+        opacity={0.3}
+        marginBottom='$4'
+      />
 
       {/* 요일 헤더 */}
       <XStack marginBottom='$2'>
@@ -844,7 +956,10 @@ function FortuneCalendar() {
               if (dayNum < 1 || dayNum > daysInMonth) {
                 return <YStack key={dayIdx} flex={1} height={44} />
               }
-              const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`
+              const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(dayNum).padStart(
+                2,
+                '0'
+              )}`
               const hasFortune = fortuneMap.has(dateStr)
               const isSelected = selectedDate === dateStr
 
@@ -861,7 +976,9 @@ function FortuneCalendar() {
                   cursor={hasFortune ? 'pointer' : 'default'}
                   opacity={hasFortune ? 1 : 0.25}
                   pressStyle={hasFortune ? { opacity: 0.6 } : undefined}
-                  onPress={() => { if (hasFortune) setSelectedDate(dateStr) }}
+                  onPress={() => {
+                    if (hasFortune) setSelectedDate(dateStr)
+                  }}
                 >
                   <Text
                     fontFamily='$body'
