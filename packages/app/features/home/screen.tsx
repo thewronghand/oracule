@@ -88,7 +88,7 @@ export function HomeScreen() {
             AI 타로 리더가 당신의 질문에 답합니다
           </Text>
 
-          <XStack gap='$3' flexWrap='wrap'>
+          <YStack gap='$4'>
             <OraculeButton
               {...queryLink}
               variant='primary'
@@ -97,22 +97,20 @@ export function HomeScreen() {
             >
               타로 리딩 시작
             </OraculeButton>
-            <OraculeButton
+            <Text
               {...fortuneLink}
-              customSize='lg'
-              minWidth={160}
+              fontFamily='$body'
+              fontSize={13}
+              color='rgba(255,255,255,0.55)'
+              letterSpacing={0.5}
+              cursor='pointer'
+              pressStyle={{ opacity: 0.7 }}
               // @ts-ignore
-              style={{
-                backgroundColor: 'transparent',
-                borderWidth: 1,
-                borderColor: 'rgba(255,255,255,0.35)',
-                color: '#ffffff',
-                borderRadius: 8,
-              }}
+              style={{ textDecoration: 'underline', textUnderlineOffset: 3 }}
             >
-              오늘의 운세
-            </OraculeButton>
-          </XStack>
+              오늘의 운세 보기 →
+            </Text>
+          </YStack>
         </YStack>
       </YStack>
 

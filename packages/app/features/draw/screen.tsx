@@ -93,12 +93,12 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
   return (
     <YStack flex={1} alignItems='center' justifyContent='center' gap='$6' padding='$4'>
       <YStack alignItems='center' gap='$2'>
-        <H2 textAlign='center' color='$color'>
+        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드를 셔플합니다
-        </H2>
-        <Paragraph textAlign='center' color='$color3'>
+        </Text>
+        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
           카드를 섞어 운명의 배열을 만듭니다
-        </Paragraph>
+        </Text>
       </YStack>
 
       {/* 카드 더미 */}
@@ -167,12 +167,12 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
   return (
     <YStack flex={1} alignItems='center' justifyContent='center' gap='$6' padding='$4'>
       <YStack alignItems='center' gap='$2'>
-        <H2 textAlign='center' color='$color'>
+        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드를 컷합니다
-        </H2>
-        <Paragraph textAlign='center' color='$color3'>
+        </Text>
+        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
           세 더미를 순서대로 터치하세요
-        </Paragraph>
+        </Text>
         <Text fontSize='$4' fontWeight='700' color='#e59c97'>
           {tappedStacks.length} / 3
         </Text>
@@ -208,7 +208,7 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
                       borderColor={isTapped ? '#111111' : 'rgba(229,156,151,0.4)'}
                     >
                       {layer === 0 && isTapped && (
-                        <Text fontSize='$7' fontWeight='700' color='$green10'>
+                        <Text fontFamily='$heading' fontSize={28} fontWeight='300' color='rgba(255,255,255,0.7)'>
                           {tapOrder + 1}
                         </Text>
                       )}
@@ -259,12 +259,12 @@ function DrawPhaseView({
   return (
     <YStack flex={1} gap='$4' padding='$4'>
       <YStack alignItems='center' gap='$2'>
-        <H2 textAlign='center' color='$color'>
+        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드를 선택하세요
-        </H2>
-        <Paragraph textAlign='center' color='$color3'>
+        </Text>
+        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
           마음이 이끄는 카드를 {cardCount}장 골라주세요
-        </Paragraph>
+        </Text>
         <Text
           fontSize='$5'
           fontWeight='700'
@@ -345,14 +345,14 @@ function RevealPhase({
   return (
     <YStack flex={1} gap='$4' padding='$4'>
       <YStack alignItems='center' gap='$2'>
-        <H2 textAlign='center' color='$color'>
+        <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드가 공개됩니다
-        </H2>
-        <Paragraph textAlign='center' color='$color3'>
+        </Text>
+        <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
           {allRevealed
             ? '모든 카드가 공개되었습니다'
             : `${revealedIndices.length} / ${drawnCards.length} 카드 공개 중...`}
-        </Paragraph>
+        </Text>
       </YStack>
 
       <ScrollView
