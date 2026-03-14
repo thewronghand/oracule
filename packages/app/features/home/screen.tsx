@@ -60,6 +60,8 @@ export function HomeScreen() {
             textTransform='uppercase'
             color='rgba(255,255,255,0.45)'
             marginBottom='$5'
+            // @ts-ignore
+            style={{ animation: 'heroFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both' }}
           >
             AI Tarot Reading
           </Text>
@@ -73,6 +75,8 @@ export function HomeScreen() {
             lineHeight={72}
             marginBottom='$6'
             $xs={{ fontSize: 52, lineHeight: 54 }}
+            // @ts-ignore
+            style={{ animation: 'heroFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both' }}
           >
             Oracule
           </Text>
@@ -84,11 +88,17 @@ export function HomeScreen() {
             lineHeight={26}
             marginBottom='$8'
             maxWidth={380}
+            // @ts-ignore
+            style={{ animation: 'heroFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.32s both' }}
           >
             AI 타로 리더가 당신의 질문에 답합니다
           </Text>
 
-          <YStack gap='$4'>
+          <YStack
+            gap='$4'
+            // @ts-ignore
+            style={{ animation: 'heroFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.44s both' }}
+          >
             <OraculeButton
               {...queryLink}
               variant='primary'
@@ -153,6 +163,8 @@ export function HomeScreen() {
                 borderTopColor='rgba(255,255,255,0.06)'
                 alignItems='center'
                 justifyContent='space-between'
+                // @ts-ignore
+                style={{ animation: `heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) ${0.5 + i * 0.1}s both` }}
               >
                 <YStack gap='$1'>
                   <Text fontFamily='$body' fontSize={15} fontWeight='500' color='#ffffff'>

@@ -271,7 +271,11 @@ export function HistoryScreen() {
         $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
       >
         {/* 페이지 헤더 */}
-        <YStack marginBottom='$8'>
+        <YStack
+          marginBottom='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           <Text
             fontFamily='$body'
             fontSize={11}
@@ -313,18 +317,23 @@ export function HistoryScreen() {
             if (!data || data.length === 0) return <EmptyState />
             return (
               <YStack>
-                {data.map((reading) => (
-                  <ReadingItem
+                {data.map((reading, i) => (
+                  <YStack
                     key={reading.id}
-                    id={reading.id}
-                    question={reading.question}
-                    spreadType={reading.spreadType}
-                    characterId={reading.characterId}
-                    interpretation={reading.interpretation}
-                    createdAt={reading.createdAt}
-                    onDelete={(id) => deleteMutation.mutate({ id })}
-                    isDeleting={deleteMutation.isLoading}
-                  />
+                    // @ts-ignore
+                    style={{ animation: `phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) ${i * 50}ms both` }}
+                  >
+                    <ReadingItem
+                      id={reading.id}
+                      question={reading.question}
+                      spreadType={reading.spreadType}
+                      characterId={reading.characterId}
+                      interpretation={reading.interpretation}
+                      createdAt={reading.createdAt}
+                      onDelete={(id) => deleteMutation.mutate({ id })}
+                      isDeleting={deleteMutation.isLoading}
+                    />
+                  </YStack>
                 ))}
               </YStack>
             )

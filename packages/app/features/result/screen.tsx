@@ -159,7 +159,12 @@ export function ResultScreen(): React.ReactNode {
             $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
           >
             {/* 페이지 헤더 */}
-            <YStack marginBottom='$8' gap='$2'>
+            <YStack
+              marginBottom='$8'
+              gap='$2'
+              // @ts-ignore
+              style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
+            >
               <Text
                 fontFamily='$body'
                 fontSize={11}
@@ -207,7 +212,10 @@ export function ResultScreen(): React.ReactNode {
             <Divider />
 
             {/* 질문 */}
-            <YStack marginBottom='$0' gap='$2'>
+            <YStack marginBottom='$0' gap='$2'
+              // @ts-ignore
+              style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both' }}
+            >
               <Text
                 fontFamily='$body'
                 fontSize={11}
@@ -234,16 +242,26 @@ export function ResultScreen(): React.ReactNode {
             <Divider />
 
             {/* 스프레드 레이아웃 */}
-            <SpreadLayout
-              spreadType={reading.spreadType as SpreadType}
-              cards={reading.cards}
-              revealedIndices={allIndices}
-            />
+            <YStack
+              // @ts-ignore
+              style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.2s both' }}
+            >
+              <SpreadLayout
+                spreadType={reading.spreadType as SpreadType}
+                cards={reading.cards}
+                revealedIndices={allIndices}
+              />
+            </YStack>
 
             <Divider />
 
             {/* 해석 */}
-            <InterpretationView interp={interp} />
+            <YStack
+              // @ts-ignore
+              style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.3s both' }}
+            >
+              <InterpretationView interp={interp} />
+            </YStack>
 
             <Divider />
 
