@@ -4,7 +4,8 @@ import { useLink } from 'solito/link'
 
 // Unsplash 밤하늘 이미지들 (타로 감성)
 // https://unsplash.com/photos/starry-night-sky
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1600&q=80&auto=format&fit=crop'
+const HERO_IMAGE =
+  'https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1600&q=80&auto=format&fit=crop'
 
 export function HomeScreen() {
   const queryLink = useLink({ href: '/query' })
@@ -13,16 +14,14 @@ export function HomeScreen() {
   return (
     <YStack flex={1} backgroundColor='$background'>
       {/* 히어로 섹션 — 밤하늘 풀블리드 */}
-      <YStack
-        position='relative'
-        minHeight={520}
-        $gtSm={{ minHeight: 620 }}
-        overflow='hidden'
-      >
+      <YStack position='relative' minHeight={520} $gtSm={{ minHeight: 620 }} overflow='hidden'>
         {/* 배경 이미지 */}
         <YStack
           position='absolute'
-          top={0} left={0} right={0} bottom={0}
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
           // @ts-ignore
           style={{
             backgroundImage: `url(${HERO_IMAGE})`,
@@ -33,10 +32,14 @@ export function HomeScreen() {
         {/* 다크 오버레이 — 텍스트 가독성 */}
         <YStack
           position='absolute'
-          top={0} left={0} right={0} bottom={0}
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
           // @ts-ignore
           style={{
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.65) 60%, rgba(0,0,0,0.88) 100%)',
+            background:
+              'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.65) 60%, rgba(0,0,0,0.88) 100%)',
           }}
         />
 
@@ -99,12 +102,7 @@ export function HomeScreen() {
             // @ts-ignore
             style={{ animation: 'heroFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.44s both' }}
           >
-            <OraculeButton
-              {...queryLink}
-              variant='primary'
-              customSize='lg'
-              minWidth={160}
-            >
+            <OraculeButton {...queryLink} variant='primary' customSize='lg' minWidth={160}>
               타로 리딩 시작
             </OraculeButton>
             <Text
@@ -125,11 +123,7 @@ export function HomeScreen() {
       </YStack>
 
       {/* 피처 섹션 — 다크 */}
-      <YStack
-        width='100%'
-        backgroundColor='#0a0a0a'
-        paddingVertical={56}
-      >
+      <YStack width='100%' backgroundColor='#0a0a0a' paddingVertical={56}>
         <YStack
           maxWidth={640}
           width='100%'
@@ -164,7 +158,9 @@ export function HomeScreen() {
                 alignItems='center'
                 justifyContent='space-between'
                 // @ts-ignore
-                style={{ animation: `heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) ${0.5 + i * 0.1}s both` }}
+                style={{
+                  animation: `heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) ${0.5 + i * 0.1}s both`,
+                }}
               >
                 <YStack gap='$1'>
                   <Text fontFamily='$body' fontSize={15} fontWeight='500' color='#ffffff'>

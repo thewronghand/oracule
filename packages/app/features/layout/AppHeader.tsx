@@ -40,22 +40,19 @@ export function AppHeader() {
     >
       {/* 로고 */}
       <YStack {...homeLink} cursor='pointer'>
-        <Text
-          fontFamily='$body'
-          fontSize={15}
-          fontWeight='500'
-          letterSpacing={0.5}
-          color='$color'
-        >
+        <Text fontFamily='$body' fontSize={15} fontWeight='500' letterSpacing={0.5} color='$color'>
           Oracule
         </Text>
       </YStack>
 
       {/* 우측 */}
       {isLoading ? null : user ? (
-        <XStack alignItems='center' gap='$5'
+        <XStack
+          alignItems='center'
+          gap='$5'
           // @ts-ignore — 'navigation' is valid ARIA role but not in RN AccessibilityRole
-          accessibilityRole='navigation'>
+          accessibilityRole='navigation'
+        >
           <YStack {...fortuneLink} cursor='pointer' pressStyle={{ opacity: 0.5 }}>
             <Text
               fontFamily='$body'
@@ -134,7 +131,10 @@ export function AppHeader() {
                   cursor='pointer'
                   pressStyle={{ opacity: 0.6 }}
                   hoverStyle={{ backgroundColor: '$backgroundHover' }}
-                  onPress={() => { setShowMenu(false); handleLogout() }}
+                  onPress={() => {
+                    setShowMenu(false)
+                    handleLogout()
+                  }}
                 >
                   <Text fontFamily='$body' fontSize={13} color='$colorFocus'>
                     로그아웃

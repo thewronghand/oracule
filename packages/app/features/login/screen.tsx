@@ -70,19 +70,18 @@ export function LoginScreen() {
   return (
     <XStack flex={1} backgroundColor='$background'>
       {/* 좌측 — 이미지 패널 (데스크탑) */}
-      <YStack
-        flex={1}
-        position='relative'
-        display='none'
-        $gtSm={{ display: 'flex' }}
-      >
+      <YStack flex={1} position='relative' display='none' $gtSm={{ display: 'flex' }}>
         {/* Unsplash 배경 */}
         <YStack
           position='absolute'
-          top={0} left={0} right={0} bottom={0}
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
           // @ts-ignore
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
+            backgroundImage:
+              'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
             backgroundSize: 'cover',
             backgroundPosition: 'center 40%',
           }}
@@ -90,7 +89,10 @@ export function LoginScreen() {
         {/* 오버레이 */}
         <YStack
           position='absolute'
-          top={0} left={0} right={0} bottom={0}
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
           // @ts-ignore
           style={{
             background: 'linear-gradient(135deg, rgba(14,13,11,0.7) 0%, rgba(14,13,11,0.3) 100%)',
@@ -98,13 +100,7 @@ export function LoginScreen() {
         />
 
         {/* 좌측 에디토리얼 텍스트 */}
-        <YStack
-          position='absolute'
-          bottom={56}
-          left={48}
-          right={48}
-          gap='$3'
-        >
+        <YStack position='absolute' bottom={56} left={48} right={48} gap='$3'>
           <XStack alignItems='center' gap='$3'>
             <YStack width={24} height={1} backgroundColor='rgba(255,255,255,0.4)' />
             <Label>Tarot · Oracle</Label>
@@ -187,7 +183,14 @@ export function LoginScreen() {
                   style={{ width: 18, height: 18 }}
                 />
               )}
-              <Text fontFamily='$body' fontSize='$3' fontWeight='500' color='#191919' letterSpacing={1.5} textTransform='uppercase'>
+              <Text
+                fontFamily='$body'
+                fontSize='$3'
+                fontWeight='500'
+                color='#191919'
+                letterSpacing={1.5}
+                textTransform='uppercase'
+              >
                 카카오로 시작하기
               </Text>
             </XStack>
@@ -211,7 +214,14 @@ export function LoginScreen() {
                   style={{ width: 18, height: 18 }}
                 />
               )}
-              <Text fontFamily='$body' fontSize='$3' fontWeight='500' color='#333333' letterSpacing={1.5} textTransform='uppercase'>
+              <Text
+                fontFamily='$body'
+                fontSize='$3'
+                fontWeight='500'
+                color='#333333'
+                letterSpacing={1.5}
+                textTransform='uppercase'
+              >
                 Google로 시작하기
               </Text>
             </XStack>

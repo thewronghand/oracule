@@ -62,7 +62,13 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
                   {card.cardName}
                 </Text>
               </XStack>
-              <Paragraph fontFamily='$body' lineHeight={24} fontSize={14} color='$colorFocus' opacity={0.8}>
+              <Paragraph
+                fontFamily='$body'
+                lineHeight={24}
+                fontSize={14}
+                color='$colorFocus'
+                opacity={0.8}
+              >
                 {card.interpretation}
               </Paragraph>
             </YStack>
@@ -85,7 +91,13 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         >
           {hasCardReadings ? '종합 해석' : '해석'}
         </Text>
-        <Paragraph fontFamily='$body' lineHeight={26} fontSize={14} color='$colorFocus' opacity={0.85}>
+        <Paragraph
+          fontFamily='$body'
+          lineHeight={26}
+          fontSize={14}
+          color='$colorFocus'
+          opacity={0.85}
+        >
           {interp.content}
         </Paragraph>
       </YStack>
@@ -211,7 +223,9 @@ export function ResultScreen(): React.ReactNode {
             <Divider />
 
             {/* 질문 */}
-            <YStack marginBottom='$0' gap='$2'
+            <YStack
+              marginBottom='$0'
+              gap='$2'
               // @ts-ignore
               style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both' }}
             >
