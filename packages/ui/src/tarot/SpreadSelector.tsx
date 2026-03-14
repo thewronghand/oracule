@@ -8,62 +8,85 @@ interface SpreadSelectorProps {
 
 export function SpreadSelector({ selectedSpread, onSelect }: SpreadSelectorProps) {
   return (
-    <XStack flexWrap='wrap' gap='$3' justifyContent='center' padding='$4'>
-      {spreadOptions.map((option) => {
+    <YStack gap={0}>
+      {spreadOptions.map((option, index) => {
         const isSelected = selectedSpread === option.value
 
         return (
-          <YStack
+          <XStack
             key={option.value}
-            width={160}
-            borderRadius={12}
-            borderWidth={isSelected ? 2 : 1}
-            borderColor={isSelected ? '$purple8' : '$borderColor'}
-            backgroundColor={isSelected ? '$purple2' : '$backgroundStrong'}
-            padding='$3'
-            gap='$2'
-            pressStyle={{ scale: 0.97, opacity: 0.85 }}
+            borderTopWidth={index === 0 ? 1 : 0}
+            borderBottomWidth={1}
+            borderColor='rgba(0,0,0,0.07)'
+            paddingVertical='$4'
+            paddingHorizontal='$3'
+            gap='$4'
             cursor='pointer'
+            pressStyle={{ opacity: 0.6 }}
             onPress={() => onSelect(option.value)}
+            alignItems='flex-start'
+            // @ts-ignore
+            style={{
+              transition: 'background-color 0.15s ease',
+              backgroundColor: isSelected ? 'rgba(229, 156, 151, 0.04)' : 'transparent',
+            }}
           >
-            {/* 카드 수 배지 */}
-            <XStack justifyContent='space-between' alignItems='center'>
+            {/* 라디오 인디케이터 */}
+            <YStack paddingTop={3} flexShrink={0}>
               <YStack
-                backgroundColor={isSelected ? '$purple5' : '$background'}
-                borderRadius={6}
-                paddingHorizontal='$2'
-                paddingVertical={2}
+                width={16}
+                height={16}
+                borderRadius={8}
+                borderWidth={1}
+                borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
+                alignItems='center'
+                justifyContent='center'
+                // @ts-ignore
+                style={{ transition: 'border-color 0.15s ease', flexShrink: 0 }}
               >
-                <Text
-                  fontSize='$1'
-                  color={isSelected ? '$purple11' : '$colorFocus'}
-                  fontWeight='600'
-                >
-                  {option.cardCount}장
-                </Text>
+                {isSelected && (
+                  <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
+                )}
               </YStack>
-              {isSelected && (
-                <YStack width={8} height={8} borderRadius={4} backgroundColor='$purple8' />
-              )}
-            </XStack>
+            </YStack>
 
-            {/* 스프레드 이름 */}
-            <Text
-              fontSize='$3'
-              fontWeight='700'
-              color={isSelected ? '$purple11' : '$color'}
-              numberOfLines={2}
-            >
-              {option.label}
-            </Text>
+            {/* 콘텐츠 */}
+            <YStack flex={1} gap='$1'>
+              <XStack alignItems='center' gap='$2' marginBottom={2}>
+                <Text
+                  fontFamily='$body'
+                  fontSize={14}
+                  fontWeight={isSelected ? '500' : '400'}
+                  color={isSelected ? '$color' : '$colorFocus'}
+                  // @ts-ignore
+                  style={{ transition: 'color 0.15s ease' }}
+                >
+                  {option.label}
+                </Text>
+                <Text
+                  fontFamily='$body'
+                  fontSize={11}
+                  color='$colorFocus'
+                  opacity={0.4}
+                  letterSpacing={0.5}
+                >
+                  · {option.cardCount}장
+                </Text>
+              </XStack>
 
-            {/* 설명 */}
-            <Text fontSize='$1' color='$colorFocus' numberOfLines={3} lineHeight={16}>
-              {option.description}
-            </Text>
-          </YStack>
+              <Text
+                fontFamily='$body'
+                fontSize={12}
+                color='$colorFocus'
+                opacity={0.5}
+                lineHeight={18}
+              >
+                {option.description}
+              </Text>
+            </YStack>
+          </XStack>
         )
       })}
-    </XStack>
+    </YStack>
   )
 }

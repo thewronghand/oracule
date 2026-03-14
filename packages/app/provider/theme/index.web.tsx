@@ -9,6 +9,8 @@ export const TamaguiThemeProvider = ({
 
   return (
     <NextThemeProvider
+      defaultTheme='light'
+      forcedTheme='light'
       onChangeTheme={(next) => {
         setTheme(next as ColorScheme)
       }}
