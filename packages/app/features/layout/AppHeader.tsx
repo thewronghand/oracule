@@ -53,7 +53,9 @@ export function AppHeader() {
 
       {/* 우측 */}
       {isLoading ? null : user ? (
-        <XStack alignItems='center' gap='$5' accessibilityRole='navigation'>
+        <XStack alignItems='center' gap='$5'
+          // @ts-ignore — 'navigation' is valid ARIA role but not in RN AccessibilityRole
+          accessibilityRole='navigation'>
           <YStack {...fortuneLink} cursor='pointer' pressStyle={{ opacity: 0.5 }}>
             <Text
               fontFamily='$body'

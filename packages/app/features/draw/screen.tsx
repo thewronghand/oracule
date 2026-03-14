@@ -529,8 +529,7 @@ export function DrawScreen() {
         setReadingId(result.id)
         setIsApiLoading(false)
       })
-      .catch((error) => {
-        console.error('리딩 생성 실패:', error)
+      .catch(() => {
         setIsApiLoading(false)
       })
   }, [questionParam]) // eslint-disable-line react-hooks/exhaustive-deps

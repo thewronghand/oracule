@@ -19,7 +19,6 @@ const Divider = styled(YStack, {
   width: '100%',
   height: 1,
   backgroundColor: '$borderColor',
-  
   marginVertical: '$6',
 })
 
