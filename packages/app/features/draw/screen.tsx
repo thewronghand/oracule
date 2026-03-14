@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { H2, H3, Paragraph, ScrollView, Text, XStack, YStack } from '@t4/ui'
+import { H2, H3, Paragraph, ScrollView, Text, XStack, YStack, styled } from '@t4/ui'
 import { OraculeButton } from '@t4/ui/src/Button'
 import { LoadingSpinner } from '@t4/ui/src/LoadingSpinner'
 import { SpreadLayout } from '@t4/ui/src/tarot/SpreadLayout'
@@ -91,7 +91,15 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
   }, [onShuffle])
 
   return (
-    <YStack flex={1} alignItems='center' justifyContent='center' gap='$6' padding='$4'>
+    <YStack
+      flex={1}
+      alignItems='center'
+      justifyContent='center'
+      gap='$6'
+      padding='$4'
+      // @ts-ignore
+      style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+    >
       <YStack alignItems='center' gap='$2'>
         <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드를 셔플합니다
@@ -113,19 +121,14 @@ function ShufflePhase({ onShuffle }: { onShuffle: () => void }) {
           <YStack
             key={i}
             position='absolute'
-            {...(isShuffling
-              ? {
-                  x: i % 2 === 0 ? -22 + i * 6 : 22 - i * 6,
-                  y: -i * 4 + (i % 2 === 0 ? -12 : 12),
-                  rotate: `${(i - 2) * 5}deg`,
-                  scale: 0.97,
-                }
-              : {
-                  y: -i * 5,
-                  x: 0,
-                  rotate: `${(i - 2) * 0.5}deg`,
-                  scale: 1,
-                })}
+            y={-i * 5}
+            rotate={`${(i - 2) * 0.5}deg`}
+            // @ts-ignore
+            style={isShuffling ? {
+              animation: `cardShuffle 0.4s cubic-bezier(0.25,1,0.5,1) ${i * 40}ms both`,
+            } : {
+              transition: 'transform 0.3s cubic-bezier(0.25,1,0.5,1)',
+            }}
           >
             <CardBack width={120} height={180} opacity={1 - i * 0.05} />
           </YStack>
@@ -165,7 +168,15 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
   )
 
   return (
-    <YStack flex={1} alignItems='center' justifyContent='center' gap='$6' padding='$4'>
+    <YStack
+      flex={1}
+      alignItems='center'
+      justifyContent='center'
+      gap='$6'
+      padding='$4'
+      // @ts-ignore
+      style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+    >
       <YStack alignItems='center' gap='$2'>
         <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드를 컷합니다
@@ -191,6 +202,8 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
               y={isTapped ? 4 : 0}
               onPress={() => handleTapStack(stackIndex)}
               cursor={!isTapped ? 'pointer' : 'default'}
+              // @ts-ignore
+              style={{ transition: 'transform 0.2s cubic-bezier(0.25,1,0.5,1)', animation: `cardAppear 0.35s cubic-bezier(0.22,1,0.36,1) ${stackIndex * 80}ms both` }}
             >
               {/* 카드 여러 장 쌓인 효과 */}
               <YStack
@@ -257,7 +270,13 @@ function DrawPhaseView({
   )
 
   return (
-    <YStack flex={1} gap='$4' padding='$4'>
+    <YStack
+      flex={1}
+      gap='$4'
+      padding='$4'
+      // @ts-ignore
+      style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+    >
       <YStack alignItems='center' gap='$2'>
         <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드를 선택하세요
@@ -286,6 +305,11 @@ function DrawPhaseView({
                 y={isSelected ? -10 : 0}
                 onPress={() => handleSelectCard(index)}
                 cursor='pointer'
+                // @ts-ignore
+                style={{
+                  transition: 'transform 0.2s cubic-bezier(0.25,1,0.5,1)',
+                  animation: `cardAppear 0.35s cubic-bezier(0.22,1,0.36,1) ${(index % 7) * 30}ms both`,
+                }}
               >
                 <CardBack
                   width={80}
@@ -343,7 +367,13 @@ function RevealPhase({
   }, [readingId, router])
 
   return (
-    <YStack flex={1} gap='$4' padding='$4'>
+    <YStack
+      flex={1}
+      gap='$4'
+      padding='$4'
+      // @ts-ignore
+      style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+    >
       <YStack alignItems='center' gap='$2'>
         <Text fontFamily='$heading' fontSize={34} fontWeight='300' letterSpacing={-0.5} color='$color' lineHeight={40} textAlign='center'>
           카드가 공개됩니다
@@ -368,7 +398,13 @@ function RevealPhase({
       </ScrollView>
 
       {allRevealed && (
-        <YStack alignItems='center' gap='$3' paddingBottom='$4'>
+        <YStack
+          alignItems='center'
+          gap='$3'
+          paddingBottom='$4'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.4s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           {isApiLoading ? (
             <YStack gap='$3' alignItems='center'>
               <LoadingSpinner message='해석을 준비하고 있습니다...' />
