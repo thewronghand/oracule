@@ -15,8 +15,8 @@ const boolVals = {
   false: false,
 }
 
-const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
+// SSR 문제를 유발하므로 항상 비활성화
+const disableExtraction = true
 
 const disableBrowserLogs =
   boolVals[process.env.DISABLE_BROWSER_LOGS] ?? process.env.NODE_ENV === 'production'
@@ -40,11 +40,6 @@ const plugins = [
     outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     logTimings: true,
     disableExtraction,
-    shouldExtract: (path) => {
-      if (path.includes(join('packages', 'app'))) {
-        return true
-      }
-    },
   }),
 ]
 
