@@ -537,6 +537,9 @@ function DrawFortuneView() {
                       pressStyle={{ opacity: 0.7 }}
                       onPress={() => setSelectedCharacter(character.id)}
                       cursor='pointer'
+                      accessibilityRole='radio'
+                      accessibilityState={{ checked: isSelected }}
+                      accessibilityLabel={`${character.name}: ${character.description}`}
                       // @ts-ignore
                       style={{ transition: 'all 0.15s ease' }}
                     >

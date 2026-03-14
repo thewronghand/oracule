@@ -36,7 +36,11 @@ export function QueryScreen() {
         $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
       >
         {/* 페이지 헤더 */}
-        <YStack marginBottom='$8'>
+        <YStack
+          marginBottom='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           <Text
             fontFamily='$body'
             fontSize={11}
@@ -62,7 +66,11 @@ export function QueryScreen() {
         </YStack>
 
         {/* 캐릭터 선택 */}
-        <YStack marginBottom='$8'>
+        <YStack
+          marginBottom='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.08s both' }}
+        >
           <Text
             fontFamily='$body'
             fontSize={11}
@@ -91,6 +99,9 @@ export function QueryScreen() {
                   pressStyle={{ opacity: 0.7 }}
                   onPress={() => setSelectedCharacter(character.id)}
                   cursor='pointer'
+                  accessibilityRole='radio'
+                  accessibilityState={{ checked: isSelected }}
+                  accessibilityLabel={`${character.name}: ${character.description}`}
                   // @ts-ignore
                   style={{ transition: 'all 0.15s ease' }}
                 >
@@ -141,7 +152,11 @@ export function QueryScreen() {
         </YStack>
 
         {/* 스프레드 선택 */}
-        <YStack marginBottom='$8'>
+        <YStack
+          marginBottom='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.16s both' }}
+        >
           <Text
             fontFamily='$body'
             fontSize={11}
@@ -158,7 +173,11 @@ export function QueryScreen() {
         </YStack>
 
         {/* 질문 입력 */}
-        <YStack marginBottom='$8'>
+        <YStack
+          marginBottom='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.24s both' }}
+        >
           <Text
             fontFamily='$body'
             fontSize={11}
@@ -189,6 +208,9 @@ export function QueryScreen() {
                   pressStyle={{ opacity: 0.6 }}
                   onPress={() => setQuestion(q)}
                   cursor='pointer'
+                  accessibilityRole='radio'
+                  accessibilityState={{ checked: isSelected }}
+                  accessibilityLabel={q}
                   // @ts-ignore
                   style={{ transition: 'all 0.15s ease' }}
                 >
@@ -237,18 +259,36 @@ export function QueryScreen() {
         </YStack>
 
         {/* CTA */}
-        <XStack justifyContent='flex-end'>
-          <OraculeButton
-            variant='primary'
-            customSize='lg'
-            onPress={handleDraw}
-            disabled={question.trim() === ''}
-            opacity={question.trim() === '' ? 0.35 : 1}
-            minWidth={160}
-          >
-            카드 뽑기
-          </OraculeButton>
-        </XStack>
+        <YStack
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.32s both' }}
+        >
+          <XStack justifyContent='flex-end'>
+            <OraculeButton
+              variant='primary'
+              customSize='lg'
+              onPress={handleDraw}
+              disabled={question.trim() === ''}
+              opacity={question.trim() === '' ? 0.35 : 1}
+              minWidth={160}
+              cursor={question.trim() === '' ? 'not-allowed' : 'pointer'}
+            >
+              카드 뽑기
+            </OraculeButton>
+          </XStack>
+          {question.trim() === '' && (
+            <Text
+              fontFamily='$body'
+              fontSize={12}
+              color='$colorFocus'
+              opacity={0.45}
+              textAlign='right'
+              marginTop='$2'
+            >
+              질문을 입력하거나 선택해주세요
+            </Text>
+          )}
+        </YStack>
       </YStack>
     </ScrollView>
   )
