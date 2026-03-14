@@ -187,6 +187,8 @@ export function LoginScreen() {
                   height={18}
                   alt='Kakao'
                   style={{ width: 18, height: 18 }}
+                  // @ts-ignore
+                  unoptimized
                 />
               )}
               <Text
@@ -226,6 +228,8 @@ export function LoginScreen() {
                   height={18}
                   alt='Google'
                   style={{ width: 18, height: 18 }}
+                  // @ts-ignore
+                  unoptimized
                 />
               )}
               <Text
