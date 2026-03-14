@@ -177,7 +177,10 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
         $gtSm={{ paddingHorizontal: 48, paddingTop: 56 }}
       >
         {/* 헤더 */}
-        <YStack marginBottom='$8' gap='$1'>
+        <YStack marginBottom='$8' gap='$1'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           <XStack alignItems='center' gap='$3' marginBottom='$3'>
             <Text
               fontFamily='$body'
@@ -236,7 +239,10 @@ function FortuneResult({ cardId, cardDirection, interpretation, characterId, dat
         <Divider />
 
         {/* 카드 + 해석 */}
-        <XStack gap='$6' alignItems='flex-start' $xs={{ flexDirection: 'column', alignItems: 'center' }}>
+        <XStack gap='$6' alignItems='flex-start' $xs={{ flexDirection: 'column', alignItems: 'center' }}
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both' }}
+        >
           <YStack alignItems='center' gap='$3' flexShrink={0}>
             <TarotCard card={drawnCard} isRevealed size='lg' />
             <YStack alignItems='center' gap='$1'>
@@ -455,7 +461,10 @@ function DrawFortuneView() {
     <>
       {/* idle */}
       {phase === 'idle' && (
-        <ScrollView>
+        <ScrollView
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.4s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           <YStack
             maxWidth={640}
             width='100%'
@@ -596,7 +605,10 @@ function DrawFortuneView() {
 
       {/* shuffling */}
       {phase === 'shuffling' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
+        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           <YStack gap='$1' alignItems='center'>
             <Text
               fontFamily='$body'
@@ -626,7 +638,10 @@ function DrawFortuneView() {
 
       {/* picking */}
       {phase === 'picking' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
+        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           <YStack gap='$1' alignItems='center'>
             <Text
               fontFamily='$body'
@@ -656,7 +671,10 @@ function DrawFortuneView() {
 
       {/* revealing */}
       {phase === 'revealing' && (
-        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'>
+        <YStack flex={1} justifyContent='center' alignItems='center' gap='$8'
+          // @ts-ignore
+          style={{ animation: 'phaseEnter 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+        >
           <YStack gap='$1' alignItems='center'>
             <Text
               fontFamily='$body'
