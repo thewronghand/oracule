@@ -91,37 +91,59 @@ const Divider = styled(YStack, {
 function LoginPrompt() {
   const loginLink = useLink({ href: '/login' })
   return (
-    <YStack flex={1} justifyContent='center' alignItems='center' padding='$6' gap='$6'>
-      <YStack gap='$2'>
-        <Text
-          fontFamily='$body'
-          fontSize={11}
-          fontWeight='500'
-          letterSpacing={3}
-          textTransform='uppercase'
-          color='$colorFocus'
-          opacity={0.6}
-          marginBottom='$2'
-        >
-          Sign In Required
+    <YStack flex={1} position='relative' justifyContent='center' alignItems='center'>
+      {/* 배경 이미지 */}
+      <YStack
+        position='absolute'
+        top={0} left={0} right={0} bottom={0}
+        // @ts-ignore
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1200&q=80&auto=format&fit=crop)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 40%',
+        }}
+      />
+      <YStack
+        position='absolute'
+        top={0} left={0} right={0} bottom={0}
+        // @ts-ignore
+        style={{
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.75) 100%)',
+        }}
+      />
+      {/* 콘텐츠 */}
+      <YStack position='relative' alignItems='center' padding='$6' gap='$6'>
+        <YStack gap='$2' alignItems='center'>
+          <Text
+            fontFamily='$body'
+            fontSize={11}
+            fontWeight='500'
+            letterSpacing={3}
+            textTransform='uppercase'
+            color='rgba(255,255,255,0.5)'
+            marginBottom='$2'
+          >
+            Sign In Required
+          </Text>
+          <Text
+            fontFamily='$heading'
+            fontSize={40}
+            fontWeight='300'
+            letterSpacing={-0.5}
+            color='#ffffff'
+            lineHeight={46}
+            textAlign='center'
+          >
+            로그인이{'\n'}필요해요
+          </Text>
+        </YStack>
+        <Text fontFamily='$body' color='rgba(255,255,255,0.6)' fontSize={14} textAlign='center'>
+          오늘의 운세를 보려면 먼저 로그인해주세요.
         </Text>
-        <Text
-          fontFamily='$heading'
-          fontSize={32}
-          fontWeight='300'
-          letterSpacing={-0.5}
-          color='$color'
-          lineHeight={38}
-        >
-          로그인이{'\n'}필요해요
-        </Text>
+        <OraculeButton variant='primary' {...loginLink} customSize='lg'>
+          로그인하기
+        </OraculeButton>
       </YStack>
-      <Paragraph fontFamily='$body' color='$colorFocus' fontSize='$3' opacity={0.7}>
-        오늘의 운세를 보려면 먼저 로그인해주세요.
-      </Paragraph>
-      <OraculeButton variant='primary' {...loginLink} customSize='lg'>
-        로그인하기
-      </OraculeButton>
     </YStack>
   )
 }
