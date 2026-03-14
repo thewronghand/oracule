@@ -10,12 +10,18 @@ export const OraculeButton = styled(Button, {
     opacity: 0.75,
     scale: 0.98,
   },
+  focusStyle: {
+    outlineColor: '#e59c97',
+    outlineWidth: 2,
+    outlineOffset: 2,
+    outlineStyle: 'solid',
+  },
 
   variants: {
     variant: {
       primary: {
-        backgroundColor: '#111111',
-        color: '#ffffff',
+        backgroundColor: '$color',
+        color: '$background',
         borderWidth: 0,
       },
       secondary: {
