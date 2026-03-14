@@ -43,6 +43,13 @@ export default class Document extends NextDocument {
       <Html>
         <Head>
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+          {/* 모던 미니멀 폰트: Inter (헤딩 + 본문 통합) */}
+          <link rel='preconnect' href='https://fonts.googleapis.com' />
+          <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
+            rel='stylesheet'
+          />
         </Head>
         <body>
           <Main />

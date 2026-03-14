@@ -1,5 +1,5 @@
 import React from 'react'
-import { H2, H3, Paragraph, ScrollView, Separator, XStack, YStack, Text } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
 import { LoadingSpinner, OraculeButton, SpreadLayout } from '@t4/ui'
 import { createParam } from 'solito'
 import { useLink } from 'solito/link'
@@ -9,42 +9,68 @@ import { error, loading, success } from 'app/utils/trpc/patterns'
 import { parseInterpretation } from 'app/utils/parseInterpretation'
 import type { SpreadType } from 'app/types/spread'
 import type { ReadingInterpretation } from 'app/types/reading'
-import { Quote } from '@tamagui/lucide-icons'
 import { getCharacterById } from 'app/types/character'
 
 const { useParam } = createParam<{ shareId: string }>()
+
+const SectionLabel = styled(Text, {
+  fontFamily: '$body',
+  fontSize: 10,
+  fontWeight: '500',
+  letterSpacing: 4,
+  textTransform: 'uppercase',
+  color: '#e59c97',
+})
+
+const Divider = styled(YStack, {
+  width: '100%',
+  height: 1,
+  backgroundColor: '$borderColor',
+  opacity: 0.5,
+  marginVertical: '$6',
+})
 
 function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
   const hasCardReadings = interp.cardReadings.length > 0
 
   return (
-    <YStack gap='$4'>
+    <YStack gap='$6'>
       {hasCardReadings && (
         <YStack gap='$4'>
           {interp.cardReadings.map((card, i) => (
             <YStack
               key={i}
-              gap='$2'
-              backgroundColor='$backgroundHover'
-              borderRadius='$4'
-              padding='$4'
+              gap='$3'
+              paddingVertical='$5'
+              paddingHorizontal='$5'
               borderWidth={1}
               borderColor='$borderColor'
-              borderLeftWidth={3}
-              borderLeftColor='$yellow8'
+              borderLeftWidth={2}
+              borderLeftColor='#e59c97'
             >
-              <XStack alignItems='center' gap='$2'>
-                <Text color='$yellow8' fontSize='$2' fontWeight='700'>
+              <XStack alignItems='center' gap='$3'>
+                <Text
+                  fontFamily='$body'
+                  fontSize={10}
+                  fontWeight='500'
+                  letterSpacing={3}
+                  textTransform='uppercase'
+                  color='#e59c97'
+                >
                   {card.position}
                 </Text>
-                <Text color='$colorSubtle' fontSize='$2'>
-                  —
-                </Text>
-                <Text color='$accentBackground' fontSize='$2' fontWeight='600'>
+                <YStack width={20} height={1} backgroundColor='$borderColor' opacity={0.5} />
+                <Text
+                  fontFamily='$heading'
+                  fontSize={18}
+                  fontWeight='400'
+                  fontStyle='italic'
+                  color='$color'
+                >
                   {card.cardName}
                 </Text>
               </XStack>
-              <Paragraph lineHeight='$6' fontSize='$3' color='$color'>
+              <Paragraph fontFamily='$body' lineHeight='$6' fontSize='$3' color='$colorFocus'>
                 {card.interpretation}
               </Paragraph>
             </YStack>
@@ -52,22 +78,18 @@ function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
         </YStack>
       )}
 
-      {hasCardReadings && <Separator borderColor='$borderColor' opacity={0.3} />}
+      {hasCardReadings && <Divider />}
 
       <YStack
         gap='$4'
-        backgroundColor='$backgroundHover'
-        borderRadius='$4'
-        padding='$5'
+        paddingVertical='$6'
+        paddingHorizontal='$5'
         borderWidth={1}
-        borderColor='$borderColor'
-        borderLeftWidth={3}
-        borderLeftColor='$accentBackground'
+        borderColor='rgba(229,156,151,0.3)'
+        backgroundColor='rgba(229,156,151,0.04)'
       >
-        <H3 color='$accentBackground' fontSize='$2' textTransform='uppercase' letterSpacing={3}>
-          {hasCardReadings ? '종합 해석' : '해석'}
-        </H3>
-        <Paragraph lineHeight='$7' fontSize='$4' color='$color'>
+        <SectionLabel>{hasCardReadings ? '종합 해석' : '해석'}</SectionLabel>
+        <Paragraph fontFamily='$body' lineHeight='$7' fontSize='$4' color='$color'>
           {interp.content}
         </Paragraph>
       </YStack>
@@ -88,7 +110,7 @@ export function ShareScreen(): React.ReactNode {
   const content = match(readingQuery)
     .with(error, () => (
       <YStack flex={1} alignItems='center' justifyContent='center' padding='$6'>
-        <Paragraph color='$red10' textAlign='center'>
+        <Paragraph fontFamily='$body' color='$red10' textAlign='center'>
           공유된 리딩을 찾을 수 없습니다.
         </Paragraph>
       </YStack>
@@ -108,97 +130,112 @@ export function ShareScreen(): React.ReactNode {
 
       return (
         <ScrollView flex={1}>
-          <YStack padding='$4' gap='$6' paddingBottom='$12'>
-            {/* 제목 */}
-            <YStack alignItems='center' gap='$3' paddingTop='$2'>
-              <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
-                공유된 타로 리딩
-              </H2>
+          <YStack
+            maxWidth={720}
+            width='100%'
+            alignSelf='center'
+            paddingHorizontal={48}
+            paddingTop={56}
+            paddingBottom={96}
+            gap='$0'
+            $xs={{ paddingHorizontal: '$5', paddingTop: '$8' }}
+            $sm={{ paddingHorizontal: '$6' }}
+          >
+            {/* 공유 배지 */}
+            <XStack alignItems='center' gap='$3' marginBottom='$8'>
+              <YStack width={24} height={1} backgroundColor='#e59c97' opacity={0.6} />
+              <SectionLabel>Shared Reading</SectionLabel>
+            </XStack>
+
+            {/* 페이지 헤더 */}
+            <YStack marginBottom='$8' gap='$2'>
+              <Text
+                fontFamily='$heading'
+                fontSize={48}
+                fontWeight='300'
+                letterSpacing={-1}
+                color='$color'
+                lineHeight={50}
+                $xs={{ fontSize: 36, lineHeight: 38 }}
+              >
+                {interp.title}
+              </Text>
+              {interp.summary && (
+                <Text
+                  fontFamily='$heading'
+                  fontSize={18}
+                  fontStyle='italic'
+                  color='#e59c97'
+                  letterSpacing={0.3}
+                  marginTop='$1'
+                >
+                  {interp.summary}
+                </Text>
+              )}
               {character.id !== 'default' && (
-                <XStack alignItems='center' gap='$2'>
-                  <Text fontSize={18}>{character.emoji}</Text>
-                  <Text fontSize='$3' color='$colorSubtle' fontWeight='500'>
+                <XStack alignItems='center' gap='$2' marginTop='$2'>
+                  <Text fontSize={16}>{character.emoji}</Text>
+                  <Text fontFamily='$body' fontSize='$2' color='$colorFocus' letterSpacing={0.3}>
                     {character.name}의 해석
                   </Text>
                 </XStack>
               )}
-              <YStack width={160} height={1} backgroundColor='$borderColor' opacity={0.3} />
             </YStack>
+
+            <Divider />
 
             {/* 질문 박스 */}
             <YStack
-              backgroundColor='$purple10'
-              borderRadius='$4'
-              padding='$5'
-              gap='$3'
-              borderWidth={1.5}
-              borderColor='$yellow8'
-              position='relative'
+              paddingVertical='$5'
+              paddingHorizontal='$6'
+              borderWidth={1}
+              borderColor='rgba(229,156,151,0.4)'
             >
-              <YStack
-                position='absolute'
-                top={6}
-                left={6}
-                right={6}
-                bottom={6}
-                borderRadius={10}
-                borderWidth={1}
-                borderColor='$yellow6'
-                opacity={0.3}
-                pointerEvents='none'
-              />
-              <XStack position='absolute' top='$3' left='$3' opacity={0.25}>
-                <Quote size={22} color='$yellow8' />
-              </XStack>
-              <Paragraph
-                color='$yellow8'
-                fontSize='$1'
-                textAlign='center'
+              <Text
+                fontFamily='$body'
+                fontSize={10}
+                fontWeight='500'
+                letterSpacing={4}
                 textTransform='uppercase'
-                letterSpacing={3}
-                opacity={0.8}
+                color='#e59c97'
+                marginBottom='$3'
               >
                 질문
-              </Paragraph>
-              <Paragraph
-                textAlign='center'
-                fontWeight='600'
-                fontSize='$5'
-                paddingHorizontal='$4'
+              </Text>
+              <Text
+                fontFamily='$heading'
+                fontSize={22}
+                fontWeight='400'
                 color='$color'
-                lineHeight='$7'
+                lineHeight={30}
+                fontStyle='italic'
               >
                 {reading.question}
-              </Paragraph>
+              </Text>
             </YStack>
 
-            {/* 스프레드 레이아웃 */}
+            <Divider />
+
+            {/* 스프레드 */}
             <SpreadLayout
               spreadType={reading.spreadType as SpreadType}
               cards={reading.cards}
               revealedIndices={allIndices}
             />
 
-            <Separator borderColor='$borderColor' opacity={0.3} />
+            <Divider />
 
-            {/* AI 생성 제목 + 요약 */}
-            <YStack alignItems='center' gap='$2'>
-              <H2 textAlign='center' color='$accentBackground' letterSpacing={1}>
-                {interp.title}
-              </H2>
-              {interp.summary ? (
-                <Paragraph textAlign='center' color='$colorSubtle' fontSize='$3' fontStyle='italic'>
-                  {interp.summary}
-                </Paragraph>
-              ) : null}
-            </YStack>
-
-            {/* 해석 영역 */}
+            {/* 해석 */}
             <InterpretationView interp={interp} />
 
-            <OraculeButton variant='primary' customSize='lg' {...homeLink}>
-              나도 타로 보기
-            </OraculeButton>
+            <Divider />
+
+            {/* CTA */}
+            <XStack justifyContent='flex-end'>
+              <OraculeButton variant='primary' customSize='lg' {...homeLink} minWidth={200}>
+                나도 타로 보기
+              </OraculeButton>
+            </XStack>
           </YStack>
         </ScrollView>
       )

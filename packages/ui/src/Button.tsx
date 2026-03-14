@@ -1,19 +1,28 @@
 import { Button, styled } from 'tamagui'
+import { ROSE } from 'app/utils/colors'
 
 export const OraculeButton = styled(Button, {
   name: 'OraculeButton',
-  borderRadius: '$4',
-  fontWeight: '600',
+  borderRadius: 8,
+  fontWeight: '500',
+  fontFamily: '$body',
+  letterSpacing: 0.3,
   pressStyle: {
-    opacity: 0.8,
-    scale: 0.97,
+    opacity: 0.75,
+    scale: 0.98,
+  },
+  focusStyle: {
+    outlineColor: ROSE,
+    outlineWidth: 2,
+    outlineOffset: 2,
+    outlineStyle: 'solid',
   },
 
   variants: {
     variant: {
       primary: {
-        backgroundColor: '$accentBackground',
-        color: '$accentColor',
+        backgroundColor: '$color',
+        color: '$background',
         borderWidth: 0,
       },
       secondary: {
@@ -24,25 +33,26 @@ export const OraculeButton = styled(Button, {
       },
       ghost: {
         backgroundColor: 'transparent',
-        color: '$color',
+        color: '$colorFocus',
         borderWidth: 0,
+        letterSpacing: 1,
       },
     },
     customSize: {
       sm: {
         paddingHorizontal: '$3',
         paddingVertical: '$2',
-        fontSize: '$3',
+        fontSize: '$2',
       },
       md: {
-        paddingHorizontal: '$4',
+        paddingHorizontal: '$5',
         paddingVertical: '$3',
-        fontSize: '$4',
+        fontSize: '$2',
       },
       lg: {
-        paddingHorizontal: '$6',
+        paddingHorizontal: '$7',
         paddingVertical: '$4',
-        fontSize: '$5',
+        fontSize: '$3',
       },
     },
   } as const,

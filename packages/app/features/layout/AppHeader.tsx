@@ -1,41 +1,8 @@
-import { XStack, Text, YStack, Avatar, styled } from 'tamagui'
+import { useState } from 'react'
+import { XStack, Text, YStack, Avatar } from 'tamagui'
 import { useUser } from 'app/utils/supabase/hooks/useUser'
 import { useSupabase } from 'app/utils/supabase/hooks/useSupabase'
 import { useLink } from 'solito/link'
-import { LogOut, History } from '@tamagui/lucide-icons'
-
-const HeaderContainer = styled(XStack, {
-  width: '100%',
-  height: 56,
-  paddingHorizontal: '$4',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  backgroundColor: '$background',
-  borderBottomWidth: 1,
-  borderBottomColor: '$purple4',
-})
-
-const HeaderTitle = styled(Text, {
-  fontSize: '$5',
-  fontWeight: '700',
-  letterSpacing: 2,
-  color: '$purple10',
-})
-
-const LoginButton = styled(Text, {
-  fontSize: '$3',
-  fontWeight: '500',
-  color: '$purple9',
-  cursor: 'pointer',
-  pressStyle: { opacity: 0.7 },
-})
-
-const LogoutButton = styled(YStack, {
-  cursor: 'pointer',
-  padding: '$1',
-  borderRadius: '$2',
-  pressStyle: { opacity: 0.7 },
-})
 
 function getInitial(name?: string | null, email?: string | null): string {
   if (name) return name.charAt(0).toUpperCase()
@@ -44,11 +11,13 @@ function getInitial(name?: string | null, email?: string | null): string {
 }
 
 export function AppHeader() {
+  const [showMenu, setShowMenu] = useState(false)
   const { user, isLoading } = useUser()
   const supabase = useSupabase()
   const loginLink = useLink({ href: '/login' })
   const homeLink = useLink({ href: '/' })
   const historyLink = useLink({ href: '/history' })
+  const fortuneLink = useLink({ href: '/fortune' })
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -58,53 +27,135 @@ export function AppHeader() {
   const displayName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email
 
   return (
-    <HeaderContainer>
+    <XStack
+      width='100%'
+      height={48}
+      paddingHorizontal={24}
+      alignItems='center'
+      justifyContent='space-between'
+      backgroundColor='$background'
+      borderBottomWidth={1}
+      borderBottomColor='$borderColor'
+      $gtSm={{ paddingHorizontal: 48 }}
+    >
       {/* 로고 */}
       <YStack {...homeLink} cursor='pointer'>
-        <HeaderTitle>Oracule</HeaderTitle>
+        <Text
+          fontFamily='$body'
+          fontSize={15}
+          fontWeight='500'
+          letterSpacing={0.5}
+          color='$color'
+        >
+          Oracule
+        </Text>
       </YStack>
 
-      {/* 우측: 로그인 상태 */}
+      {/* 우측 */}
       {isLoading ? null : user ? (
-        <XStack alignItems='center' gap='$3'>
-          <YStack {...historyLink} cursor='pointer' pressStyle={{ opacity: 0.7 }} padding='$1'>
-            <History size={20} color='$purple8' />
+        <XStack alignItems='center' gap='$5'
+          // @ts-ignore — 'navigation' is valid ARIA role but not in RN AccessibilityRole
+          accessibilityRole='navigation'>
+          <YStack {...fortuneLink} cursor='pointer' pressStyle={{ opacity: 0.5 }}>
+            <Text
+              fontFamily='$body'
+              fontSize={13}
+              color='$colorFocus'
+              // @ts-ignore
+              style={{ transition: 'color 0.15s ease' }}
+            >
+              운세
+            </Text>
           </YStack>
-          <XStack alignItems='center' gap='$2'>
-            {avatarUrl ? (
-              <Avatar circular size='$2'>
-                <Avatar.Image src={avatarUrl} />
-                <Avatar.Fallback backgroundColor='$purple6'>
-                  <Text fontSize='$2' color='white'>
+          <YStack {...historyLink} cursor='pointer' pressStyle={{ opacity: 0.5 }}>
+            <Text
+              fontFamily='$body'
+              fontSize={13}
+              color='$colorFocus'
+              // @ts-ignore
+              style={{ transition: 'color 0.15s ease' }}
+            >
+              히스토리
+            </Text>
+          </YStack>
+
+          {/* 아바타 */}
+          <YStack position='relative'>
+            <XStack
+              alignItems='center'
+              gap='$2'
+              cursor='pointer'
+              pressStyle={{ opacity: 0.6 }}
+              onPress={() => setShowMenu(!showMenu)}
+            >
+              {avatarUrl ? (
+                <Avatar circular size={40}>
+                  <Avatar.Image src={avatarUrl} />
+                  <Avatar.Fallback backgroundColor='rgba(0,0,0,0.07)'>
+                    <Text fontFamily='$body' fontSize={14} color='$colorFocus'>
+                      {getInitial(displayName)}
+                    </Text>
+                  </Avatar.Fallback>
+                </Avatar>
+              ) : (
+                <YStack
+                  width={40}
+                  height={40}
+                  borderRadius={20}
+                  backgroundColor='rgba(0,0,0,0.07)'
+                  alignItems='center'
+                  justifyContent='center'
+                >
+                  <Text fontFamily='$body' fontSize={14} color='$colorFocus' fontWeight='500'>
                     {getInitial(displayName)}
                   </Text>
-                </Avatar.Fallback>
-              </Avatar>
-            ) : (
+                </YStack>
+              )}
+            </XStack>
+            {showMenu && (
               <YStack
-                width={28}
-                height={28}
-                borderRadius={14}
-                backgroundColor='$purple6'
-                alignItems='center'
-                justifyContent='center'
+                position='absolute'
+                top={48}
+                right={0}
+                backgroundColor='$background'
+                borderWidth={1}
+                borderColor='$borderColor'
+                paddingVertical='$2'
+                minWidth={120}
+                shadowColor='rgba(0,0,0,0.08)'
+                shadowOpacity={1}
+                shadowRadius={8}
+                shadowOffset={{ width: 0, height: 4 }}
+                zIndex={1000}
               >
-                <Text fontSize='$2' color='white' fontWeight='600'>
-                  {getInitial(displayName)}
-                </Text>
+                <YStack
+                  paddingVertical='$3'
+                  paddingHorizontal='$4'
+                  cursor='pointer'
+                  pressStyle={{ opacity: 0.6 }}
+                  hoverStyle={{ backgroundColor: '$backgroundHover' }}
+                  onPress={() => { setShowMenu(false); handleLogout() }}
+                >
+                  <Text fontFamily='$body' fontSize={13} color='$colorFocus'>
+                    로그아웃
+                  </Text>
+                </YStack>
               </YStack>
             )}
-            <Text fontSize='$3' color='$color' maxWidth={120} numberOfLines={1}>
-              {displayName}
-            </Text>
-          </XStack>
-          <LogoutButton onPress={handleLogout}>
-            <LogOut size={18} color='$purple8' />
-          </LogoutButton>
+          </YStack>
         </XStack>
       ) : (
-        <LoginButton {...loginLink}>로그인</LoginButton>
+        <Text
+          {...loginLink}
+          fontFamily='$body'
+          fontSize={13}
+          color='$colorFocus'
+          cursor='pointer'
+          pressStyle={{ opacity: 0.5 }}
+        >
+          로그인
+        </Text>
       )}
-    </HeaderContainer>
+    </XStack>
   )
 }
