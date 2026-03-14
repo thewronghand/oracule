@@ -1,5 +1,5 @@
 import React from 'react'
-import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text } from 'tamagui'
 import { LoadingSpinner, OraculeButton, SpreadLayout } from '@t4/ui'
 import { createParam } from 'solito'
 import { useLink } from 'solito/link'
@@ -13,22 +13,28 @@ import { getCharacterById } from 'app/types/character'
 
 const { useParam } = createParam<{ shareId: string }>()
 
-const SectionLabel = styled(Text, {
-  fontFamily: '$body',
-  fontSize: 10,
-  fontWeight: '500',
-  letterSpacing: 4,
-  textTransform: 'uppercase',
-  color: '#e59c97',
-})
+const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+  <Text
+    fontFamily='$body'
+    fontSize={10}
+    fontWeight='500'
+    letterSpacing={4}
+    textTransform='uppercase'
+    color='#e59c97'
+  >
+    {children}
+  </Text>
+)
 
-const Divider = styled(YStack, {
-  width: '100%',
-  height: 1,
-  backgroundColor: '$borderColor',
-  opacity: 0.5,
-  marginVertical: '$6',
-})
+const Divider = () => (
+  <YStack
+    width='100%'
+    height={1}
+    backgroundColor='$borderColor'
+    opacity={0.5}
+    marginVertical='$6'
+  />
+)
 
 function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
   const hasCardReadings = interp.cardReadings.length > 0

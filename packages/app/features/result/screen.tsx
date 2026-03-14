@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text } from 'tamagui'
 import { LoadingSpinner, OraculeButton, SpreadLayout } from '@t4/ui'
 import { createParam } from 'solito'
 import { useLink } from 'solito/link'
@@ -16,12 +16,9 @@ import { ROSE, ROSE_ALPHA } from 'app/utils/colors'
 
 const { useParam } = createParam<{ id: string }>()
 
-const Divider = styled(YStack, {
-  width: '100%',
-  height: 1,
-  backgroundColor: '$borderColor',
-  marginVertical: '$6',
-})
+const Divider = () => (
+  <YStack width='100%' height={1} backgroundColor='$borderColor' marginVertical='$6' />
+)
 
 function InterpretationView({ interp }: { interp: ReadingInterpretation }) {
   const hasCardReadings = interp.cardReadings.length > 0

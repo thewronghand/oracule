@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV === 'production') {
+  require('../public/tamagui.css')
+}
+
 if (typeof requestAnimationFrame === 'undefined') {
   if (typeof setImmediate !== 'undefined') {
     globalThis.requestAnimationFrame = setImmediate
@@ -22,10 +26,6 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import type { SolitoAppProps } from 'solito'
-
-if (process.env.NODE_ENV === 'production') {
-  require('../public/tamagui.css')
-}
 
 const title = `${process.env.NEXT_PUBLIC_METADATA_NAME}`
 const description = `${process.env.NEXT_PUBLIC_METADATA_DESCRIPTION}`

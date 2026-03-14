@@ -1,36 +1,41 @@
-import { Anchor, Button, H1, Paragraph, XStack, YStack } from '@t4/ui'
-import { RotateCw } from '@tamagui/lucide-icons'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { SolitoImage } from 'solito/image'
 
-const customerCareEmail = process.env.NEXT_PUBLIC_CUSTOMER_CARE_EMAIL
-
-export default function Page() {
+export default function Page404() {
   const router = useRouter()
-
   return (
     <>
       <Head>
-        <title>Page not found</title>
+        <title>페이지를 찾을 수 없습니다 — Oracule</title>
       </Head>
-      <YStack flex={1} justifyContent='center' alignItems='center' padding='$4' space='$4'>
-        <SolitoImage src='/t4-logo.png' width={96} height={96} alt='T4 Logo' />
-        <H1>Page not found</H1>
-        <Paragraph maxWidth={500}>
-          Your changes were saved, but we could not load the page you requested because it was not
-          found on our server. Please try connecting again. If the issue keeps happening,{' '}
-          <Anchor href={`mailto:${customerCareEmail}`} target='_blank' rel='noreferrer'>
-            contact Customer Care
-          </Anchor>
-          .
-        </Paragraph>
-        <XStack padding='$4'>
-          <Button icon={<RotateCw />} onPress={() => router.reload()}>
-            Try Again
-          </Button>
-        </XStack>
-      </YStack>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          fontFamily: 'sans-serif',
+          color: '#111',
+          gap: 16,
+        }}
+      >
+        <h1 style={{ fontSize: 24, fontWeight: 600, margin: 0 }}>404</h1>
+        <p style={{ fontSize: 16, color: '#666', margin: 0 }}>페이지를 찾을 수 없습니다.</p>
+        <button
+          onClick={() => router.push('/')}
+          style={{
+            padding: '8px 20px',
+            border: '1px solid #e5e5e5',
+            borderRadius: 6,
+            background: '#fff',
+            cursor: 'pointer',
+            fontSize: 14,
+          }}
+        >
+          홈으로
+        </button>
+      </div>
     </>
   )
 }

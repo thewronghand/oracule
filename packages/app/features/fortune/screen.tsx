@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react'
-import { Paragraph, ScrollView, XStack, YStack, Text, styled } from 'tamagui'
+import { Paragraph, ScrollView, XStack, YStack, Text } from 'tamagui'
 import { LoadingSpinner, OraculeButton, TarotCard } from '@t4/ui'
 import { useLink } from 'solito/link'
 import { trpc } from 'app/utils/trpc'
@@ -79,13 +79,9 @@ function fortuneToDrawnCard(cardId: number, cardDirection: string): DrawnTarotCa
 
 // ─── 공통 스타일드 컴포넌트 ──────────────────────────────────────────────────
 
-const Divider = styled(YStack, {
-  width: '100%',
-  height: 1,
-  backgroundColor: '$borderColor',
-
-  marginVertical: '$6',
-})
+const Divider = () => (
+  <YStack width='100%' height={1} backgroundColor='$borderColor' marginVertical='$6' />
+)
 
 // ─── 로그인 필요 ─────────────────────────────────────────────────────────────
 
