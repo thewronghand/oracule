@@ -34,10 +34,10 @@ const optimizeCss = false
 const plugins = [
   withPWA,
   withTamagui({
-    config: './tamagui.config.ts',
+    config: join(__dirname, 'tamagui.config.ts'),
     components: ['tamagui', '@t4/ui'],
     importsWhitelist: ['constants.js', 'colors.js'],
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+    outputCSS: process.env.NODE_ENV === 'production' ? join(__dirname, 'public/tamagui.css') : null,
     logTimings: true,
     disableExtraction,
     shouldExtract: (path) => {
