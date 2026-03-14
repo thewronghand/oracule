@@ -77,6 +77,31 @@ const Metadata = () => (
           from { opacity: 0; transform: translateY(28px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        /* Draw 화면 Phase 전환 */
+        @keyframes phaseEnter {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        /* Draw 화면 카드 등장 */
+        @keyframes cardAppear {
+          from { opacity: 0; transform: translateY(12px) scale(0.94); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        /* 셔플 카드 */
+        @keyframes cardShuffle {
+          0%   { transform: translateX(0) rotate(0deg); }
+          25%  { transform: translateX(-18px) rotate(-4deg); }
+          75%  { transform: translateX(18px) rotate(4deg); }
+          100% { transform: translateX(0) rotate(0deg); }
+        }
+        /* prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
       `}
     </style>
     {/* Favicons */}
