@@ -12,6 +12,7 @@ import type { ReadingInterpretation } from 'app/types/reading'
 import { Share2, RefreshCw, MessageCircle } from '@tamagui/lucide-icons'
 import { shareToKakao } from 'app/utils/kakaoShare'
 import { getCharacterById } from 'app/types/character'
+import { ROSE, ROSE_ALPHA } from 'app/utils/colors'
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -284,11 +285,11 @@ export function ResultScreen(): React.ReactNode {
                     variant='secondary'
                     customSize='md'
                     onPress={handleKakaoShare}
-                    borderColor='rgba(229,156,151,0.3)'
+                    borderColor={ROSE_ALPHA(0.3)}
                   >
                     <XStack alignItems='center' gap='$2'>
-                      <MessageCircle size={16} color='#e59c97' />
-                      <Text fontFamily='$body' fontSize={12} color='#e59c97' letterSpacing={1}>
+                      <MessageCircle size={16} color={ROSE} />
+                      <Text fontFamily='$body' fontSize={12} color={ROSE} letterSpacing={1}>
                         카카오 공유
                       </Text>
                     </XStack>

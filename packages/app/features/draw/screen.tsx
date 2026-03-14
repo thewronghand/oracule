@@ -10,6 +10,7 @@ import { SPREAD_INFO, type SpreadType, spreadOptions } from 'app/types/spread'
 import { drawRandomCards } from 'app/utils/drawRandomCards'
 import { getCardImageUrl } from 'app/utils/cardImage'
 import { trpc } from 'app/utils/trpc'
+import { ROSE, ROSE_ALPHA, CARD_BACK_BG } from 'app/utils/colors'
 
 function preloadCardImages(cards: DrawnTarotCard[]) {
   if (typeof window === 'undefined') return
@@ -44,8 +45,8 @@ function CardBack({
       height={height}
       borderRadius={12}
       borderWidth={1}
-      borderColor='rgba(229,156,151,0.3)'
-      backgroundColor='#f5f5f5'
+      borderColor={ROSE_ALPHA(0.3)}
+      backgroundColor={CARD_BACK_BG}
       alignItems='center'
       justifyContent='center'
       overflow='hidden'
@@ -55,11 +56,11 @@ function CardBack({
         width={width * 0.82}
         height={height * 0.85}
         borderWidth={1}
-        borderColor='rgba(229,156,151,0.15)'
+        borderColor={ROSE_ALPHA(0.15)}
         alignItems='center'
         justifyContent='center'
       >
-        <Text fontSize={glowColor ? 22 : 18} opacity={0.3} color='#e59c97'>✦</Text>
+        <Text fontSize={glowColor ? 22 : 18} opacity={0.3} color={ROSE}>✦</Text>
         {children}
       </YStack>
     </YStack>
@@ -171,7 +172,7 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
         <Text fontFamily='$body' fontSize={14} color='$colorFocus' opacity={0.55} textAlign='center'>
           세 더미를 순서대로 터치하세요
         </Text>
-        <Text fontSize='$4' fontWeight='700' color='#e59c97'>
+        <Text fontSize='$4' fontWeight='700' color={ROSE}>
           {tappedStacks.length} / 3
         </Text>
       </YStack>
@@ -207,7 +208,7 @@ function CutPhase({ onComplete }: { onComplete: () => void }) {
                       opacity={1 - layer * 0.08}
                     >
                       {layer === 0 && isTapped && (
-                        <Text fontFamily='$heading' fontSize={28} fontWeight='300' color='#e59c97' opacity={1}>
+                        <Text fontFamily='$heading' fontSize={28} fontWeight='300' color={ROSE} opacity={1}>
                           {tapOrder + 1}
                         </Text>
                       )}
@@ -273,7 +274,7 @@ function DrawPhaseView({
         <Text
           fontSize='$5'
           fontWeight='700'
-          color={selectedIndices.length === cardCount ? '#111111' : '#e59c97'}
+          color={selectedIndices.length === cardCount ? '#111111' : ROSE}
         >
           {selectedIndices.length} / {cardCount} 장 선택됨
         </Text>
@@ -300,10 +301,10 @@ function DrawPhaseView({
                 <CardBack
                   width={80}
                   height={120}
-                  glowColor={isSelected ? '#e59c97' : undefined}
+                  glowColor={isSelected ? ROSE : undefined}
                 >
                   {isSelected && (
-                    <Text fontSize='$4' fontWeight='700' color='#e59c97' opacity={1}>
+                    <Text fontSize='$4' fontWeight='700' color={ROSE} opacity={1}>
                       {selectOrder + 1}
                     </Text>
                   )}

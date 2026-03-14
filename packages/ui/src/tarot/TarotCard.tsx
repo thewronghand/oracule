@@ -1,5 +1,6 @@
 import type { DrawnTarotCard } from 'app/types/card'
 import { getCardImageUrl } from 'app/utils/cardImage'
+import { ROSE, ROSE_ALPHA } from 'app/utils/colors'
 import { useEffect, useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { Image, YStack } from 'tamagui'
@@ -79,7 +80,7 @@ function WebFlipCard({
           style={{
             ...faceStyle,
             background: '#0a0a0a',
-            border: '1.5px solid rgba(229,156,151,0.4)',
+            border: `1.5px solid ${ROSE_ALPHA(0.4)}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -120,7 +121,7 @@ function WebFlipCard({
             style={{
               width: 20,
               height: 20,
-              border: '1px solid rgba(229,156,151,0.5)',
+              border: `1px solid ${ROSE_ALPHA(0.5)}`,
               transform: 'rotate(45deg)',
               borderRadius: 2,
             }}
@@ -138,7 +139,7 @@ function WebFlipCard({
                 width: 4,
                 height: 4,
                 borderRadius: '50%',
-                background: 'rgba(229,156,151,0.4)',
+                background: ROSE_ALPHA(0.4),
               }}
             />
           ))}
@@ -149,7 +150,7 @@ function WebFlipCard({
           style={{
             ...frontStyle,
             background: '#f0f0f0',
-            border: isReversed ? '2px solid #e05252' : '1.5px solid rgba(229,156,151,0.5)',
+            border: isReversed ? '2px solid #e05252' : `1.5px solid ${ROSE_ALPHA(0.5)}`,
           }}
         >
           <img

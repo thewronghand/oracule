@@ -10,6 +10,7 @@ import { CHARACTERS, type CharacterId } from 'app/types/character'
 import { getCharacterById } from 'app/types/character'
 import type { DrawnTarotCard } from 'app/types/card'
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import { ROSE, ROSE_ALPHA, CARD_BACK_BG } from 'app/utils/colors'
 
 // ─── 파싱 유틸 ────────────────────────────────────────────────────────────────
 
@@ -337,7 +338,7 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       width={90}
       height={135}
       borderWidth={1}
-      borderColor='rgba(229,156,151,0.3)'
+      borderColor={ROSE_ALPHA(0.3)}
       overflow='hidden'
       animation='bouncy'
       x={isShuffling ? offset.x : 0}
@@ -345,18 +346,18 @@ function ShuffleCard({ index, phase }: { index: number; phase: DrawPhase }) {
       rotate={isShuffling ? offset.rotate : '0deg'}
       scale={isShuffling ? 1 : 0.95}
       zIndex={5 - index}
-      backgroundColor='#f5f5f5'
+      backgroundColor={CARD_BACK_BG}
     >
       <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
           width={70}
           height={115}
           borderWidth={1}
-          borderColor='rgba(229,156,151,0.15)'
+          borderColor={ROSE_ALPHA(0.15)}
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={20} opacity={0.3} color='#e59c97'>✦</Text>
+          <Text fontSize={20} opacity={0.3} color={ROSE}>✦</Text>
         </YStack>
       </YStack>
     </YStack>
@@ -372,27 +373,27 @@ function PickCard({ index, onPick, disabled }: { index: number; onPick: () => vo
       width={80}
       height={120}
       borderWidth={1}
-      borderColor='rgba(229,156,151,0.3)'
+      borderColor={ROSE_ALPHA(0.3)}
       overflow='hidden'
       animation='bouncy'
       x={xOffsets[index]}
       rotate={`${angles[index]}deg`}
       cursor={disabled ? 'default' : 'pointer'}
-      pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: 'rgba(229,156,151,0.7)' }}
-      hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: 'rgba(229,156,151,0.5)' }}
+      pressStyle={disabled ? undefined : { scale: 1.08, y: -12, borderColor: ROSE_ALPHA(0.7) }}
+      hoverStyle={disabled ? undefined : { scale: 1.05, y: -8, borderColor: ROSE_ALPHA(0.5) }}
       onPress={disabled ? undefined : onPick}
-      backgroundColor='#f5f5f5'
+      backgroundColor={CARD_BACK_BG}
     >
       <YStack flex={1} alignItems='center' justifyContent='center'>
         <YStack
           width={62}
           height={100}
           borderWidth={1}
-          borderColor='rgba(229,156,151,0.15)'
+          borderColor={ROSE_ALPHA(0.15)}
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize={16} opacity={0.3} color='#e59c97'>✦</Text>
+          <Text fontSize={16} opacity={0.3} color={ROSE}>✦</Text>
         </YStack>
       </YStack>
     </YStack>
@@ -532,8 +533,8 @@ function DrawFortuneView() {
                       paddingVertical='$4'
                       paddingHorizontal='$4'
                       borderWidth={1}
-                      borderColor={isSelected ? 'rgba(229,156,151,0.4)' : 'rgba(0,0,0,0.07)'}
-                      backgroundColor={isSelected ? 'rgba(229,156,151,0.05)' : 'transparent'}
+                      borderColor={isSelected ? ROSE_ALPHA(0.4) : 'rgba(0,0,0,0.07)'}
+                      backgroundColor={isSelected ? ROSE_ALPHA(0.05) : 'transparent'}
                       pressStyle={{ opacity: 0.7 }}
                       onPress={() => setSelectedCharacter(character.id)}
                       cursor='pointer'
@@ -548,13 +549,13 @@ function DrawFortuneView() {
                         height={16}
                         borderRadius={8}
                         borderWidth={1}
-                        borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
+                        borderColor={isSelected ? ROSE : 'rgba(0,0,0,0.15)'}
                         alignItems='center'
                         justifyContent='center'
                         flexShrink={0}
                       >
                         {isSelected && (
-                          <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
+                          <YStack width={8} height={8} borderRadius={4} backgroundColor={ROSE} />
                         )}
                       </YStack>
                       <YStack flex={1}>
@@ -702,12 +703,12 @@ function DrawFortuneView() {
                 width={160}
                 height={240}
                 borderWidth={1}
-                borderColor='rgba(229,156,151,0.3)'
-                backgroundColor='#f5f5f5'
+                borderColor={ROSE_ALPHA(0.3)}
+                backgroundColor={CARD_BACK_BG}
                 alignItems='center'
                 justifyContent='center'
               >
-                <Text fontSize={28} opacity={0.25} color='#e59c97'>✦</Text>
+                <Text fontSize={28} opacity={0.25} color={ROSE}>✦</Text>
               </YStack>
             )}
           </YStack>
@@ -854,9 +855,9 @@ function FortuneCalendar() {
                   height={44}
                   alignItems='center'
                   justifyContent='center'
-                  backgroundColor={isSelected ? 'rgba(229,156,151,0.08)' : 'transparent'}
+                  backgroundColor={isSelected ? ROSE_ALPHA(0.08) : 'transparent'}
                   borderWidth={isSelected ? 1 : 0}
-                  borderColor='rgba(229,156,151,0.4)'
+                  borderColor={ROSE_ALPHA(0.4)}
                   cursor={hasFortune ? 'pointer' : 'default'}
                   opacity={hasFortune ? 1 : 0.25}
                   pressStyle={hasFortune ? { opacity: 0.6 } : undefined}
@@ -866,7 +867,7 @@ function FortuneCalendar() {
                     fontFamily='$body'
                     fontSize={13}
                     fontWeight={hasFortune ? '500' : '300'}
-                    color={isSelected ? '#e59c97' : '$color'}
+                    color={isSelected ? ROSE : '$color'}
                   >
                     {dayNum}
                   </Text>
@@ -875,7 +876,7 @@ function FortuneCalendar() {
                       width={3}
                       height={3}
                       borderRadius={2}
-                      backgroundColor={isSelected ? '#e59c97' : 'rgba(229,156,151,0.5)'}
+                      backgroundColor={isSelected ? ROSE : ROSE_ALPHA(0.5)}
                       position='absolute'
                       bottom={5}
                     />

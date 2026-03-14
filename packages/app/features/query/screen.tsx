@@ -4,6 +4,7 @@ import { OraculeButton, OraculeTextArea, SpreadSelector } from '@t4/ui'
 import type { SpreadType } from 'app/types/spread'
 import { CHARACTERS, type CharacterId } from 'app/types/character'
 import { useRouter } from 'solito/router'
+import { ROSE, ROSE_ALPHA } from 'app/utils/colors'
 
 const EXAMPLE_QUESTIONS = [
   '지금 내 커리어 방향은 올바른가요?',
@@ -94,8 +95,8 @@ export function QueryScreen() {
                   paddingVertical='$4'
                   paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(229,156,151,0.4)' : 'rgba(0,0,0,0.07)'}
-                  backgroundColor={isSelected ? 'rgba(229,156,151,0.05)' : 'transparent'}
+                  borderColor={isSelected ? ROSE_ALPHA(0.4) : 'rgba(0,0,0,0.07)'}
+                  backgroundColor={isSelected ? ROSE_ALPHA(0.05) : 'transparent'}
                   pressStyle={{ opacity: 0.7 }}
                   onPress={() => setSelectedCharacter(character.id)}
                   cursor='pointer'
@@ -111,13 +112,13 @@ export function QueryScreen() {
                     height={16}
                     borderRadius={8}
                     borderWidth={1}
-                    borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
+                    borderColor={isSelected ? ROSE : 'rgba(0,0,0,0.15)'}
                     alignItems='center'
                     justifyContent='center'
                     flexShrink={0}
                   >
                     {isSelected && (
-                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
+                      <YStack width={8} height={8} borderRadius={4} backgroundColor={ROSE} />
                     )}
                   </YStack>
 
@@ -203,8 +204,8 @@ export function QueryScreen() {
                   paddingVertical='$3'
                   paddingHorizontal='$4'
                   borderWidth={1}
-                  borderColor={isSelected ? 'rgba(229,156,151,0.4)' : 'rgba(0,0,0,0.07)'}
-                  backgroundColor={isSelected ? 'rgba(229,156,151,0.05)' : 'transparent'}
+                  borderColor={isSelected ? ROSE_ALPHA(0.4) : 'rgba(0,0,0,0.07)'}
+                  backgroundColor={isSelected ? ROSE_ALPHA(0.05) : 'transparent'}
                   pressStyle={{ opacity: 0.6 }}
                   onPress={() => setQuestion(q)}
                   cursor='pointer'
@@ -219,13 +220,13 @@ export function QueryScreen() {
                     height={16}
                     borderRadius={8}
                     borderWidth={1}
-                    borderColor={isSelected ? '#e59c97' : 'rgba(0,0,0,0.15)'}
+                    borderColor={isSelected ? ROSE : 'rgba(0,0,0,0.15)'}
                     alignItems='center'
                     justifyContent='center'
                     flexShrink={0}
                   >
                     {isSelected && (
-                      <YStack width={8} height={8} borderRadius={4} backgroundColor='#e59c97' />
+                      <YStack width={8} height={8} borderRadius={4} backgroundColor={ROSE} />
                     )}
                   </YStack>
                   <Text
@@ -253,7 +254,7 @@ export function QueryScreen() {
               fontFamily: 'Inter, sans-serif',
               fontSize: 14,
               borderRadius: 8,
-              borderColor: question ? 'rgba(229,156,151,0.6)' : undefined,
+              borderColor: question ? ROSE_ALPHA(0.6) : undefined,
             }}
           />
         </YStack>

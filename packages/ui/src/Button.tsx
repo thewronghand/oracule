@@ -1,4 +1,5 @@
 import { Button, styled } from 'tamagui'
+import { ROSE } from 'app/utils/colors'
 
 export const OraculeButton = styled(Button, {
   name: 'OraculeButton',
@@ -11,7 +12,7 @@ export const OraculeButton = styled(Button, {
     scale: 0.98,
   },
   focusStyle: {
-    outlineColor: '#e59c97',
+    outlineColor: ROSE,
     outlineWidth: 2,
     outlineOffset: 2,
     outlineStyle: 'solid',
